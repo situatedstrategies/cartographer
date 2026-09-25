@@ -5,15 +5,18 @@
 <meta name="description" content="Cartographer reads the session history your coding agent already keeps and tells it back to you as a story: what you did, what happened, what it meant, how you responded. Local, private, one line to install.">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap">
 <link rel="stylesheet" href="/site.css">
 </head>
 <body><div class="wrap">
-<nav><a class="brand" href="/"><i></i>Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
 
 <header>
   <div class="eyebrow">A map of how you build with coding agents</div>
   <h1>Git records what changed. Cartographer records how you got there.</h1>
-  <p class="lead">It reads the session history your coding agent already keeps and tells it back to you as a story: what you did, what happened, what it meant, how you responded. When a version is done, it appraises the whole build against the outcome you said you wanted. Evidence on every line, no flattery.</p>
+  <p class="lead">Cartographer reads the session history your coding agent already keeps and turns it into the story of how your project got built. When you finish a version, it checks the result against what you said you were making, and it points to the moments that back that up.</p>
   <div class="cta"><a class="btn primary" href="/install">Install</a><a class="btn" href="/demo.html" target="_blank" rel="noopener">Watch a real build replay ↗</a></div>
   <p class="meta">Works with Claude Code today. Runs on your machine only. Plain Python, no dependencies, MIT.</p>
 </header>
@@ -29,22 +32,18 @@
 
 <section>
   <h2>What you get</h2>
-  <div class="grid">
-    <a class="card link" href="/claude-code"><h3>/wrap</h3><p>At the end of a session, Claude writes the map: chapters, then moves. What you did, what happened, what it meant, how you responded. Each move cites its evidence.</p><span class="more">In Claude Code →</span></a>
-    <a class="card link" href="/demo.html" target="_blank" rel="noopener"><h3>The replay</h3><p>A story you can play, one move at a time, with the playbook underneath: coaching, prompts worth reusing, how you build, where time went.</p><span class="more">Open the demo in a new tab ↗</span></a>
-    <a class="card link" href="/how-it-works"><h3>/complete</h3><p>When a version ships, the honest reading of the whole build against what you said "done" meant. What got you there, what cost you, what was carried into the result.</p><span class="more">How it works →</span></a>
+  <div class="rows">
+    <a class="row" href="/claude-code"><span class="k">/wrap</span><span class="d">Run it at the end of a session. Claude writes up what you asked for, what the agent did, where things went sideways, and how you got back on track. Each point links to the moment in the transcript it came from.</span><span class="go">In Claude Code →</span></a>
+    <a class="row" href="/demo.html" target="_blank" rel="noopener"><span class="k">replay</span><span class="d">Play back a whole project one step at a time. Underneath, you get coaching, the prompts worth keeping, and where your time actually went.</span><span class="go">Open the demo ↗</span></a>
+    <a class="row" href="/how-it-works"><span class="k">/complete</span><span class="d">When a version ships, look at the whole build next to what you said "done" would mean. What got you there, and what it cost.</span><span class="go">How it works →</span></a>
   </div>
 </section>
 
-<section>
-  <h2>Where to go</h2>
-  <div class="grid">
-    <a class="card link" href="/install"><h3>Install</h3><p>Terminal, PowerShell, manual, uninstall. Claude Code first if you don't have it.</p></a>
-    <a class="card link" href="/commands"><h3>Commands</h3><p>Every CLI command, what it does, when you'd use it.</p></a>
-    <a class="card link" href="/questions"><h3>Questions</h3><p>Privacy, Windows, .pkg, updating, old sessions, what "honest" means mechanically.</p></a>
-  </div>
+<section class="about">
+  <h2>About</h2>
+  <p>Cartographer is for people who code with AI: engineers who work with an agent every day, and yes, even vibe coders. It's meant to help you understand your own process, and what your projects look like in practice, session by session.</p>
+  <p>There are only so many words you can remember, and only so many prompts. A few weeks into a build, it's hard to say which prompts did the work and which ones sent the agent in circles. Cartographer isn't a prompt library, and it isn't trying to replace one. It shows you how you've been using your prompts, and how well your natural language held up against the code the AI generated.</p>
 </section>
-
 
 <footer>
   <span>Cartographer is made by Situated Strategies.</span>
