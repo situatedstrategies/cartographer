@@ -84,6 +84,7 @@ code{display:block;margin:10px 0 18px;padding:14px 16px;white-space:pre-wrap;ove
 .lockup span{font:400 var(--t-display)/.9 var(--serif);letter-spacing:-.02em}
 .hero h1{font-size:var(--t-heading);line-height:1.15;max-width:26ch;margin-bottom:22px}
 .about p{max-width:64ch;margin:0 0 16px}
+.badge{display:inline-block;margin-top:4px}.badge img{display:block;width:230px;height:auto}
 
 /* Itemized lists and tables. Everything with .hl hovers the same way:
    the others fade back and a dashed route draws across the one you're on. */
