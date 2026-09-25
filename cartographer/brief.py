@@ -16,13 +16,13 @@ from . import config, lang, recap
 
 VOICE_RULES = {
     "plain": (
-        "Write titles and details in everyday words. Name a technical concept once with a short gloss in parentheses, "
-        "then use the everyday word. No jargon in titles. Say what happened and why it mattered to the thing being built."),
+        "Write every move in everyday words. Name a technical concept once with a short gloss in parentheses, then use "
+        "the everyday word. Say what happened and why it mattered to the thing being built."),
     "technical": (
         "Write for someone who reads code. Use the real names of files, functions, libraries and errors. Be exact "
         "about what was tried and what changed. No glosses."),
     "both": (
-        "Write `title`/`detail` in technical register, and add a `plain` object on every step with the same step in "
+        "Write the moves in technical register, and add a `plain` object on every move with the same four parts in "
         "everyday words (no jargon, one gloss per concept)."),
 }
 CODING_LEVEL = {
@@ -61,10 +61,10 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
     w = out.append
 
     w("# Cartographer mapping brief\n")
-    w("You are Cartographer. Turn the session below into a map of **how the user built**, not a changelog. Git records the "
-      "code; you record the thinking: what they asked, what they decided, where they got stuck, what fixed it, what they "
-      "would reuse. Use your own knowledge of the languages, frameworks and agent involved to read intent behind the "
-      "prompts. Every step must be traceable to something in the timeline; never invent events.\n")
+    w("You are Cartographer. Turn the session below into the story of **how the user built**, told to them in second person: "
+      "what you did, what happened, what it meant, how you responded. Git records the code; you record the thinking. Use "
+      "your own knowledge of the languages, frameworks and agent involved to read intent behind the prompts. Every move must "
+      "be traceable to something in the timeline; never invent events.\n")
 
     w("## Session\n")
     w("- Agent: **%s**%s" % (digest.get("agent"), (" (model %s)" % digest["model"]) if digest.get("model") else ""))
@@ -86,12 +86,12 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
     w("- Prompting aptitude: **%s**. %s" % (eff["prompting"], PROMPTING_LEVEL[eff["prompting"]]))
     w("- Voice: **%s**. %s" % (eff["voice"], VOICE_RULES[eff["voice"]]))
     if eff["feedback"]:
-        w("- Feedback: **on**, focus **%s**, at most %d items. %s Each item names the step it refers to and, for prompt "
+        w("- Feedback: **on**, focus **%s**, at most %d items. %s Each item names the move it refers to and, for prompt "
           "items, includes a `rewrite` of the actual prompt." % (eff["focus"], eff["max_feedback"], FOCUS_RULES[eff["focus"]]))
     else:
         w("- Feedback: **off**. Leave `coaching` empty. Patterns stay descriptive, not advisory.")
-    w("- Exact prompts: **%s**." % ("keep them; put the exact wording in `prompt` on every prompt step" if eff["keep_exact_prompts"]
-                                     else "do not copy them; paraphrase in `prompt`"))
+    w("- Exact prompts: **%s**." % ("keep them; put the exact wording in `prompt` on every move that started with one" if eff["keep_exact_prompts"]
+                                     else "do not copy them; leave `prompt` out and paraphrase in `you`"))
     w("")
 
     if notes:
@@ -115,14 +115,20 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
 
     w("## Mapping rules\n")
     w("- **Phases**: 2–6 per session, named by what the user was doing (Explore, Plan, Scaffold, Build UI, Debug auth, "
-      "Polish, Ship…). They become the columns of the replay. If the branch changed, note the branch on the phase.")
-    w("- **Steps**: 6–25. Choose the moments that changed the direction of the build. Skip routine tool calls. Every prompt "
-      "that set direction is a `prompt` step. Every choice between options is a `decision`. Anything abandoned is a "
-      "`dead_end` linked to what replaced it (`blocked_by` or `reverted`). A `fix` is what unblocked. A `pivot` is a change "
-      "of framing. `insight` is a realization. `question` is an investigation before acting. `t` is minutes from start. "
-      "A prompt the detector reads as a *repair* usually marks a dead end: the turn before it went the wrong way.")
-    w("- **Links**: only when the sequence doesn't already say it. Consecutive steps are joined automatically.")
-    w("- **Branches**: set `branch` on steps when the session touched more than one.")
+      "Polish, Ship…). They are the chapters of the story. If the branch changed, note the branch on the phase.")
+    w("- **Moves**: 5–20. A move is one round with consequences, written to the user in second person, past tense: `you` "
+      "(what you did, one sentence: 'You asked for…'), `happened` (what the agent did and what resulted, one or two concrete "
+      "sentences), `consequence` (what that meant for the build), `outcome` (one word: worked, partly, broke, wrong_way, "
+      "opened), `response` (how you responded: accepted it, repaired it, went back, changed direction; usually the next "
+      "move's `you` seen from here). Several prompts that continued one line of work share a move; a prompt that changed "
+      "direction always starts one. When the agent worked for a long stretch without a prompt, say so in `you`. Skip routine "
+      "tool calls. `t` is minutes from start.")
+    w("- **Marks**: tag turning points with `mark`: decision (a choice between options), dead_end (abandoned), fix (what "
+      "unblocked), pivot (change of framing), insight (a realization), question (investigation before acting), artifact "
+      "(something made). Leave it out on ordinary moves.")
+    w("- **Read the response honestly**: the detector marks the next prompt as accept, repair or something else. A repair "
+      "means the previous move went wrong for the user even if the code ran; say so in that move's `outcome` and `consequence`.")
+    w("- **Branches**: set `branch` on moves when the session touched more than one.")
     w("- **Language-aware reading**: when a prompt uses aesthetic or physical words (\"snappier\", \"cleaner\", \"make it "
       "pop\"), map what the agent *interpreted* them as, in the target language's terms. When a fix loop is really a "
       "toolchain or environment issue, say so; that is a different lesson from a code bug.")
@@ -135,7 +141,7 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
     w("## Recap format\n")
     w("Write JSON with exactly this shape (values are placeholders):\n")
     w("```json\n%s\n```\n" % json.dumps(recap.EXAMPLE, indent=1, ensure_ascii=False))
-    w("`kind` ∈ %s. `rel` ∈ %s. `coaching[].focus` ∈ %s.\n" % (", ".join(recap.KINDS), ", ".join(recap.RELS), ", ".join(recap.FOCUS)))
+    w("`outcome` ∈ %s. `mark` ∈ %s (optional). `coaching[].focus` ∈ %s.\n" % (", ".join(recap.OUTCOMES), ", ".join(recap.MARKS), ", ".join(recap.FOCUS)))
 
     w("## Timeline\n")
     w("`t` is minutes from session start. `read:` lines are the detector's reading of each prompt.\n")
@@ -148,8 +154,9 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
     w("2. Run: `cartographer save \"%s\"` — it validates, redacts secrets, files the recap under the project and renders the replay. "
       "If it reports problems, fix the JSON and run it again. Replace every placeholder from the example; ones left as-is are "
       "filled from the session where possible and rejected otherwise." % recap_out)
-    w("3. Tell the user, in the configured voice: one line on what the session accomplished; 3–5 bullets on decisions and "
-      "dead ends; one 'how you build' observation; the coaching items if feedback is on; the replay path.")
+    w("3. Tell the user, in the configured voice, as a short story in second person: one line on what the session "
+      "accomplished; 3–5 beats of 'you did X, Y happened, so Z, and you responded with W'; one 'how you build' observation; "
+      "the coaching items if feedback is on; the replay path.")
     return "\n".join(out)
 
 

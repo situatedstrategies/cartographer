@@ -186,31 +186,57 @@ class LangTest(unittest.TestCase):
 
 
 class RecapTest(unittest.TestCase):
+    def moves(self, n=3, phase="A"):
+        return [{"id": "m%d" % i, "t": i, "phase": phase, "you": "you did %d" % i, "happened": "it %d" % i, "outcome": "worked"} for i in range(1, n + 1)]
+
     def test_validate_and_normalize(self):
-        r = {"title": "t", "goal": "g", "outcome": "o", "phases": [{"name": "A"}],
-             "steps": [{"id": "s1", "kind": "prompt", "title": "x", "phase": "A"}, {"id": "s2", "kind": "dead_end", "title": "y", "phase": "A", "links": [{"to": "s3", "rel": "reverted"}]},
-                       {"id": "s3", "kind": "fix", "title": "z", "phase": "B"}]}
-        errs = recap.validate(recap.normalize(r))
-        self.assertTrue(any("phase 'B'" in e for e in errs))
-        r["steps"][2]["phase"] = "A"
+        r = {"title": "t", "goal": "g", "outcome": "o", "phases": [{"name": "A"}], "moves": self.moves()}
+        r["moves"][2]["phase"] = "B"
+        self.assertTrue(any("phase 'B'" in e for e in recap.validate(recap.normalize(r))))
+        r["moves"][2]["phase"] = "A"
+        r["moves"][1]["outcome"] = "meh"
+        self.assertTrue(any("outcome" in e for e in recap.validate(recap.normalize(r))))
+        r["moves"][1]["outcome"] = "broke"
+        r["moves"][1]["mark"] = "dead_end"
         self.assertEqual(recap.validate(recap.normalize(r)), [])
         d = {"agent": "codex", "session_id": "abc", "started_at": "2026-09-01T10:00:00+00:00", "duration_min": 12.5,
              "languages": [{"lang": "go"}], "project": {"id": "github.com/me/app", "name": "app", "root": "/r", "remote": None, "kind": "git"}}
         n = recap.normalize(r, d)
         self.assertEqual((n["date"], n["languages"], n["project"]["id"]), ("2026-09-01", ["go"], "github.com/me/app"))
 
+    def test_legacy_steps_become_moves(self):
+        r = {"title": "t", "goal": "g", "outcome": "o", "phases": [{"name": "A"}],
+             "steps": [{"id": "s1", "t": 0, "kind": "prompt", "phase": "A", "title": "Ask for a login page", "prompt": "add login", "detail": "vague"},
+                       {"id": "s2", "t": 1, "kind": "artifact", "phase": "A", "title": "Login.tsx written", "files": ["src/Login.tsx"]},
+                       {"id": "s3", "t": 2, "kind": "dead_end", "phase": "A", "title": "Cookie lost on refresh", "detail": "session not persisted"},
+                       {"id": "s4", "t": 5, "kind": "prompt", "phase": "A", "title": "Ask to persist the session"},
+                       {"id": "s5", "t": 6, "kind": "fix", "phase": "A", "title": "Store cookie server-side"},
+                       {"id": "s6", "t": 9, "kind": "prompt", "phase": "A", "title": "Ask to ship it"}],
+             "coaching": [{"focus": "prompt", "observation": "o", "suggestion": "s", "step": "s1"}]}
+        n = recap.normalize(r)
+        self.assertEqual(recap.validate(n), [])
+        m1, m2, m3 = n["moves"]
+        self.assertEqual((m1["id"], m1["you"], m1["prompt"]), ("s1", "Ask for a login page", "add login"))
+        self.assertIn("Login.tsx written", m1["happened"])
+        self.assertIn("Cookie lost on refresh", m1["happened"])
+        self.assertEqual((m1["outcome"], m1["mark"], m1["files"]), ("wrong_way", "dead_end", ["src/Login.tsx"]))
+        self.assertEqual(m1["response"], "Ask to persist the session")
+        self.assertEqual((m2["outcome"], m2["mark"], m2["response"]), ("worked", "fix", "Ask to ship it"))
+        self.assertEqual((m3["happened"], m3["response"]), ("Ask to ship it", ""))
+        self.assertEqual(n["coaching"][0]["move"], "s1")
+
     def test_placeholders_are_filled_or_rejected(self):
         r = {"title": "Short session title", "goal": "g", "outcome": "o", "session_id": "…", "date": "YYYY-MM-DD", "duration_min": 0,
-             "project": dict(recap.EXAMPLE["project"]), "phases": [{"name": "A"}],
-             "steps": [{"id": "s%d" % i, "kind": "prompt", "title": "x", "phase": "A", "t": "soon" if i == 1 else i} for i in range(1, 4)],
-             "coaching": [{"focus": "prompt", "observation": "o", "suggestion": "s", "step": "s9"}], "time_sinks": [{"what": "w", "minutes": "ten"}]}
+             "project": dict(recap.EXAMPLE["project"]), "phases": [{"name": "A"}], "moves": self.moves(),
+             "coaching": [{"focus": "prompt", "observation": "o", "suggestion": "s", "move": "m9"}], "time_sinks": [{"what": "w", "minutes": "ten"}]}
+        r["moves"][0]["t"] = "soon"
+        r["moves"][1]["you"] = recap.EXAMPLE["moves"][0]["you"]
         d = {"session_id": "real-id", "title": "From digest", "started_at": "2026-09-02T09:00:00+00:00", "duration_min": 7, "project": {"id": "local:/x", "name": "x"}}
         n = recap.normalize(r, d)
         self.assertEqual((n["session_id"], n["date"], n["duration_min"], n["project"]["id"], n["title"]), ("real-id", "2026-09-02", 7, "local:/x", "From digest"))
         errs = recap.validate(n)
-        self.assertTrue(any("t must be a number" in e for e in errs))
-        self.assertTrue(any("s9" in e for e in errs))
-        self.assertTrue(any("time_sinks[0]" in e for e in errs))
+        for needle in ("t must be a number", "m9", "time_sinks[0]", "move m2: missing you"):
+            self.assertTrue(any(needle in e for e in errs), needle)
         self.assertTrue(any("missing title" in e for e in recap.validate(recap.normalize(r))))
 
 

@@ -1,9 +1,10 @@
-"""Recap schema: the map of one session.
+"""Recap schema: the story of one session.
 
-A recap is what the mapping model writes and what everything downstream
-(storage, replay, profile) consumes. `normalize` fills what can be derived
-from the digest so the model only has to supply judgment, and treats
-placeholders copied from the example as unset. `validate` returns
+The unit is a *move*: what you did, what happened, what it meant, how you
+responded. The mapping model writes moves in second person; the replay
+narrates them. `normalize` fills what can be derived from the digest, treats
+placeholders copied from the example as unset, and converts the older
+typed-step shape (v2) into moves so old maps still play. `validate` returns
 human-readable problems.
 """
 from __future__ import annotations
@@ -12,9 +13,9 @@ import copy
 import re
 from typing import Any, Dict, List, Optional
 
-SCHEMA = "cartographer.session/v2"
-KINDS = ("prompt", "question", "decision", "dead_end", "fix", "artifact", "pivot", "insight")
-RELS = ("led_to", "blocked_by", "reverted", "reused", "answered")
+SCHEMA = "cartographer.session/v3"
+OUTCOMES = ("worked", "partly", "broke", "wrong_way", "opened")      # what happened, in one word
+MARKS = ("decision", "question", "dead_end", "fix", "artifact", "pivot", "insight")  # optional turning-point tag
 FOCUS = ("prompt", "code", "workflow")
 PLACEHOLDER = re.compile(r"^(?:…|\.\.\.|YYYY-MM-DD|TBD|)$")
 
@@ -24,28 +25,33 @@ EXAMPLE: Dict[str, Any] = {
     "project": {"id": "github.com/me/app", "name": "app", "root": "/path/to/repo", "remote": "git@github.com:me/app.git"},
     "branch": "feature/auth", "branches": ["main", "feature/auth"],
     "date": "YYYY-MM-DD", "started_at": "…", "ended_at": "…", "duration_min": 0,
-    "goal": "what the user set out to do, in their own terms",
+    "goal": "what you set out to do, in your own terms",
     "outcome": "where it actually landed",
     "voice": "technical",
     "languages": ["typescript"], "frameworks": ["Next.js"], "files": ["src/auth.ts"],
     "tags": ["nextjs", "auth", "webapp"],
     "phases": [{"name": "Explore", "summary": "one line", "branch": "main"}],
-    "steps": [{
-        "id": "s1", "t": 0.0, "phase": "Explore", "branch": "main", "kind": "prompt",
-        "title": "≤ 7 words, verb first", "detail": "1–2 sentences: what happened and why it mattered.",
-        "plain": {"title": "same step in everyday words", "detail": "only when voice is 'both'"},
-        "prompt": "the user's exact wording when the phrasing is the lesson",
+    "moves": [{
+        "id": "m1", "t": 0.0, "phase": "Explore", "branch": "main",
+        "you": "What you did, second person, one sentence: 'You asked for…'",
+        "prompt": "your exact wording, when the phrasing is the lesson",
+        "happened": "What the agent did and what resulted. One or two concrete sentences.",
+        "consequence": "What that meant for the build.",
+        "outcome": "worked",
+        "response": "How you responded: accepted it, repaired it, went back, changed direction.",
+        "mark": "decision",
         "files": ["src/auth.ts"],
-        "links": [{"to": "s4", "rel": "led_to"}],
+        "plain": {"you": "same move in everyday words", "happened": "…", "consequence": "…", "response": "only when voice is 'both'"},
     }],
     "reusable_prompts": [{"prompt": "template with <placeholders>", "why": "what it reliably gets", "language": "typescript"}],
-    "patterns": ["neutral observation about how this person builds"],
+    "patterns": ["neutral observation about how you build"],
     "time_sinks": [{"what": "…", "minutes": 0}],
     "coaching": [{"focus": "prompt", "observation": "what happened", "suggestion": "what to do next time",
-                  "rewrite": "an improved version of a real prompt from this session", "step": "s3"}],
+                  "rewrite": "an improved version of a real prompt from this session", "move": "m3"}],
     "next_steps": ["unfinished work, phrased so the next session can pick it up"],
 }
 DERIVED = ("agent", "session_id", "title", "started_at", "ended_at", "duration_min", "branch", "branches", "frameworks", "files", "project")
+LEGACY_OUTCOME = {"dead_end": "wrong_way", "fix": "worked", "artifact": "worked", "decision": "worked", "pivot": "opened", "question": "opened", "insight": "opened"}
 
 
 def _unset(key: str, value: Any) -> bool:
@@ -65,7 +71,7 @@ def validate(recap: Dict[str, Any]) -> List[str]:
     errs: List[str] = []
     if not isinstance(recap, dict):
         return ["recap must be a JSON object"]
-    for key in ("title", "goal", "outcome", "phases", "steps"):
+    for key in ("title", "goal", "outcome", "phases", "moves"):
         if _unset(key, recap.get(key)):
             errs.append("missing %s" % key)
     phases = recap.get("phases") or []
@@ -73,42 +79,68 @@ def validate(recap: Dict[str, Any]) -> List[str]:
     errs += ["phases[%d] needs a name" % i for i, p in enumerate(phases) if not (isinstance(p, dict) and p.get("name"))]
     if len(phases) > 8:
         errs.append("too many phases (%d); merge to 8 or fewer" % len(phases))
-    steps = [s for s in (recap.get("steps") or []) if isinstance(s, dict)]
-    ids = [s.get("id") for s in steps]
-    for i, s in enumerate(steps):
-        sid = s.get("id")
-        if not sid:
-            errs.append("steps[%d] needs an id" % i)
-        elif ids.index(sid) != i:
-            errs.append("duplicate step id %s" % sid)
-        if s.get("kind") not in KINDS:
-            errs.append("step %s: kind must be one of %s" % (sid, ", ".join(KINDS)))
-        if not s.get("title"):
-            errs.append("step %s: missing title" % sid)
-        if s.get("t") is not None and not _num(s["t"]):
-            errs.append("step %s: t must be a number (minutes from start)" % sid)
-        if s.get("phase") and names and s["phase"] not in names:
-            errs.append("step %s: phase %r is not in phases" % (sid, s["phase"]))
-        for l in s.get("links") or []:
-            if not isinstance(l, dict) or l.get("rel") not in RELS:
-                errs.append("step %s: link rel must be one of %s" % (sid, ", ".join(RELS)))
-            elif l.get("to") and l["to"] not in ids and ":" not in str(l["to"]):
-                errs.append("step %s links to unknown step %s" % (sid, l["to"]))
-    if len(steps) < 3:
-        errs.append("fewer than 3 steps; a map needs at least the goal, one turning point and the outcome")
-    if len(steps) > 40:
-        errs.append("more than 40 steps; keep the moments that changed direction")
+    moves = [m for m in (recap.get("moves") or []) if isinstance(m, dict)]
+    ids = [m.get("id") for m in moves]
+    for i, m in enumerate(moves):
+        mid = m.get("id")
+        if not mid:
+            errs.append("moves[%d] needs an id" % i)
+        elif ids.index(mid) != i:
+            errs.append("duplicate move id %s" % mid)
+        for key in ("you", "happened"):
+            if _unset(key, m.get(key)) or m.get(key) == EXAMPLE["moves"][0][key]:
+                errs.append("move %s: missing %s" % (mid, key))
+        if m.get("outcome") not in OUTCOMES:
+            errs.append("move %s: outcome must be one of %s" % (mid, ", ".join(OUTCOMES)))
+        if m.get("mark") not in (None, "") and m["mark"] not in MARKS:
+            errs.append("move %s: mark must be one of %s" % (mid, ", ".join(MARKS)))
+        if m.get("t") is not None and not _num(m["t"]):
+            errs.append("move %s: t must be a number (minutes from start)" % mid)
+        if m.get("phase") and names and m["phase"] not in names:
+            errs.append("move %s: phase %r is not in phases" % (mid, m["phase"]))
+    if len(moves) < 3:
+        errs.append("fewer than 3 moves; a story needs at least what you set out to do, a turning point and where it landed")
+    if len(moves) > 30:
+        errs.append("more than 30 moves; merge rounds that continued one line of work")
     for i, c in enumerate(recap.get("coaching") or []):
         if not isinstance(c, dict) or c.get("focus") not in FOCUS:
             errs.append("coaching[%d]: focus must be one of %s" % (i, ", ".join(FOCUS)))
         elif not (c.get("observation") and c.get("suggestion")):
             errs.append("coaching[%d]: needs observation and suggestion" % i)
-        elif c.get("step") and c["step"] not in ids:
-            errs.append("coaching[%d]: step %r is not a step id" % (i, c["step"]))
+        elif (c.get("move") or c.get("step")) and (c.get("move") or c.get("step")) not in ids:
+            errs.append("coaching[%d]: move %r is not a move id" % (i, c.get("move") or c.get("step")))
     for i, t in enumerate(recap.get("time_sinks") or []):
         if not isinstance(t, dict) or not t.get("what") or (t.get("minutes") is not None and not _num(t["minutes"])):
             errs.append("time_sinks[%d]: needs `what` and a numeric `minutes`" % i)
     return errs
+
+
+def moves_from_steps(steps: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """v2 typed steps -> moves. Each prompt step opens a move; what followed it is what happened;
+    the next prompt is how you responded. Lossy, but old maps keep playing."""
+    moves: List[Dict[str, Any]] = []
+    cur: Optional[Dict[str, Any]] = None
+    for s in steps:
+        if not isinstance(s, dict):
+            continue
+        kind, line = s.get("kind"), (s.get("title") or "") + ((": " + s["detail"]) if s.get("detail") else "")
+        if cur is None or kind == "prompt":
+            cur = {"id": s.get("id"), "t": s.get("t") or 0, "phase": s.get("phase"), "branch": s.get("branch"),
+                   "you": s.get("title") or "" if kind == "prompt" else "", "prompt": s.get("prompt"),
+                   "happened": "" if kind == "prompt" else line, "consequence": "", "outcome": LEGACY_OUTCOME.get(kind, "partly"),
+                   "response": "", "mark": None if kind == "prompt" else kind, "files": list(s.get("files") or []), "_detail": s.get("detail") or ""}
+            moves.append(cur)
+        else:
+            cur["happened"] = (cur["happened"] + " " if cur["happened"] else "") + line
+            cur["files"] += [f for f in s.get("files") or [] if f not in cur["files"]]
+            if kind in LEGACY_OUTCOME and (cur["mark"] is None or kind in ("dead_end", "fix", "pivot")):
+                cur["mark"], cur["outcome"] = kind, LEGACY_OUTCOME[kind]
+    for m in moves:
+        m["happened"] = m["happened"] or m.pop("_detail", "") or m["you"]
+        m.pop("_detail", None)
+    for a, b in zip(moves, moves[1:]):
+        a["response"] = b["you"]
+    return moves
 
 
 def normalize(recap: Dict[str, Any], digest: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -133,9 +165,16 @@ def normalize(recap: Dict[str, Any], digest: Optional[Dict[str, Any]] = None) ->
         r["prompting"] = d["prompting"]
     for key in ("tags", "reusable_prompts", "patterns", "time_sinks", "coaching", "next_steps"):
         r.setdefault(key, [])
-    for s in r.get("steps") or []:
-        if isinstance(s, dict):
-            s.setdefault("links", [])
-            if s.get("t") is None:
-                s["t"] = 0
+    if not r.get("moves") and r.get("steps"):
+        r["moves"] = moves_from_steps(r["steps"])
+    for m in r.get("moves") or []:
+        if isinstance(m, dict):
+            m.setdefault("files", [])
+            if m.get("t") is None:
+                m["t"] = 0
+            if not m.get("outcome"):
+                m["outcome"] = "partly"
+    for c in r.get("coaching") or []:
+        if isinstance(c, dict) and c.get("step") and not c.get("move"):
+            c["move"] = c.pop("step")
     return r

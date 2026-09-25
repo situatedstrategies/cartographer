@@ -1,0 +1,13 @@
+name = "codecartographer-mail"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+# Every destination below must be a verified destination address in
+# Cloudflare → Email → Email Routing → Destination addresses.
+# Set the real addresses in the Cloudflare dashboard (Worker → Settings → Variables)
+# or replace the placeholders here before `wrangler deploy`.
+[vars]
+DEST_SUPPORT = "you@example.com"    # where support@codecartographer.dev lands
+DEST_FEEDBACK = "you@example.com"   # where mapit@codecartographer.dev lands
+DEST_DEFAULT = "you@example.com"    # used when a mailbox has no destination of its own
+# FALLBACK = "you@example.com"      # uncomment to receive mail sent to unknown names instead of rejecting it

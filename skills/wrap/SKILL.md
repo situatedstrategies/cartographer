@@ -1,6 +1,6 @@
 ---
 name: wrap
-description: Cartographer — wrap up the current coding session. Digests this session's transcript, builds a mapping brief tuned to the user's aptitude profile and the languages involved, and has you write the recap (phases, turning points, dead ends, fixes, reusable prompts, coaching). Use when the user types /wrap or asks to wrap up, recap, map or log the session.
+description: Cartographer — wrap up the current coding session. Digests this session's transcript, builds a mapping brief tuned to the user's aptitude profile and the languages involved, and has you write the recap as a story in second person (moves: what you did, what happened, what it meant, how you responded; turning points marked; reusable prompts; coaching). Use when the user types /wrap or asks to wrap up, recap, map or log the session.
 argument-hint: "[project name] [--session ID] [--force]"
 allowed-tools: Bash(*/cartographer:*), Bash(cartographer:*), Bash(open:*), Read, Write
 ---
@@ -42,7 +42,7 @@ It validates, redacts secrets, files the recap under the project (a git repo, wi
 In the voice the brief specified:
 
 - One line: what the session accomplished.
-- 3–5 bullets: the decisions and dead ends.
+- 3–5 beats, each in second person: what you did, what happened, what it meant, how you responded.
 - One "how you build" observation.
 - If feedback is on: the coaching items, each with its rewrite when it's a prompt item.
 - The replay path, and offer to `open` it. `cartographer open` opens the newest map; `cartographer serve --open` opens the dashboard with every project.

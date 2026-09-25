@@ -32,7 +32,7 @@ CSS = r"""
 .nav{display:flex;gap:18px;align-items:center;margin:0 0 26px;font-weight:600}.nav a{text-decoration:none;color:var(--muted)}.nav a.brand{color:var(--ink);font-size:18px;letter-spacing:-.01em}.nav a.here{color:var(--accent)}.nav .grow{flex:1}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin:0 0 22px}
 .row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}.row:first-child{border-top:0}.row .grow{flex:1;min-width:0}.row b{display:block}
-.row .mono{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .meta{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .notice{background:var(--panel2);border-radius:12px;padding:14px 16px;margin:0 0 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.notice .grow{flex:1}
 form.setup{display:grid;gap:18px;max-width:640px}form.setup label{display:grid;gap:6px;font-weight:600}form.setup small{font-weight:400;color:var(--muted)}
 .ok{color:var(--k-fix)}.warn{color:var(--k-dead_end)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
@@ -43,7 +43,7 @@ FAVICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect wi
            '<circle cx="24" cy="12" r="2.5" fill="#d9a21b"/></svg>')
 SHELL = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>%(title)s · Cartographer</title><link rel="icon" href="/favicon.ico"><style>%(css)s</style></head><body><div class="wrap">
-<nav class="nav"><a href="/" class="brand">Cartographer</a>%(links)s<span class="grow"></span><span class="mono">v%(version)s · this machine only</span></nav>
+<nav class="nav"><a href="/" class="brand">Cartographer</a>%(links)s<span class="grow"></span><span class="meta">v%(version)s · this machine only</span></nav>
 %(flash)s%(body)s
 <footer>Local dashboard · started with <kbd>cartographer serve</kbd> · nothing here leaves your machine</footer></div></body></html>"""
 
@@ -87,7 +87,7 @@ def home(q: Dict[str, str]) -> str:
     for pid, p in sorted(reg.items(), key=lambda kv: kv[1].get("name", "")):
         recaps = store.load_recaps(p["slug"])
         latest = recaps[-1] if recaps else {}
-        rows.append('<div class="row"><div class="grow"><b>%s</b><span class="mono">%s · %d session%s%s</span></div><a class="btn small primary" href="/replay/%s">Open map</a></div>'
+        rows.append('<div class="row"><div class="grow"><b>%s</b><span class="meta">%s · %d session%s%s</span></div><a class="btn small primary" href="/replay/%s">Open map</a></div>'
                     % (e(p["name"]), e(pid), len(recaps), "" if len(recaps) == 1 else "s", (" · last " + e(latest.get("date") or "")) if latest else "", e(p["slug"])))
     out.append('<div class="card panel"><h2>Projects</h2>%s</div>' % ("".join(rows) or '<p class="sub">No maps yet. Map a session on the right, or type <kbd>/wrap</kbd> in Claude Code at the end of one.</p>'))
     # sessions
@@ -101,13 +101,13 @@ def home(q: Dict[str, str]) -> str:
         if wrapped_path:
             action = '<a class="btn small" href="/replay/%s">Open map</a>' % e(slug_of(wrapped_path))
         elif job and job["status"] == "running":
-            action = '<span class="mono">mapping…</span>'
+            action = '<span class="meta">mapping…</span>'
         elif job and job["status"] == "error":
-            action = '<span class="mono warn" title="%s">failed</span>' % e(str(job.get("error"))[:200])
+            action = '<span class="meta warn" title="%s">failed</span>' % e(str(job.get("error"))[:200])
         else:
             action = ('<form method="post" action="/wrap">%s<input type="hidden" name="agent" value="%s"><input type="hidden" name="session" value="%s">'
                       '<button class="small">Map this session</button></form>' % (token_field(), e(r.agent), e(r.id)))
-        rows.append('<div class="row"><span class="dot" style="background:%s"></span><div class="grow"><b>%s</b><span class="mono">%s · %s · %s</span></div>%s</div>'
+        rows.append('<div class="row"><span class="dot" style="background:%s"></span><div class="grow"><b>%s</b><span class="meta">%s · %s · %s</span></div>%s</div>'
                     % ("var(--k-fix)" if wrapped_path else "var(--line)", e(label), e(r.agent), e(when), e(r.cwd or ""), action))
     out.append('<div class="card panel"><h2>Recent sessions</h2>%s</div>' % ("".join(rows) or '<p class="sub">No agent history found on this machine yet. Have a session in Claude Code, then come back.</p>'))
     out.append('</div>')
@@ -172,13 +172,13 @@ def wrap_page(form: Dict[str, str]) -> str:
     proj = res.get("project") or {}
     headless = autowrap.headless_command(agent, cfg)
     run_form = ('<form method="post" action="/wrap-run">%s<input type="hidden" name="agent" value="%s"><input type="hidden" name="session" value="%s"><input type="hidden" name="force" value="%s">'
-                '<button>Map it in the background with <kbd>%s</kbd></button><small class="mono" style="display:block;margin-top:8px">A few minutes. The home page shows progress.</small></form>'
+                '<button>Map it in the background with <kbd>%s</kbd></button><small class="meta" style="display:block;margin-top:8px">A few minutes. The home page shows progress.</small></form>'
                 % (token_field(), e(agent), e(sid), "1" if force else "0", e(headless[0]))) if headless else '<p class="sub"><kbd>claude</kbd> is not on PATH, so the background option is unavailable here.</p>'
     body = ('<div class="eyebrow">Map</div><h1>%s</h1><p class="sub">%s · %s prompts · %s min · %s</p>'
             '<div class="grid"><div class="card panel"><h2>Best: from inside Claude Code</h2><p>The agent that was in the session remembers the intent behind each prompt. In <kbd>%s</kbd>, type:</p>'
             '<code>/wrap --session %s%s</code></div>'
             '<div class="card panel"><h2>Or: headless</h2>%s</div></div>'
-            '<p class="mono">Brief prepared at %s</p><p><a href="/">Back</a></p>'
+            '<p class="meta">Brief prepared at %s</p><p><a href="/">Back</a></p>'
             % (e(proj.get("name") or "Session"), e(agent), e(str(res.get("prompts"))), e(str(res.get("duration_min"))), ", ".join(res.get("languages") or []) or "no language detected",
                e((proj.get("root") or "the project folder")), e(sid[:12]), " --force" if force else "", run_form, e(res["brief"])))
     return page("Map", body)

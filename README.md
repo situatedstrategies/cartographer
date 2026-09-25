@@ -1,6 +1,6 @@
 # Cartographer
 
-A map of how you build with coding agents. Cartographer reads the session history your agent already keeps, maps each session (phases, turning points, dead ends, fixes, reusable prompts, coaching), files it under the git repo it belongs to, and replays the whole build when the project is done.
+A map of how you build with coding agents. Cartographer reads the session history your agent already keeps and tells each session back to you as a story in second person: what you did, what happened, what it meant, how you responded, with turning points marked, reusable prompts and coaching. It files the map under the git repo it belongs to and replays the whole build when the project is done.
 
 Works with **Claude Code**, **Codex CLI** and **Cursor**, and with any other agent through a generic transcript adapter. Pure Python 3.9+, no dependencies.
 
@@ -19,7 +19,7 @@ cartographer config init                  # aptitude profile, feedback, voice, m
 | In the agent | What happens |
 |---|---|
 | `/wrap` (Claude Code) · "wrap up this session" (Codex, Cursor) | `cartographer wrap` digests the transcript and writes a **brief**: session facts, your aptitude profile, what Cartographer knows about the languages used, a pragmatic reading of every prompt, the mapping rules and the timeline. The agent follows it, writes the recap, and `cartographer save` files it and renders the replay. |
-| `/replay <project>` | One animated map of every wrapped session in the repo, across agents and branches, plus the playbook. Space plays, arrow keys step, the time strip jumps to any minute. |
+| `/replay <project>` | The story of every wrapped session in the repo, across agents and branches, told one move at a time, plus the playbook. Space plays, arrow keys step, the time strip jumps to any minute. |
 | `/cartographer-setup` | Change the profile, switch manual/auto, or backfill maps of old sessions. |
 
 The dashboard, for anyone who would rather click than type:
@@ -68,6 +68,7 @@ skills/           Claude Code skills: wrap, replay, cartographer-setup
 bin/cartographer  runs the CLI from a checkout
 tests/            python3 -m unittest discover -s tests -v
 demo/             a wrapped session and its replay
+site/             codecartographer.dev pieces that are not the CLI (the mail worker)
 ```
 
 Everything lives under `~/.cartographer` (override with `CARTOGRAPHER_HOME`): `config.json`, `projects.json`, `sessions/<project>/<date>_<agent>_<id>.json`, `replays/`, `briefs/`, `digests/`. Which sessions are wrapped is read from the recap file names, so there is nothing else to keep in sync.
