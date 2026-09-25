@@ -16,6 +16,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from typing import Any, Dict, List, Optional
 
 from . import config, store
@@ -34,29 +35,60 @@ def bin_path() -> str:
     return installed if os.path.exists(installed) else os.path.join(package_root(), "bin", "cartographer")
 
 
+def launcher() -> List[str]:
+    """How a hook runs the CLI: the script itself on POSIX, the interpreter plus the script on Windows."""
+    return [bin_path()] if os.name != "nt" else [sys.executable, bin_path()]
+
+
+def command_prefix() -> str:
+    """The launcher as a quoted shell fragment, for hook commands, rules and hints."""
+    return " ".join('"%s"' % p.replace("\\", "/") for p in launcher())
+
+
 def self_install() -> str:
-    """Copy this checkout to ~/.cartographer/app and link ~/.local/bin/cartographer."""
+    """Copy this checkout to ~/.cartographer/app and put a `cartographer` command in ~/.local/bin."""
     src = package_root()
     if os.path.abspath(src) != os.path.abspath(APP_DIR):
         if os.path.isdir(APP_DIR):
             shutil.rmtree(APP_DIR)
-        shutil.copytree(src, APP_DIR, ignore=shutil.ignore_patterns("__pycache__", ".git", "tests", "demo", "*.pyc"))
+        shutil.copytree(src, APP_DIR, ignore=shutil.ignore_patterns("__pycache__", ".git", "tests", "demo", "site", "*.pyc"))
     target = os.path.join(APP_DIR, "bin", "cartographer")
     os.chmod(target, 0o755)
-    link = os.path.join(HOME, ".local", "bin", "cartographer")
+    link_dir = os.path.join(HOME, ".local", "bin")
     try:
-        os.makedirs(os.path.dirname(link), exist_ok=True)
-        if os.path.islink(link) or os.path.exists(link):
-            os.remove(link)
-        os.symlink(target, link)
+        os.makedirs(link_dir, exist_ok=True)
+        if os.name == "nt":
+            write_shims(link_dir, target)
+        else:
+            link = os.path.join(link_dir, "cartographer")
+            if os.path.islink(link) or os.path.exists(link):
+                os.remove(link)
+            os.symlink(target, link)
     except OSError:
         pass
     return target
 
 
+def write_shims(link_dir: str, target: str, python: Optional[str] = None) -> List[str]:
+    """Windows has no symlinks for ordinary users: a .cmd for PowerShell and cmd, and an extensionless
+    sh script for Git Bash, which is what Claude Code uses on Windows."""
+    python = python or sys.executable
+    cmd = os.path.join(link_dir, "cartographer.cmd")
+    with open(cmd, "w", encoding="utf-8", newline="\r\n") as fh:
+        fh.write('@echo off\n"%s" "%s" %%*\n' % (python, target))
+    sh = os.path.join(link_dir, "cartographer")
+    with open(sh, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write('#!/bin/sh\nexec "%s" "%s" "$@"\n' % (python.replace("\\", "/"), target.replace("\\", "/")))
+    return [cmd, sh]
+
+
 def sweep_hint(bin_cmd: str) -> str:
+    idle = config.load()["wrap"]["idle_minutes"]
+    if os.name == "nt":
+        return ("Codex has no session-end event: run `%s sweep` every 20 min to wrap sessions idle for %d min, e.g. "
+                "schtasks /create /sc minute /mo 20 /tn Cartographer /tr '%s sweep'" % (bin_cmd, idle, bin_cmd))
     return ("Codex has no session-end event: run `%s sweep` every 20 min to wrap sessions idle for %d min, e.g. crontab -e → "
-            "*/20 * * * * \"%s\" sweep >> \"%s\" 2>&1" % (bin_cmd, config.load()["wrap"]["idle_minutes"], bin_cmd, os.path.join(config.HOME, "sweep.log")))
+            "*/20 * * * * %s sweep >> \"%s\" 2>&1" % (bin_cmd, idle, bin_cmd, os.path.join(config.HOME, "sweep.log")))
 
 
 # ------------------------------------------------------------ installers
@@ -86,7 +118,7 @@ def install_claude_code(auto: bool, bin_cmd: str, project: Optional[str] = None)
     hooks = settings.setdefault("hooks", {})
     entries = [e for e in (hooks.get("SessionEnd") or []) if not _ours(e)]
     if auto:
-        entries.append({"hooks": [{"type": "command", "command": '"%s" hook claude-code' % bin_cmd, "timeout": 20}]})
+        entries.append({"hooks": [{"type": "command", "command": '%s hook claude-code' % bin_cmd, "timeout": 20}]})
         msgs.append("Claude Code: SessionEnd hook added to %s (auto-wrap on)" % settings_path)
     else:
         msgs.append("Claude Code: manual mode; type /wrap at the end of a session")
@@ -121,7 +153,7 @@ def install_cursor(auto: bool, bin_cmd: str, project: Optional[str] = None) -> L
         data = store.read_json(hooks_path, {})
         data.setdefault("version", 1)
         stops = [h for h in (data.setdefault("hooks", {}).get("stop") or []) if not _ours(h)]
-        stops.append({"command": '"%s" hook cursor' % bin_cmd})
+        stops.append({"command": '%s hook cursor' % bin_cmd})
         data["hooks"]["stop"] = stops
         store.write_json(hooks_path, data, indent=2)
         msgs.append("Cursor: stop hook added to %s (auto-wrap on)" % hooks_path)
@@ -139,7 +171,7 @@ def handle(agent: str, payload: Dict[str, Any], cfg: Dict[str, Any]) -> Dict[str
             "transcript": payload.get("transcript_path"), "event": payload.get("hook_event_name") or payload.get("type")}
     # Only Claude Code and Cursor say a session actually ended; everything else is picked up by `sweep`.
     if cfg["wrap"]["mode"] == "auto" and agent in ("claude-code", "cursor") and sid:
-        cmd = [bin_path(), "wrap", "--run", "--agent", agent, "--session", sid]
+        cmd = launcher() + ["wrap", "--run", "--agent", agent, "--session", sid]
         if item["transcript"]:
             cmd += ["--transcript", item["transcript"]]
         _spawn(cmd)
@@ -165,7 +197,7 @@ def _agents_snippet(bin_cmd: str) -> str:
 
 When the user says "wrap", "wrap up", "map this session", or "cartographer", run:
 
-    "%s" wrap --agent codex
+    %s wrap --agent codex
 
 It prints a BRIEF path. Read that file and follow it exactly: write the recap JSON to the RECAP_OUT path it names, then run the save command it gives. Report the result in the voice the brief specifies. Do not wrap unless asked.
 %s""" % (MARK_START, bin_cmd, MARK_END)
@@ -176,7 +208,7 @@ def _cursor_rule(bin_cmd: str) -> str:
 description: Wrap up / map this session with Cartographer
 alwaysApply: false
 ---
-When the user says "wrap", "wrap up", "map this session" or "cartographer", run `"%s" wrap --agent cursor` in the terminal. It prints a BRIEF path. Read that file and follow it exactly: write the recap JSON to the RECAP_OUT path it names, then run the save command it gives, then summarize for the user in the voice the brief specifies.
+When the user says "wrap", "wrap up", "map this session" or "cartographer", run `%s wrap --agent cursor` in the terminal. It prints a BRIEF path. Read that file and follow it exactly: write the recap JSON to the RECAP_OUT path it names, then run the save command it gives, then summarize for the user in the voice the brief specifies.
 """ % bin_cmd
 
 

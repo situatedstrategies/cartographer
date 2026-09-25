@@ -7,9 +7,9 @@ allowed-tools: Bash(*/cartographer:*), Bash(cartographer:*), Read
 
 # /cartographer-setup
 
-`$ARGUMENTS` may be a `key value` pair, `backfill`, or empty.
+The command is `cartographer`. If it is not on PATH, use `"$HOME/.cartographer/app/bin/cartographer"` (Windows, in Git Bash: `python "$HOME/.cartographer/app/bin/cartographer"`).
 
-The command is `"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}"`.
+`$ARGUMENTS` may be a `key value` pair, `backfill`, or empty.
 
 ## Empty: walk through the profile
 
@@ -35,19 +35,19 @@ Finish with `config show` and read back the `effective` line in one sentence.
 ## `key value`: set one thing
 
 ```bash
-"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}" config set <key> <value>
+cartographer config set <key> <value>
 ```
 
 ## `backfill`: retrospective maps
 
 ```bash
-"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}" sessions --all --limit 30
+cartographer sessions --all --limit 30
 ```
 
 Show the list, ask which folder or sessions to map. Then for the chosen folder:
 
 ```bash
-"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}" backfill --cwd "<folder>"
+cartographer backfill --cwd "<folder>"
 ```
 
 It prepares one brief per past session and prints their paths. Map them one at a time: read the brief, write the recap to its `RECAP_OUT`, run `save`. For a long backlog, offer `backfill --run`, which uses `claude -p` headlessly and takes a few minutes per session.

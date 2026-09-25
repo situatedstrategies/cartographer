@@ -37,9 +37,11 @@ def _agent_arg(value: Optional[str]) -> Optional[str]:
 
 
 def _open(path: str) -> None:
-    opener = "open" if sys.platform == "darwin" else ("start" if os.name == "nt" else "xdg-open")
     try:
-        subprocess.Popen([opener, path], shell=(os.name == "nt"))
+        if os.name == "nt":
+            os.startfile(path)  # type: ignore[attr-defined]
+        else:
+            subprocess.Popen(["open" if sys.platform == "darwin" else "xdg-open", path])
     except OSError:
         pass
 
@@ -237,7 +239,9 @@ def cmd_config(a) -> int:
 
 def cmd_install(a) -> int:
     cfg = config.load()
-    bin_cmd = hooks.bin_path() if a.no_copy else hooks.self_install()
+    if not a.no_copy:
+        hooks.self_install()
+    bin_cmd = hooks.command_prefix()
     if a.auto or a.manual:
         config.set_value(cfg, "wrap.mode", "auto" if a.auto else "manual")
     config.save(cfg)
@@ -331,6 +335,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
     try:
         return a.fn(a) or 0
+    except BrokenPipeError:  # e.g. `cartographer sessions | head`
+        return 0
     except (LookupError, ValueError, OSError) as exc:
         print("cartographer: %s" % exc, file=sys.stderr)
         return 1
