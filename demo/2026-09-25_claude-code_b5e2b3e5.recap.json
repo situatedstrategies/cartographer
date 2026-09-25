@@ -1,0 +1,443 @@
+{
+ "schema": "cartographer.session/v3",
+ "title": "Lean pass, dashboard, story map, yardstick: four versions in one sitting",
+ "goal": "Refine the app and the script. It became: make Cartographer user-friendly on the front end, tell each map as a human story, and ground that story in an honest appraisal against a declared outcome.",
+ "outcome": "Four pushes on the feature branch, v0.3 to v0.6: a lean pass, a local dashboard, the story map, then versions with a declared desired outcome and an appraisal at completion, plus a tan palette and a Cloudflare mail worker. No desired outcome was declared for this project, so every outcome below is how it looked at the time. Nothing has been used by anyone but the agent; the Codex and Cursor adapters and the mail worker are unverified.",
+ "voice": "technical",
+ "tags": [
+  "cartographer",
+  "python",
+  "dashboard",
+  "schema-change",
+  "dogfooding"
+ ],
+ "phases": [
+  {
+   "name": "Lean pass",
+   "summary": "Read everything, cut what carried no weight, fix what dogfooding found"
+  },
+  {
+   "name": "Front end",
+   "summary": "Explain what exists, then build the local dashboard and a rounder map"
+  },
+  {
+   "name": "Story",
+   "summary": "The map becomes moves in second person; mail worker; cleaner type"
+  },
+  {
+   "name": "Yardstick",
+   "summary": "Tan palette, then the model itself: declared outcomes, evidence, appraisal"
+  }
+ ],
+ "moves": [
+  {
+   "id": "m1",
+   "t": 0.0,
+   "phase": "Lean pass",
+   "outcome": "opened",
+   "mark": "question",
+   "you": "You opened the repo with one line, refine the app and the script, with no target and no scope.",
+   "prompt": "Okay, open this repo and let's refine the app and script",
+   "happened": "The agent read every file, about 3,900 lines across package, skills, tests and demo, ran the 12 existing tests, and exercised the CLI against this very session's transcript to find real rough edges instead of guessing at them.",
+   "consequence": "Four minutes of reading before any change. Technical implication: the refinement that followed was anchored in the code's actual failure points (a hook that could hang on stdin, placeholder recaps saved verbatim), not in the prompt, which named none.",
+   "response": "A minute in, while the agent was still reading, you asked whether the modules needed to be that large.",
+   "evidence": [
+    "prompt #1",
+    "tools 0.1m to 4.3m",
+    "error at 4.3m"
+   ],
+   "files": []
+  },
+  {
+   "id": "m2",
+   "t": 1.3,
+   "phase": "Lean pass",
+   "outcome": "worked",
+   "mark": "decision",
+   "you": "You asked, mid-read, whether the modules needed to be that large, and for something leaner and lighter but as effective.",
+   "prompt": "Do they need to be that large? Can we make it leaner and lighter but as effective?",
+   "happened": "The agent turned the open-ended refinement into a bounded pass. It removed a job queue and a second index of wrapped sessions, the Codex notify hook and the launchd installer, four CLI subcommands and the reference docs, then fixed the bugs its own dogfooding had surfaced. The package went from 3,346 to 3,067 lines and the tests from 12 to 16. Pushed as v0.3 at minute 20.",
+   "consequence": "Leaner was read as fewer moving parts rather than fewer lines, and the agent said so: an 8% line reduction. Technical implication: the cuts removed state that had to be kept in sync (a queue file, an index of wrapped sessions), which is what later makes git-native team maps feasible.",
+   "response": "You came back with the front-end vision.",
+   "evidence": [
+    "prompt #2",
+    "tools 4.5m to 20.0m",
+    "error at 19.0m"
+   ],
+   "files": [
+    "cartographer/lang.py",
+    "cartographer/store.py",
+    "cartographer/cli.py",
+    "cartographer/hooks.py",
+    "cartographer/autowrap.py",
+    "cartographer/recap.py"
+   ]
+  },
+  {
+   "id": "m3",
+   "t": 20.7,
+   "phase": "Front end",
+   "outcome": "opened",
+   "mark": "pivot",
+   "you": "You set the destination in one sentence: user friendly on the front end, set up, instructions, output, a clean rounded map, integrated team maps, easy access. Then you asked what exists so far.",
+   "prompt": "Okay- I want this all to be very user friendly on the front end. Set up, instructions, output- clean, rounded, clear UI for the map, integrated team maps, and easy access. So basically the script is built, no? Now we need to build everything else. Explain to me what exisits so far.",
+   "happened": "The agent answered the question instead of building: an inventory by layer (engine, agent-facing skills, replay page, setup, storage, and no team layer at all), a plain walkthrough of the current experience, a build order, and three decisions put to you: web page or desktop app, git-native or hosted team maps, Claude Code first or all three agents.",
+   "consequence": "Six capabilities in one sentence and no done-condition, so the agent proposed the order. Technical implication: everything after this was sequenced by the agent's proposal, which you accepted by answering its questions one at a time rather than restating priorities.",
+   "response": "You stepped away for 54 minutes, then came back with a question rather than an instruction.",
+   "evidence": [
+    "prompt #3",
+    "reply at 22.0m",
+    "pause 54m"
+   ],
+   "files": []
+  },
+  {
+   "id": "m4",
+   "t": 76.4,
+   "phase": "Front end",
+   "outcome": "worked",
+   "mark": "decision",
+   "you": "Back after 54 minutes, you asked what the web page reuses, then what the difference is between git-native and something else, and told the agent to polish Claude Code first.",
+   "prompt": "What does the webpage reuse?",
+   "happened": "Two explanations, then one decision taken on the agent's third question. The web-page question was never answered explicitly; the agent treated the absence of an objection as consent and started building the local dashboard on Python's own HTTP server, bound to 127.0.0.1 with a per-run token.",
+   "consequence": "Two of the three decisions were made by inference, not by you. Technical implication: the dashboard keeps the zero-dependency promise but cannot be reached from a phone, which you had listed under easy access; that need now sits with the hosted tier.",
+   "response": "While it built, you raised scaling.",
+   "evidence": [
+    "prompt #4",
+    "prompt #5",
+    "pause 54m",
+    "tools 79.1m to 83.5m"
+   ],
+   "files": []
+  },
+  {
+   "id": "m5",
+   "t": 78.4,
+   "phase": "Front end",
+   "outcome": "opened",
+   "mark": "insight",
+   "you": "Mid-build you said it sounds like we really need to think about scaling, and two minutes later that you would make the homepage and get the domain on Cloudflare.",
+   "prompt": "Okay so it sounds like we really need to think about scaling",
+   "happened": "The agent answered inline and kept building: the costly part, the mapping, runs on each user's own agent, so a hosted tier stores small JSON files and renders pages; and it split the work, your public site against its local dashboard.",
+   "consequence": "Scaling was answered in a paragraph and not designed. Technical implication: no schema or sync contract for a hosted tier exists; the only grounding is that recaps are portable files with one schema and projects are identified by normalized git remote.",
+   "response": "You let it finish the dashboard.",
+   "evidence": [
+    "prompt #6",
+    "prompt #7",
+    "reply at 79.1m"
+   ],
+   "files": []
+  },
+  {
+   "id": "m6",
+   "t": 83.5,
+   "phase": "Front end",
+   "outcome": "broke",
+   "mark": "dead_end",
+   "you": "No prompt from you here; the agent was verifying its own dashboard in a headless browser.",
+   "happened": "Three self-inflicted failures in a row: a hidden branch selector still rendered because the base CSS overrode the hidden attribute, the error message for a rejected boolean setting crashed, and the demo file was corrupted by a stray backslash-n from the agent's own patch script.",
+   "consequence": "All three were caught by the agent's screenshots and tests, none by you. Technical implication: the verification loop (unit tests plus a Chromium pass over every page) is doing the quality work and costs roughly a fifth of each build; without it, two of the three would have shipped.",
+   "response": "The agent fixed them and pushed v0.4 at minute 90. You saw only the screenshots.",
+   "evidence": [
+    "tools 83.5m to 88.2m",
+    "error at 88.2m",
+    "reply at 90.6m"
+   ],
+   "files": [
+    "cartographer/serve.py",
+    "cartographer/render.py",
+    "cartographer/config.py"
+   ]
+  },
+  {
+   "id": "m7",
+   "t": 96.4,
+   "phase": "Story",
+   "outcome": "worked",
+   "mark": "pivot",
+   "you": "You said the map needs to be more human: this is what you did, this is what happened, these were the consequences, this is how you responded.",
+   "prompt": "The map needs to be more human, i.e., this is what you did and this is what happened, and then you did this, and these were the main consequences and this is how you responded to them.",
+   "happened": "The agent treated it as a schema change, not a styling change. The unit of a map became a move with four parts, an outcome word and an optional turning-point mark; the brief was rewritten in second person; the phase grid was replaced by a narrated story that reveals one part at a time; old maps convert automatically. The demo was rewritten as 12 moves. Pushed as v0.5 at minute 109.",
+   "consequence": "One sentence from you replaced the data model. Technical implication: the v2 typed-step schema is now legacy, converted on read; anything that consumed steps directly would have broken, and nothing did because nothing else exists yet.",
+   "response": "Two minutes later you sent the domain and the mailboxes, and a minute after that the typography note.",
+   "evidence": [
+    "prompt #8",
+    "tools 99.8m to 105.1m",
+    "error at 105.0m"
+   ],
+   "files": [
+    "cartographer/recap.py",
+    "cartographer/render.py",
+    "cartographer/brief.py",
+    "demo/2026-09-24_claude-code_ca61170e.recap.json"
+   ]
+  },
+  {
+   "id": "m8",
+   "t": 98.9,
+   "phase": "Story",
+   "outcome": "partly",
+   "mark": "artifact",
+   "you": "You sent the live domain, codecartographer.dev, the two mailboxes, and asked for a Cloudflare email worker that tags mail by the address it was sent to.",
+   "prompt": "the domain is codecartographer.dev it's live. support goes to support@codecartographer.dev feedback goes to mapit@codecartographer.dev and design a email worker script to give cloudfare email routing that labels emails or tags the emails as to a specific email",
+   "happened": "The agent wrote the worker (tag headers, forward, reject unknown names), a wrangler config with placeholder destinations, and a README with the routing steps and the Gmail filter rules, under site/email-worker.",
+   "consequence": "Unverified: written from the Email Workers API as the agent knows it and never deployed. The README states one limit (subjects cannot be rewritten by routing) and keeps destination addresses out of the repo. Technical implication: labelling happens in the inbox by filter on the original To address; the worker adds headers and control, not the labels themselves.",
+   "response": "You did not comment on it. Your next messages were about the map's look and then its honesty.",
+   "evidence": [
+    "prompt #9",
+    "tools 105.1m"
+   ],
+   "files": [
+    "site/email-worker/worker.js",
+    "site/email-worker/wrangler.toml",
+    "site/email-worker/README.md"
+   ]
+  },
+  {
+   "id": "m9",
+   "t": 99.6,
+   "phase": "Story",
+   "outcome": "worked",
+   "you": "You asked for a little darker, a cleaner font, and less monospace.",
+   "prompt": "It needs to be a little darker in color, maybe cleaner font and a less mono monotype",
+   "happened": "Deeper palette, system sans throughout, monospace kept only for prompts, commands and file names. Shipped inside v0.5.",
+   "consequence": "Applied as asked. Technical implication: the first palette (sage and teal) had been the agent's choice with no brief from you; this was the first design correction, about tone rather than structure, and it took one round.",
+   "response": "After seeing v0.5 you rejected both the dark mode and the green.",
+   "evidence": [
+    "prompt #10",
+    "reply at 109.1m"
+   ],
+   "files": []
+  },
+  {
+   "id": "m10",
+   "t": 113.1,
+   "phase": "Yardstick",
+   "outcome": "worked",
+   "mark": "decision",
+   "you": "You said dark mode kind of sucks and the green is bland, and proposed beige, a cool tan.",
+   "prompt": "Dark mode kind of sucks, and the green we currently have is bland. What about beige? a cool tan.",
+   "happened": "Cool tan paper with a map-ink blue accent in the light, warm charcoal with a tan accent in the dark, and a theme switch remembered per browser. One patch failed on a string the agent had renamed earlier, so the dashboard got its switch a round later than the replay.",
+   "consequence": "Second aesthetic correction, again by feel and again converged in one round because you named a direction. Technical implication: the palette is two hand-tuned token sets and nothing more; there is no design system, so your public site and the product can drift apart.",
+   "response": "Fifty seconds later you moved from looks to substance: the map must be an honest appraisal.",
+   "evidence": [
+    "prompt #11",
+    "tools 114.8m to 118.2m"
+   ],
+   "files": []
+  },
+  {
+   "id": "m11",
+   "t": 113.9,
+   "phase": "Yardstick",
+   "outcome": "opened",
+   "mark": "pivot",
+   "you": "Mid-build you sent two messages a minute apart: the map needs to be an honest appraisal with honest technical implications based on how you worked and prompted; and it needs to be based in something, because the source of truth is the desired outcome, revealed only when a project or version is marked complete.",
+   "prompt": "It needs to be based in something though. The source of truth is the desired outcome of the coding- and the outcome is only revealed when a project or version of the project is marked as complete",
+   "happened": "The agent set the palette aside and changed the model. Projects gained versions with a declared desired outcome; every move gained an evidence list; praise words are rejected on save; consequences must name a technical implication; a complete command marks a version shipped, partial or abandoned and writes an appraisal brief; a /complete skill and a project page on the dashboard; a demo appraisal written to those rules. Pushed as v0.6 at minute 125.",
+   "consequence": "The two most consequential messages of the session were also the two shortest, and both arrived while the agent was mid-task. Technical implication: the validator now enforces evidence and bans praise, but nothing checks that a cited item exists in the timeline; a mapping model can still invent a citation and pass.",
+   "response": "You typed /wrap.",
+   "evidence": [
+    "prompt #12",
+    "prompt #13",
+    "tools 118.2m to 124.7m"
+   ],
+   "files": [
+    "cartographer/store.py",
+    "cartographer/recap.py",
+    "cartographer/brief.py",
+    "cartographer/autowrap.py",
+    "cartographer/cli.py",
+    "cartographer/serve.py",
+    "skills/complete/SKILL.md",
+    "demo/appraisal_v1.json"
+   ]
+  },
+  {
+   "id": "m12",
+   "t": 125.7,
+   "phase": "Yardstick",
+   "outcome": "worked",
+   "mark": "fix",
+   "you": "You typed /wrap.",
+   "prompt": "/wrap",
+   "happened": "The skill is not installed in this cloud session, so the agent ran the pipeline by hand. The first brief showed 7 prompts where you had sent 14: the other seven were messages sent mid-turn, which Claude Code stores on attachment records under a rendered field the adapter never read. The agent fixed the adapter with a test, re-prepared the brief, and wrote this map.",
+   "consequence": "Half of your steering in this session was invisible to the product until its own dogfooding found the gap. Technical implication: any map made before this fix of a session with mid-turn messages under-reports the user; such sessions should be re-wrapped, and the same gap may exist for other record types the adapter skips.",
+   "evidence": [
+    "prompt #14",
+    "tools 126.5m onward"
+   ],
+   "files": [
+    "cartographer/adapters/claude_code.py",
+    "cartographer/digest.py",
+    "cartographer/brief.py",
+    "tests/test_cartographer.py"
+   ]
+  }
+ ],
+ "reusable_prompts": [
+  {
+   "prompt": "Do they need to be that large? Can we make <this> leaner and lighter but as effective?",
+   "why": "Turned an open-ended 'refine' into a bounded pass with a claim the agent had to defend: same behaviour, fewer parts, and a report of what it cut and what it did not.",
+   "language": null
+  },
+  {
+   "prompt": "<The output> needs to be more human: this is what I did, this is what happened, these were the consequences, this is how I responded.",
+   "why": "A sentence that carries a schema. The agent could derive the data model from the grammar of the request, which is why one message changed the product's unit of record.",
+   "language": null
+  },
+  {
+   "prompt": "It needs to be based in something. The source of truth is <the desired outcome>, and it is only revealed when <a version is marked complete>.",
+   "why": "Names the yardstick and when it becomes known, which is enough for an agent to design the evaluation loop around it.",
+   "language": null
+  }
+ ],
+ "patterns": [
+  "Steers with one-line messages sent while the agent is still working: 7 of 14 prompts were mid-turn, and the two that changed the product most were among them.",
+  "Names destinations, not acceptance criteria: no prompt in this session stated a done-condition, so what shipped was the agent's reading each time, and the agent reported that reading rather than asking.",
+  "Corrects by feel on aesthetics ('bland', 'kind of sucks', 'cool tan') and by principle on substance ('the source of truth is…'); the second kind changed the data model twice in one session.",
+  "Answers the agent's decision questions selectively: one of three was answered explicitly; the other two were resolved by the agent from silence.",
+  "Steps away for long stretches (54 minutes) and returns with a question before an instruction."
+ ],
+ "time_sinks": [
+  {
+   "what": "Away between the front-end brief and the next question; the agent had nothing to do",
+   "minutes": 54
+  },
+  {
+   "what": "Lean pass: reading, cutting, dogfooding, browser check, push (v0.3)",
+   "minutes": 20
+  },
+  {
+   "what": "Dashboard and map redesign, including three self-inflicted failures and their fixes (v0.4)",
+   "minutes": 12
+  },
+  {
+   "what": "Story schema, mail worker, typography (v0.5)",
+   "minutes": 9
+  },
+  {
+   "what": "Palette, theme switch, versions and appraisal (v0.6)",
+   "minutes": 11
+  },
+  {
+   "what": "Adapter fix for mid-turn messages, then this map",
+   "minutes": 4
+  }
+ ],
+ "coaching": [
+  {
+   "focus": "prompt",
+   "move": "m3",
+   "observation": "The front-end brief listed six things and no done-condition; the agent chose the order and then asked you three questions, of which you answered one.",
+   "suggestion": "When you hand over a list, mark the one item that would make the version done. The agent then sequences around it instead of proposing its own order.",
+   "rewrite": "Make Cartographer usable without a terminal. Done means: a first-time user installs, sets their profile, wraps one session and opens the map from a page, in under ten minutes, on Claude Code only. Team maps and other agents come after that."
+  },
+  {
+   "focus": "workflow",
+   "move": "m11",
+   "observation": "The two messages that redefined the product arrived mid-turn, in one line each, while the agent was applying a palette. They landed, but only because the agent chose to stop the palette work; nothing in the flow guarantees that.",
+   "suggestion": "When a mid-turn message changes the goal rather than the details, say so in the message ('this changes the model, stop and redo') so the agent does not fold it into the current task."
+  },
+  {
+   "focus": "code",
+   "move": "m11",
+   "observation": "The honesty checks are real but shallow: evidence is required and praise words are rejected, but no check confirms that a cited 'prompt #3' or 'error at 12.4m' exists in the digest.",
+   "suggestion": "Add a validator pass that resolves each evidence string against the digest's timeline and rejects citations that match nothing. It is a small function in recap.py and it is the difference between 'must cite' and 'must cite truthfully'."
+  },
+  {
+   "focus": "code",
+   "move": "m12",
+   "observation": "Half the prompts of this session were invisible to the adapter until the last five minutes; the gap was in record types the adapter skipped, not in parsing.",
+   "suggestion": "Before wrapping older sessions, re-run `cartographer wrap --force` on them, and add a doctor check that counts rendered mid-turn messages against prompt events so a silent gap shows up as a number."
+  }
+ ],
+ "next_steps": [
+  "Declare the desired outcome for this project's first version (`cartographer goal \"…\"`) so the next maps have a yardstick; until then every outcome above is provisional.",
+  "Run a real /wrap and a real /complete on a machine with the skills installed; this map was written by the agent by hand, so whether a mapping model cites evidence truthfully under the new brief is still unknown.",
+  "Add the evidence-resolution check to the validator (see coaching).",
+  "Deploy the Cloudflare mail worker and send two test mails; it has never run.",
+  "Decide the team-maps route (git-native was recommended and not yet confirmed)."
+ ],
+ "agent": "claude-code",
+ "session_id": "b5e2b3e5-3bb8-583f-ae2d-f04615102c83",
+ "started_at": "2026-09-25T02:39:42.543000+00:00",
+ "ended_at": "2026-09-25T04:47:09.182000+00:00",
+ "duration_min": 127.4,
+ "branch": "claude/vigilant-davinci-8j0q1t",
+ "branches": [
+  "claude/vigilant-davinci-8j0q1t"
+ ],
+ "files": [
+  "cartographer/render.py",
+  "cartographer/recap.py",
+  "cartographer/lang.py",
+  "cartographer/store.py",
+  "cartographer/autowrap.py",
+  "cartographer/hooks.py",
+  "cartographer/cli.py",
+  "skills/wrap/SKILL.md",
+  "skills/cartographer-setup/SKILL.md",
+  "README.md",
+  "tests/test_cartographer.py",
+  "cartographer/serve.py",
+  "demo/2026-09-24_claude-code_ca61170e.recap.json",
+  "site/email-worker/worker.js",
+  "site/email-worker/wrangler.toml",
+  "site/email-worker/README.md",
+  "skills/complete/SKILL.md",
+  "demo/appraisal_v1.json"
+ ],
+ "project": {
+  "id": "github.com/situatedstrategies/cartographer",
+  "name": "cartographer",
+  "root": "/home/user/cartographer",
+  "remote": "https://github.com/situatedstrategies/cartographer",
+  "slug": "cartographer"
+ },
+ "date": "2026-09-25",
+ "languages": [
+  "python",
+  "javascript",
+  "toml"
+ ],
+ "stats": {
+  "prompts": 14,
+  "replies": 20,
+  "tool_calls": 148,
+  "errors": 4,
+  "files_touched": 18,
+  "files_read": 40,
+  "subagent_events": 0
+ },
+ "prompting": {
+  "prompts": 14,
+  "avg_words": 20.4,
+  "avg_specificity": 0.07,
+  "anchored_ratio": 0.0,
+  "vague_ratio": 0.07,
+  "delegation_ratio": 0.0,
+  "acceptance_ratio": 0.0,
+  "pasted_code_ratio": 0.0,
+  "repair_ratio": 0.0,
+  "accept_ratio": 0.0,
+  "intent_mix": {
+   "other": 6,
+   "design": 3,
+   "refactor": 2,
+   "build": 2,
+   "explain": 1
+  },
+  "mode_mix": {
+   "mixed": 11,
+   "question": 2,
+   "descriptive": 1
+  },
+  "top_signals": [
+   "large scope with little detail: the agent chose the architecture",
+   "no stated done-condition: success was judged by feel",
+   "aesthetic or vague wording (kind of, cool) with nothing to anchor it"
+  ]
+ },
+ "saved_at": "2026-09-25T04:51:19.504214+00:00"
+}

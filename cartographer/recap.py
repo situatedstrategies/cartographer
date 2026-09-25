@@ -70,13 +70,16 @@ APPRAISAL_EXAMPLE: Dict[str, Any] = {
 LEGACY_OUTCOME = {"dead_end": "wrong_way", "fix": "worked", "artifact": "worked", "decision": "worked", "pivot": "opened", "question": "opened", "insight": "opened"}
 
 
+LITERAL_OK = {"agent", "voice", "branch", "branches", "languages", "frameworks", "files", "tags", "schema", "result"}  # real values can equal the example's
+
+
 def _unset(key: str, value: Any) -> bool:
     """Missing, empty, a placeholder, or copied verbatim from the example."""
     if value is None or value == "" or value == [] or value == {}:
         return True
     if isinstance(value, str) and PLACEHOLDER.match(value.strip()):
         return True
-    return value == EXAMPLE.get(key)
+    return key not in LITERAL_OK and value == EXAMPLE.get(key)
 
 
 def _num(x: Any) -> bool:

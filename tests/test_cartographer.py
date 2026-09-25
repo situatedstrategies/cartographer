@@ -206,6 +206,8 @@ class RecapTest(unittest.TestCase):
              "languages": [{"lang": "go"}], "project": {"id": "github.com/me/app", "name": "app", "root": "/r", "remote": None, "kind": "git"}}
         n = recap.normalize(r, d)
         self.assertEqual((n["date"], n["languages"], n["project"]["id"]), ("2026-09-01", ["go"], "github.com/me/app"))
+        d["agent"] = "claude-code"  # equals the schema example, and is still a real value to fill in
+        self.assertEqual(recap.normalize(r, d)["agent"], "claude-code")
 
     def test_legacy_steps_become_moves(self):
         r = {"title": "t", "goal": "g", "outcome": "o", "phases": [{"name": "A"}],
