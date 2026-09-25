@@ -10,13 +10,15 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
+os.environ.setdefault("CARTOGRAPHER_HOME", tempfile.mkdtemp())
 
-from cartographer import config, digest, lang, recap, store  # noqa: E402
+from cartographer import config, digest, hooks, lang, recap, store  # noqa: E402
 from cartographer.adapters import claude_code, codex_cli, cursor, generic  # noqa: E402
-from cartographer.adapters.base import ERROR, PROMPT, REPLY, TOOL, SessionRef  # noqa: E402
+from cartographer.adapters.base import ERROR, NOTE, PROMPT, REPLY, TOOL, Event, Session  # noqa: E402
 
 
 def write(path, text):
@@ -27,9 +29,10 @@ def write(path, text):
 
 
 class ClaudeCodeTest(unittest.TestCase):
-    def test_parses_prompts_tools_errors_and_branches(self):
+    def test_parses_prompts_tools_errors_branches_and_commands(self):
         tmp = tempfile.mkdtemp()
         lines = [
+            {"type": "summary", "summary": "auto summary"},
             {"type": "custom-title", "customTitle": "Auth work"},
             {"type": "user", "timestamp": "2026-09-01T10:00:00Z", "cwd": "/repo", "gitBranch": "main",
              "message": {"role": "user", "content": [{"type": "text", "text": "<system-reminder>noise</system-reminder>Add login to src/app.ts"}]}},
@@ -39,17 +42,20 @@ class ClaudeCodeTest(unittest.TestCase):
             {"type": "user", "timestamp": "2026-09-01T10:02:00Z", "cwd": "/repo", "gitBranch": "feature/login",
              "message": {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "t1", "is_error": True, "content": "TypeError: x"}]}},
             {"type": "user", "isSidechain": True, "timestamp": "2026-09-01T10:03:00Z", "message": {"role": "user", "content": [{"type": "text", "text": "subagent chatter"}]}},
+            {"type": "user", "timestamp": "2026-09-01T10:04:00Z", "cwd": "/repo", "gitBranch": "feature/login",
+             "message": {"role": "user", "content": [{"type": "text", "text": "<command-name>/wrap</command-name><command-message>wrap</command-message><command-args></command-args>"}]}},
         ]
         path = write(os.path.join(tmp, "-repo", "abc.jsonl"), "\n".join(json.dumps(l) for l in lines))
         ad = claude_code.ClaudeCodeAdapter(projects_dir=tmp)
         s = ad.load_path(path)
-        kinds = [e.kind for e in s.events]
-        self.assertEqual(kinds, [PROMPT, REPLY, TOOL, "branch", ERROR])
+        self.assertEqual([e.kind for e in s.events], [PROMPT, REPLY, TOOL, "branch", ERROR, NOTE])
+        self.assertEqual(s.title, "Auth work")
         self.assertEqual(s.events[0].text, "Add login to src/app.ts")
         self.assertEqual(s.events[2].files, ["/repo/src/app.ts"])
+        self.assertEqual(s.events[3].text, "feature/login")
+        self.assertEqual(s.events[5].text, "ran /wrap")
         self.assertEqual(s.model, "claude-x")
         self.assertEqual(s.meta["subagent_events"], 1)
-        self.assertEqual(s.events[3].text, "feature/login")
         self.assertEqual(ad.find("abc").id, "abc")
 
 
@@ -66,14 +72,12 @@ class CodexTest(unittest.TestCase):
             {"timestamp": "2026-09-01T10:00:05Z", "type": "response_item", "payload": {"type": "custom_tool_call", "name": "apply_patch", "call_id": "c2", "input": "*** Begin Patch\n*** Update File: src/api.py\n@@\n-a\n+b\n*** End Patch"}},
             {"timestamp": "2026-09-01T10:00:06Z", "type": "response_item", "payload": {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": "Fixed."}]}},
         ]
-        path = write(os.path.join(tmp, "sessions", "2026", "09", "01", "rollout-2026-09-01T10-00-00-%s.jsonl" % sid), "\n".join(json.dumps(l) for l in lines))
+        write(os.path.join(tmp, "sessions", "2026", "09", "01", "rollout-2026-09-01T10-00-00-%s.jsonl" % sid), "\n".join(json.dumps(l) for l in lines))
         ad = codex_cli.CodexAdapter(home=tmp)
         refs = ad.list_sessions()
-        self.assertEqual(refs[0].id, sid)
-        self.assertEqual(refs[0].cwd, "/repo")
+        self.assertEqual((refs[0].id, refs[0].cwd), (sid, "/repo"))
         s = ad.load(refs[0])
-        self.assertEqual(s.branch, "dev")
-        self.assertEqual(s.model, "gpt-x")
+        self.assertEqual((s.branch, s.model), ("dev", "gpt-x"))
         self.assertEqual([e.kind for e in s.events], [PROMPT, TOOL, ERROR, TOOL, REPLY])
         self.assertEqual(s.events[0].text, "Fix the failing test in tests/test_api.py")
         self.assertEqual(s.events[1].text, "bash -lc pytest -q")
@@ -99,18 +103,18 @@ class CursorTest(unittest.TestCase):
         con = sqlite3.connect(os.path.join(gdir, "state.vscdb"))
         con.execute("CREATE TABLE cursorDiskKV (key TEXT PRIMARY KEY, value BLOB)")
         cid = "comp-1"
-        con.execute("INSERT INTO cursorDiskKV VALUES (?, ?)", ("composerData:%s" % cid, json.dumps({
-            "composerId": cid, "name": "Style the navbar", "createdAt": 1756720000000, "lastUpdatedAt": 1756723600000,
-            "fullConversationHeadersOnly": [{"bubbleId": "b1", "type": 1}, {"bubbleId": "b2", "type": 2}, {"bubbleId": "b3", "type": 2}, {"bubbleId": "b4", "type": 2}]})))
-        con.execute("INSERT INTO cursorDiskKV VALUES (?, ?)", ("bubbleId:%s:b1" % cid, json.dumps({"type": 1, "text": "make the navbar sticky and cleaner", "createdAt": "2026-09-01T10:00:00Z",
-                                                                                                    "context": {"fileSelections": [{"uri": {"path": "/ws/src/Nav.tsx"}}]}})))
-        con.execute("INSERT INTO cursorDiskKV VALUES (?, ?)", ("bubbleId:%s:b2" % cid, json.dumps({"type": 2, "text": "", "toolFormerData": {"name": "edit_file", "params": json.dumps({"target_file": "src/Nav.tsx"}), "status": "completed"}})))
-        con.execute("INSERT INTO cursorDiskKV VALUES (?, ?)", ("bubbleId:%s:b3" % cid, json.dumps({"type": 2, "text": "", "toolFormerData": {"name": "run_terminal_cmd", "params": json.dumps({"command": "npm test"}), "status": "error", "result": "{\"error\": \"exit 1\"}"}})))
-        con.execute("INSERT INTO cursorDiskKV VALUES (?, ?)", ("bubbleId:%s:b4" % cid, json.dumps({"type": 2, "text": "Done, the navbar is sticky."})))
+        rows = [
+            ("composerData:%s" % cid, {"composerId": cid, "name": "Style the navbar", "createdAt": 1756720000000, "lastUpdatedAt": 1756723600000,
+                                       "fullConversationHeadersOnly": [{"bubbleId": "b%d" % i, "type": t} for i, t in ((1, 1), (2, 2), (3, 2), (4, 2))]}),
+            ("bubbleId:%s:b1" % cid, {"type": 1, "text": "make the navbar sticky and cleaner", "createdAt": "2026-09-01T10:00:00Z", "context": {"fileSelections": [{"uri": {"path": "/ws/src/Nav.tsx"}}]}}),
+            ("bubbleId:%s:b2" % cid, {"type": 2, "text": "", "toolFormerData": {"name": "edit_file", "params": json.dumps({"target_file": "src/Nav.tsx"}), "status": "completed"}}),
+            ("bubbleId:%s:b3" % cid, {"type": 2, "text": "", "toolFormerData": {"name": "run_terminal_cmd", "params": json.dumps({"command": "npm test"}), "status": "error", "result": "{\"error\": \"exit 1\"}"}}),
+            ("bubbleId:%s:b4" % cid, {"type": 2, "text": "Done, the navbar is sticky."}),
+        ]
+        con.executemany("INSERT INTO cursorDiskKV VALUES (?, ?)", [(k, json.dumps(v)) for k, v in rows])
         con.commit()
         con.close()
         ws = os.path.join(tmp, "workspaceStorage", "hash1")
-        os.makedirs(ws)
         write(os.path.join(ws, "workspace.json"), json.dumps({"folder": "file:///ws"}))
         wcon = sqlite3.connect(os.path.join(ws, "state.vscdb"))
         wcon.execute("CREATE TABLE ItemTable (key TEXT PRIMARY KEY, value BLOB)")
@@ -120,8 +124,7 @@ class CursorTest(unittest.TestCase):
         ad = cursor.CursorAdapter(user_dir=tmp)
         self.assertTrue(ad.available())
         refs = ad.list_sessions()
-        self.assertEqual(refs[0].cwd, "/ws")
-        self.assertEqual(refs[0].title, "Style the navbar")
+        self.assertEqual((refs[0].cwd, refs[0].title), ("/ws", "Style the navbar"))
         s = ad.load(refs[0])
         self.assertEqual([e.kind for e in s.events], [PROMPT, TOOL, ERROR, REPLY])
         self.assertEqual(s.events[0].meta["attached"], ["/ws/src/Nav.tsx"])
@@ -133,8 +136,7 @@ class GenericTest(unittest.TestCase):
     def test_json_and_markdown(self):
         tmp = tempfile.mkdtemp()
         j = write(os.path.join(tmp, "chat.json"), json.dumps({"messages": [{"role": "user", "content": "build me a todo app in Svelte"}, {"role": "assistant", "content": "Sure", "tool_calls": [{"function": {"name": "write_file", "arguments": "{}"}}]}]}))
-        s = generic.GenericAdapter().load_path(j)
-        self.assertEqual([e.kind for e in s.events], [PROMPT, TOOL, REPLY])
+        self.assertEqual([e.kind for e in generic.GenericAdapter().load_path(j).events], [PROMPT, TOOL, REPLY])
         m = write(os.path.join(tmp, "chat.md"), "## User\nwhy is this slow?\n\n## Assistant\nBecause of N+1 queries.\n\n**User:**\nfix it\n")
         s = generic.GenericAdapter().load_path(m)
         self.assertEqual([e.kind for e in s.events], [PROMPT, REPLY, PROMPT])
@@ -144,38 +146,46 @@ class GenericTest(unittest.TestCase):
 class LangTest(unittest.TestCase):
     def test_prompt_analysis(self):
         p = lang.analyze_prompt("Fix the TypeError in src/auth.ts line 42; it must keep the existing session cookie. Traceback: TypeError: undefined is not a function")
-        self.assertEqual(p["intent"], "fix")
-        self.assertEqual(p["mode"], "imperative")
+        self.assertEqual((p["intent"], p["mode"], p["specificity"]), ("fix", "imperative", 3))
         self.assertIn("src/auth.ts", p["anchors"]["paths"])
         self.assertTrue(p["anchors"]["error_text"])
-        self.assertEqual(p["specificity"], 3)
         v = lang.analyze_prompt("make it look nicer and more modern, you decide the colors")
-        self.assertEqual(v["intent"], "design")
-        self.assertTrue(v["vague"])
-        self.assertTrue(v["delegation"])
-        self.assertEqual(v["specificity"], 0)
+        self.assertEqual((v["intent"], v["specificity"]), ("design", 0))
+        self.assertTrue(v["vague"] and v["delegation"])
         self.assertTrue(any("vague" in s for s in v["signals"]))
-        q = lang.analyze_prompt("Why does the build fail on CI but not locally?")
-        self.assertEqual(q["mode"], "question")
+        self.assertEqual(lang.analyze_prompt("Why does the build fail on CI but not locally?")["mode"], "question")
         big = lang.analyze_prompt("build the whole app from scratch with auth, billing and an admin panel")
         self.assertEqual(big["scope"], "large")
         self.assertTrue(any("architecture" in s for s in big["signals"]))
+
+    def test_repair_accept_and_file_anchors(self):
+        rep = lang.analyze_prompt("no, I meant the other button. put it back in the header")
+        self.assertEqual(rep["intent"], "repair")
+        self.assertTrue(any("repair" in s for s in rep["signals"]))
+        self.assertEqual(lang.analyze_prompt("yes go ahead")["intent"], "accept")
+        self.assertEqual(lang.analyze_prompt("looks good, continue")["intent"], "accept")
+        self.assertEqual(lang.analyze_prompt("ok now add a footer")["intent"], "build")
+        self.assertEqual(lang.analyze_prompt("open this repo and let's refine the app")["intent"], "refactor")
+        fx = lang.analyze_prompt("fix app.py, it crashes on empty input")
+        self.assertEqual(fx["anchors"]["paths"], ["app.py"])
+        self.assertFalse(any("guess where the bug" in s for s in fx["signals"]))
+        self.assertEqual(lang.analyze_prompt("use version 3.9.6 and node.js")["anchors"], {"paths": [], "symbols": [], "line_refs": False, "urls": 0, "error_text": False})
 
     def test_language_detection(self):
         langs = lang.detect_languages(["src/main.rs", "src/lib.rs", "README.md"], ["python"], ["can you make the borrow checker happy"])
         self.assertEqual(langs[0]["lang"], "rust")
         self.assertIn("files", langs[0]["evidence"])
-        self.assertTrue(lang.notes_for(["rust", "nope"]).keys() == {"rust"})
+        self.assertEqual(set(lang.notes_for(["rust", "nope"])), {"rust"})
         fw = lang.detect_frameworks(["use Next.js app router and Supabase"], [])
         self.assertEqual([f["name"] for f in fw][:2], ["Next.js", "Supabase"])
 
     def test_aggregate(self):
-        agg = lang.aggregate([lang.analyze_prompt("fix it"), lang.analyze_prompt("Add a /health route to server/app.py that should return 200")])
-        self.assertEqual(agg["prompts"], 2)
-        self.assertEqual(agg["anchored_ratio"], 0.5)
+        agg = lang.aggregate([lang.analyze_prompt("fix it"), lang.analyze_prompt("Add a /health route to server/app.py that should return 200"), lang.analyze_prompt("nope, the other file")])
+        self.assertEqual((agg["prompts"], agg["repair_ratio"]), (3, 0.33))
+        self.assertEqual(agg["anchored_ratio"], 0.33)
 
 
-class RecapAndStoreTest(unittest.TestCase):
+class RecapTest(unittest.TestCase):
     def test_validate_and_normalize(self):
         r = {"title": "t", "goal": "g", "outcome": "o", "phases": [{"name": "A"}],
              "steps": [{"id": "s1", "kind": "prompt", "title": "x", "phase": "A"}, {"id": "s2", "kind": "dead_end", "title": "y", "phase": "A", "links": [{"to": "s3", "rel": "reverted"}]},
@@ -184,19 +194,45 @@ class RecapAndStoreTest(unittest.TestCase):
         self.assertTrue(any("phase 'B'" in e for e in errs))
         r["steps"][2]["phase"] = "A"
         self.assertEqual(recap.validate(recap.normalize(r)), [])
-        d = {"agent": "codex", "session_id": "abc", "started_at": "2026-09-01T10:00:00+00:00", "languages": [{"lang": "go"}], "project": {"id": "github.com/me/app", "name": "app"}}
+        d = {"agent": "codex", "session_id": "abc", "started_at": "2026-09-01T10:00:00+00:00", "duration_min": 12.5,
+             "languages": [{"lang": "go"}], "project": {"id": "github.com/me/app", "name": "app", "root": "/r", "remote": None, "kind": "git"}}
         n = recap.normalize(r, d)
-        self.assertEqual(n["date"], "2026-09-01")
-        self.assertEqual(n["languages"], ["go"])
-        self.assertEqual(n["project"]["id"], "github.com/me/app")
+        self.assertEqual((n["date"], n["languages"], n["project"]["id"]), ("2026-09-01", ["go"], "github.com/me/app"))
 
+    def test_placeholders_are_filled_or_rejected(self):
+        r = {"title": "Short session title", "goal": "g", "outcome": "o", "session_id": "…", "date": "YYYY-MM-DD", "duration_min": 0,
+             "project": dict(recap.EXAMPLE["project"]), "phases": [{"name": "A"}],
+             "steps": [{"id": "s%d" % i, "kind": "prompt", "title": "x", "phase": "A", "t": "soon" if i == 1 else i} for i in range(1, 4)],
+             "coaching": [{"focus": "prompt", "observation": "o", "suggestion": "s", "step": "s9"}], "time_sinks": [{"what": "w", "minutes": "ten"}]}
+        d = {"session_id": "real-id", "title": "From digest", "started_at": "2026-09-02T09:00:00+00:00", "duration_min": 7, "project": {"id": "local:/x", "name": "x"}}
+        n = recap.normalize(r, d)
+        self.assertEqual((n["session_id"], n["date"], n["duration_min"], n["project"]["id"], n["title"]), ("real-id", "2026-09-02", 7, "local:/x", "From digest"))
+        errs = recap.validate(n)
+        self.assertTrue(any("t must be a number" in e for e in errs))
+        self.assertTrue(any("s9" in e for e in errs))
+        self.assertTrue(any("time_sinks[0]" in e for e in errs))
+        self.assertTrue(any("missing title" in e for e in recap.validate(recap.normalize(r))))
+
+
+class StoreAndConfigTest(unittest.TestCase):
     def test_redaction(self):
         text = "use sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123456789 and password: hunter2secret and ghp_" + "a" * 36
         out = store.redact_text(text)
-        self.assertNotIn("abcdefghijklmnopqrstuvwxyz", out)
-        self.assertNotIn("hunter2secret", out)
-        self.assertNotIn("a" * 36, out)
+        for secret in ("abcdefghijklmnopqrstuvwxyz", "hunter2secret", "a" * 36):
+            self.assertNotIn(secret, out)
         self.assertIn("[redacted]", out)
+
+    def test_wrapped_is_read_from_recap_filenames(self):
+        old = store.SESSIONS
+        store.SESSIONS = tempfile.mkdtemp()
+        try:
+            write(os.path.join(store.SESSIONS, "app", "2026-09-01_claude-code_abcdef12.json"), "{}")
+            self.assertTrue(store.is_wrapped("claude-code", "abcdef12-3456-7890"))
+            self.assertFalse(store.is_wrapped("codex", "abcdef12-3456-7890"))
+            self.assertFalse(store.is_wrapped("claude-code", "ffffffff"))
+            self.assertEqual(list(store.wrapped()), ["claude-code:abcdef12"])
+        finally:
+            store.SESSIONS = old
 
     def test_effective_config(self):
         cfg = json.loads(json.dumps(config.DEFAULTS))
@@ -211,9 +247,13 @@ class RecapAndStoreTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             config.set_value(cfg, "voice", "loud")
 
+    def test_hook_in_manual_mode_only_records(self):
+        cfg = json.loads(json.dumps(config.DEFAULTS))
+        item = hooks.handle("claude-code", {"session_id": "abc", "cwd": "/repo", "transcript_path": "/t.jsonl", "hook_event_name": "SessionEnd"}, cfg)
+        self.assertEqual((item["session_id"], item["cwd"], item["transcript"], item["event"]), ("abc", "/repo", "/t.jsonl", "SessionEnd"))
+        self.assertNotIn("spawned", item)
+
     def test_digest_from_session(self):
-        from cartographer.adapters.base import Event, Session
-        from datetime import datetime, timezone
         t0 = datetime(2026, 9, 1, 10, 0, tzinfo=timezone.utc)
         s = Session(agent="generic", id="x", path="/tmp/x", cwd=None, events=[
             Event(t0, PROMPT, "Add a login page in src/Login.tsx using React"),
@@ -225,8 +265,7 @@ class RecapAndStoreTest(unittest.TestCase):
         self.assertEqual(d["stats"]["prompts"], 2)
         self.assertEqual(d["languages"][0]["lang"], "typescript")
         self.assertIn("React", [f["name"] for f in d["frameworks"]])
-        kinds = [x["kind"] for x in d["timeline"]]
-        self.assertIn("pause", kinds)
+        self.assertIn("pause", [x["kind"] for x in d["timeline"]])
         self.assertEqual(d["duration_min"], 30.0)
 
 

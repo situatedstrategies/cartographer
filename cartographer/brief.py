@@ -105,8 +105,9 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
     if p.get("prompts"):
         w("## Prompting profile (mechanical signals, this session)\n")
         w("- %d prompts, avg %s words, avg specificity %s/3, anchored %s, vague %s, delegating %s, with done-condition %s, "
-          "pasted code %s" % (p["prompts"], p["avg_words"], p["avg_specificity"], _pct(p["anchored_ratio"]), _pct(p["vague_ratio"]),
-                              _pct(p["delegation_ratio"]), _pct(p["acceptance_ratio"]), _pct(p["pasted_code_ratio"])))
+          "pasted code %s, repairs of the agent's previous turn %s, bare go-aheads %s"
+          % (p["prompts"], p["avg_words"], p["avg_specificity"], _pct(p["anchored_ratio"]), _pct(p["vague_ratio"]), _pct(p["delegation_ratio"]),
+             _pct(p["acceptance_ratio"]), _pct(p["pasted_code_ratio"]), _pct(p.get("repair_ratio")), _pct(p.get("accept_ratio"))))
         w("- Intent mix: " + ", ".join("%s %d" % kv for kv in p["intent_mix"].items()))
         if p.get("top_signals"):
             w("- Most common signals: " + "; ".join(p["top_signals"]))
@@ -118,7 +119,8 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
     w("- **Steps**: 6–25. Choose the moments that changed the direction of the build. Skip routine tool calls. Every prompt "
       "that set direction is a `prompt` step. Every choice between options is a `decision`. Anything abandoned is a "
       "`dead_end` linked to what replaced it (`blocked_by` or `reverted`). A `fix` is what unblocked. A `pivot` is a change "
-      "of framing. `insight` is a realization. `question` is an investigation before acting. `t` is minutes from start.")
+      "of framing. `insight` is a realization. `question` is an investigation before acting. `t` is minutes from start. "
+      "A prompt the detector reads as a *repair* usually marks a dead end: the turn before it went the wrong way.")
     w("- **Links**: only when the sequence doesn't already say it. Consecutive steps are joined automatically.")
     w("- **Branches**: set `branch` on steps when the session touched more than one.")
     w("- **Language-aware reading**: when a prompt uses aesthetic or physical words (\"snappier\", \"cleaner\", \"make it "
@@ -144,7 +146,8 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
     w("## Output\n")
     w("1. Write the recap JSON to `%s`." % recap_out)
     w("2. Run: `cartographer save \"%s\"` — it validates, redacts secrets, files the recap under the project and renders the replay. "
-      "If it reports problems, fix the JSON and run it again." % recap_out)
+      "If it reports problems, fix the JSON and run it again. Replace every placeholder from the example; ones left as-is are "
+      "filled from the session where possible and rejected otherwise." % recap_out)
     w("3. Tell the user, in the configured voice: one line on what the session accomplished; 3–5 bullets on decisions and "
       "dead ends; one 'how you build' observation; the coaching items if feedback is on; the replay path.")
     return "\n".join(out)

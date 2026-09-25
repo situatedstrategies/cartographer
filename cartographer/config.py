@@ -37,17 +37,12 @@ DEFAULTS: Dict[str, Any] = {
         "redact_secrets": True,
         "store_replies": False,    # keep agent replies verbatim in recaps (they can be long)
     },
-    "projects": {
-        "identity": "git",         # git (repo = project, branches tracked) | folder
-        "track_branches": True,
-    },
-    "agents": {
+    "projects": {"identity": "git"},   # git: repo = project, branches tracked | folder: the cwd is the project
+    "agents": {  # enabled: include in sweeps; headless: override the command that maps a session non-interactively
         "claude-code": {"enabled": True, "headless": None},
         "codex": {"enabled": True, "headless": None},
         "cursor": {"enabled": True, "headless": None},
     },
-    "sync": {"enabled": False, "endpoint": None, "team": None},
-    "language": "en",
 }
 ENUMS = {
     "wrap.mode": ("manual", "auto"),
@@ -149,7 +144,6 @@ def effective(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "max_feedback": int(cfg["feedback"].get("max_items", 4)),
         "keep_exact_prompts": bool(cfg["privacy"]["keep_exact_prompts"]),
         "store_replies": bool(cfg["privacy"].get("store_replies", False)),
-        "track_branches": bool(cfg["projects"].get("track_branches", True)),
         "wrap_mode": cfg["wrap"]["mode"],
     }
 

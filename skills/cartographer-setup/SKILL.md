@@ -26,7 +26,7 @@ Ask these one at a time, in plain language, then set them with `config set`:
 
 What the levels do: **new** coders get plain-language maps and feedback that explains what the code did and one thing to check next time; **advanced** coders get code-level feedback (implicit architecture decisions, risky patterns, missing tests) with files cited. **new** prompters get encouraging, concrete rewrites of their real prompts; **advanced** prompters get prompt-architecture feedback (context loading, constraints, acceptance criteria, delegation boundaries) tied to the prompting-profile numbers.
 
-If they switch to `auto`, run `install --agent claude-code --auto` so the SessionEnd hook is added, and mention that Codex and Cursor need `install --agent codex --auto` / `install --agent cursor --auto --project <repo>` plus a periodic `sweep` (`install --launchd` on macOS).
+If they switch to `auto`, run `install --agent claude-code --auto` so the SessionEnd hook is added. Cursor needs `install --agent cursor --auto --project <repo>`. Codex has no session-end event, so it needs `install --agent codex --auto` plus `cartographer sweep` on a schedule (the install prints a cron line).
 
 Finish with `config show` and read back the `effective` line in one sentence.
 

@@ -1,14 +1,14 @@
-"""Local storage under ~/.cartographer.
+"""Local storage under ~/.cartographer (or $CARTOGRAPHER_HOME).
 
-    config.json                 user settings
-    projects.json               registry: project id -> name, root, remote, slug, sessions
-    sessions/<slug>/<file>.json one recap per wrapped session
-    replays/<slug>.html         rendered replays
-    briefs/, digests/, queue/   working files
-    wrapped.json                which session ids have been wrapped (for sweeps)
+    config.json                                  user settings
+    projects.json                                project id -> name, slug, roots, remote
+    sessions/<slug>/<date>_<agent>_<sid8>.json   one recap per wrapped session
+    replays/<slug>.html                          rendered replays
+    briefs/, digests/                            working files
 
-Secrets are redacted before anything is written. Raw transcripts are never
-copied here.
+Which sessions are wrapped is read from the recap file names, so there is no
+second index to keep in sync. Secrets are redacted before anything is written;
+raw transcripts are never copied here.
 """
 from __future__ import annotations
 
@@ -23,13 +23,8 @@ from . import config
 from .gitinfo import project_slug
 
 HOME = config.HOME
-SESSIONS = os.path.join(HOME, "sessions")
-REPLAYS = os.path.join(HOME, "replays")
-BRIEFS = os.path.join(HOME, "briefs")
-DIGESTS = os.path.join(HOME, "digests")
-QUEUE = os.path.join(HOME, "queue")
+SESSIONS, REPLAYS, BRIEFS, DIGESTS = (os.path.join(HOME, d) for d in ("sessions", "replays", "briefs", "digests"))
 PROJECTS = os.path.join(HOME, "projects.json")
-WRAPPED = os.path.join(HOME, "wrapped.json")
 
 SECRET_PATTERNS = [
     re.compile(r"sk-ant-[A-Za-z0-9_-]{20,}"), re.compile(r"sk-(?:proj-)?[A-Za-z0-9_-]{20,}"),
@@ -44,7 +39,7 @@ SECRET_PATTERNS = [
 
 
 def ensure_dirs() -> None:
-    for d in (HOME, SESSIONS, REPLAYS, BRIEFS, DIGESTS, QUEUE):
+    for d in (HOME, SESSIONS, REPLAYS, BRIEFS, DIGESTS):
         os.makedirs(d, exist_ok=True)
 
 
@@ -64,7 +59,7 @@ def redact(obj: Any) -> Any:
     return obj
 
 
-def _read_json(path: str, default: Any) -> Any:
+def read_json(path: str, default: Any) -> Any:
     try:
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)
@@ -72,11 +67,12 @@ def _read_json(path: str, default: Any) -> Any:
         return default
 
 
-def _write_json(path: str, data: Any) -> str:
+def write_json(path: str, data: Any, indent: int = 1) -> str:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as fh:
-        json.dump(data, fh, indent=1, ensure_ascii=False)
+        json.dump(data, fh, indent=indent, ensure_ascii=False)
+        fh.write("\n")
     os.replace(tmp, path)
     return path
 
@@ -84,7 +80,7 @@ def _write_json(path: str, data: Any) -> str:
 # ------------------------------------------------------------- projects
 
 def projects() -> Dict[str, Dict[str, Any]]:
-    return _read_json(PROJECTS, {})
+    return read_json(PROJECTS, {})
 
 
 def register_project(pid: str, name: str, root: Optional[str], remote: Optional[str]) -> Dict[str, Any]:
@@ -92,14 +88,12 @@ def register_project(pid: str, name: str, root: Optional[str], remote: Optional[
     entry = reg.get(pid) or {"id": pid, "name": name, "slug": _unique_slug(reg, project_slug(name), pid),
                              "created_at": datetime.now(timezone.utc).isoformat()}
     entry["name"] = entry.get("name") or name
-    if root:
-        roots = entry.setdefault("roots", [])
-        if root not in roots:
-            roots.append(root)
+    if root and root not in entry.setdefault("roots", []):
+        entry["roots"].append(root)
     if remote:
         entry["remote"] = remote
     reg[pid] = entry
-    _write_json(PROJECTS, reg)
+    write_json(PROJECTS, reg)
     return entry
 
 
@@ -107,19 +101,18 @@ def _unique_slug(reg: Dict[str, Any], slug: str, pid: str) -> str:
     taken = {v["slug"] for k, v in reg.items() if k != pid}
     out, n = slug, 2
     while out in taken:
-        out = "%s-%d" % (slug, n)
-        n += 1
+        out, n = "%s-%d" % (slug, n), n + 1
     return out
 
 
-def find_project(name_or_slug_or_id: str) -> Optional[Dict[str, Any]]:
-    q = name_or_slug_or_id.lower()
-    for pid, p in projects().items():
-        if q in (pid.lower(), p["slug"], (p.get("name") or "").lower()):
-            return p
-    for pid, p in projects().items():
-        if q in pid.lower() or q in p["slug"] or q in (p.get("name") or "").lower():
-            return p
+def find_project(query: str) -> Optional[Dict[str, Any]]:
+    q = query.lower()
+    reg = projects()
+    for exact in (True, False):
+        for pid, p in reg.items():
+            keys = (pid.lower(), p["slug"], (p.get("name") or "").lower())
+            if (q in keys) if exact else any(q in k for k in keys):
+                return p
     return None
 
 
@@ -141,9 +134,7 @@ def save_recap(recap: Dict[str, Any], cfg: Optional[Dict[str, Any]] = None) -> s
     recap["saved_at"] = datetime.now(timezone.utc).isoformat()
     if cfg["privacy"].get("redact_secrets", True):
         recap = redact(recap)
-    path = _write_json(recap_path(recap, entry["slug"]), recap)
-    mark_wrapped(recap.get("agent", ""), recap.get("session_id", ""), path)
-    return path
+    return write_json(recap_path(recap, entry["slug"]), recap)
 
 
 def load_recaps(project: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -156,7 +147,7 @@ def load_recaps(project: Optional[str] = None) -> List[Dict[str, Any]]:
         pattern = os.path.join(SESSIONS, "*", "*.json")
     out = []
     for path in glob.glob(pattern):
-        data = _read_json(path, None)
+        data = read_json(path, None)
         if isinstance(data, dict):
             data["_path"] = path
             out.append(data)
@@ -165,41 +156,18 @@ def load_recaps(project: Optional[str] = None) -> List[Dict[str, Any]]:
 
 
 def wrapped() -> Dict[str, str]:
-    return _read_json(WRAPPED, {})
+    """{'<agent>:<first 8 chars of session id>': recap path}, from the file names."""
+    out = {}
+    for path in glob.glob(os.path.join(SESSIONS, "*", "*.json")):
+        parts = os.path.splitext(os.path.basename(path))[0].split("_", 2)  # date_agent_sid8
+        if len(parts) == 3:
+            out["%s:%s" % (parts[1], parts[2])] = path
+    return out
 
 
-def mark_wrapped(agent: str, session_id: str, path: str) -> None:
-    w = wrapped()
-    w["%s:%s" % (agent, session_id)] = path
-    _write_json(WRAPPED, w)
+def wrapped_path(agent: str, session_id: str) -> Optional[str]:
+    return wrapped().get("%s:%s" % (agent, (session_id or "")[:8]))
 
 
 def is_wrapped(agent: str, session_id: str) -> bool:
-    return ("%s:%s" % (agent, session_id)) in wrapped()
-
-
-# --------------------------------------------------------------- queue
-
-def enqueue(item: Dict[str, Any]) -> str:
-    ensure_dirs()
-    item = dict(item, queued_at=datetime.now(timezone.utc).isoformat())
-    path = os.path.join(QUEUE, "pending.jsonl")
-    with open(path, "a", encoding="utf-8") as fh:
-        fh.write(json.dumps(item) + "\n")
-    return path
-
-
-def drain_queue() -> List[Dict[str, Any]]:
-    path = os.path.join(QUEUE, "pending.jsonl")
-    items: List[Dict[str, Any]] = []
-    try:
-        with open(path, encoding="utf-8") as fh:
-            for line in fh:
-                try:
-                    items.append(json.loads(line))
-                except json.JSONDecodeError:
-                    continue
-        os.remove(path)
-    except OSError:
-        pass
-    return items
+    return wrapped_path(agent, session_id) is not None

@@ -1,7 +1,7 @@
 ---
 name: wrap
 description: Cartographer — wrap up the current coding session. Digests this session's transcript, builds a mapping brief tuned to the user's aptitude profile and the languages involved, and has you write the recap (phases, turning points, dead ends, fixes, reusable prompts, coaching). Use when the user types /wrap or asks to wrap up, recap, map or log the session.
-argument-hint: "[project name] [--session ID]"
+argument-hint: "[project name] [--session ID] [--force]"
 allowed-tools: Bash(*/cartographer:*), Bash(cartographer:*), Bash(open:*), Read, Write
 ---
 
@@ -9,15 +9,15 @@ allowed-tools: Bash(*/cartographer:*), Bash(cartographer:*), Bash(open:*), Read,
 
 You are Cartographer. The map is of **how the user built**, not what changed. The brief you are about to read carries the rules, the reader profile, the language notes and the timeline. Follow it exactly.
 
-Arguments: `$ARGUMENTS`. A bare word or phrase is the project name. `--session <id>` maps a different session (for retrospective maps; `cartographer sessions` lists them).
+Arguments: `$ARGUMENTS`. A bare word or phrase is the project name. `--session <id>` maps a different session (`cartographer sessions` lists them). `--force` redoes an already-wrapped or very short session.
 
 ## 1. Prepare the brief
 
 ```bash
-"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}" wrap --agent claude-code --session "${CLAUDE_SESSION_ID}" --project "<project name or empty>"
+"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}" wrap --agent claude-code --session "${CLAUDE_SESSION_ID:-$CLAUDE_CODE_SESSION_ID}" --project "<project name or empty>"
 ```
 
-If `CLAUDE_SESSION_ID` isn't set, drop `--session`; the command falls back to the newest session for this folder. If the output starts with `SKIPPED: already wrapped`, tell the user and offer `--force` (add it to the command) to redo it.
+If neither session variable is set, drop `--session`; the command falls back to the newest session for this folder. If the output starts with `SKIPPED:`, tell the user why and offer `--force`.
 
 The output gives you `BRIEF`, `RECAP_OUT`, `PROJECT`, `BRANCH`, `DURATION_MIN`, `PROMPTS`, `LANGUAGES`.
 
@@ -27,7 +27,7 @@ Read the `BRIEF` file. It contains everything: session facts, the reader's codin
 
 You also have this conversation in context. Use both: the timeline gives you timings and tool activity; your memory gives you intent. Every step must trace to something that happened.
 
-Write the recap JSON to `RECAP_OUT`.
+Write the recap JSON to `RECAP_OUT`, replacing every placeholder from the schema example.
 
 ## 3. Save
 
