@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cartographer-cli"
-version = "0.3.0"
+version = "0.4.0"
 description = "A map of how you build with coding agents: records sessions from Claude Code, Codex CLI and Cursor, maps them, and replays the build."
 readme = "README.md"
 requires-python = ">=3.9"

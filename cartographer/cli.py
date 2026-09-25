@@ -3,6 +3,8 @@
     sessions    list sessions found for every installed agent (✓ = wrapped)
     wrap        write the mapping brief for a session; --run maps it headlessly
     save        validate, store and render a recap (--check only validates)
+    serve       local dashboard: projects, sessions, replays, setup (this machine only)
+    open        open a project's replay in the browser (default: the newest)
     render      build a project replay
     projects    list wrapped projects
     sweep       auto-wrap sessions that went idle
@@ -21,7 +23,7 @@ import sys
 from datetime import datetime
 from typing import Any, List, Optional
 
-from . import __version__, adapters, autowrap, config, hooks, render, store
+from . import __version__, adapters, autowrap, config, hooks, render, serve, store
 
 
 def _print(obj: Any) -> None:
@@ -106,6 +108,7 @@ def cmd_save(a) -> int:
     print("SAVED: %s" % res["saved"])
     if res.get("replay"):
         print("REPLAY: %s" % res["replay"])
+        print("OPEN: cartographer open %s   (or `cartographer serve --open` for the dashboard)" % (res.get("slug") or ""))
         if a.open:
             _open(res["replay"])
     return 0
@@ -131,6 +134,26 @@ def cmd_render(a) -> int:
     print(path)
     if a.open:
         _open(path)
+    return 0
+
+
+def cmd_serve(a) -> int:
+    serve.serve(a.port, a.open)
+    return 0
+
+
+def cmd_open(a) -> int:
+    if a.project:
+        path = render.render_project(a.project)
+    else:
+        recaps = store.load_recaps()
+        if not recaps:
+            print("nothing wrapped yet: type /wrap in Claude Code at the end of a session, or run `cartographer serve --open`", file=sys.stderr)
+            return 1
+        latest = max(recaps, key=lambda r: r.get("saved_at") or "")
+        path = render.render_project((latest.get("project") or {}).get("slug") or (latest.get("project") or {}).get("name") or "")
+    print(path)
+    _open(path)
     return 0
 
 
@@ -181,7 +204,7 @@ def cmd_install(a) -> int:
         for msg in hooks.install(name, auto, a.project, bin_cmd):
             print("• " + msg)
     print("\nmode: %s · config: %s" % (cfg["wrap"]["mode"], config.PATH))
-    print("run `cartographer config init` to set your aptitude profile and feedback preferences")
+    print("next: `cartographer serve --open` opens the dashboard (setup, sessions, maps); `cartographer config init` does setup in the terminal")
     return 0
 
 
@@ -241,6 +264,8 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("wrap", help="write the mapping brief for a session"); session_args(s); s.add_argument("--project", help="project name override"); s.add_argument("--force", action="store_true", help="redo an already wrapped or very short session"); s.add_argument("--print-brief", action="store_true"); s.add_argument("--run", action="store_true", help="also map it with the agent's headless CLI"); s.add_argument("--runner", help="which agent CLI does the mapping (with --run)"); s.set_defaults(fn=cmd_wrap)
     s = sub.add_parser("save", help="validate, store and render a recap"); s.add_argument("recap"); s.add_argument("--digest"); s.add_argument("--check", action="store_true", help="validate only"); s.add_argument("--open", action="store_true"); s.set_defaults(fn=cmd_save)
     s = sub.add_parser("render", help="render a replay"); s.add_argument("--project"); s.add_argument("files", nargs="*"); s.add_argument("--all", action="store_true"); s.add_argument("--out"); s.add_argument("--title"); s.add_argument("--open", action="store_true"); s.set_defaults(fn=cmd_render)
+    s = sub.add_parser("serve", help="local dashboard in the browser"); s.add_argument("--port", type=int, default=8765); s.add_argument("--open", action="store_true", help="open the browser"); s.set_defaults(fn=cmd_serve)
+    s = sub.add_parser("open", help="open a project's replay (default: newest)"); s.add_argument("project", nargs="?"); s.set_defaults(fn=cmd_open)
     s = sub.add_parser("projects", help="list wrapped projects"); s.set_defaults(fn=cmd_projects)
     s = sub.add_parser("sweep", help="auto-wrap idle sessions"); s.add_argument("--idle", type=int, help="minutes of quiet (default: wrap.idle_minutes)"); s.add_argument("--since-days", type=int, default=7); s.add_argument("--dry", action="store_true"); s.add_argument("--runner"); s.set_defaults(fn=cmd_sweep)
     s = sub.add_parser("backfill", help="retrospective maps for a repo's past sessions"); s.add_argument("--cwd"); s.add_argument("--agent"); s.add_argument("--limit", type=int); s.add_argument("--run", action="store_true", help="map headlessly instead of only preparing briefs"); s.add_argument("--runner"); s.set_defaults(fn=cmd_backfill)

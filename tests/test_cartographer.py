@@ -269,5 +269,47 @@ class StoreAndConfigTest(unittest.TestCase):
         self.assertEqual(d["duration_min"], 30.0)
 
 
+class ServeTest(unittest.TestCase):
+    def test_dashboard_routes_and_token(self):
+        import http.client
+        import threading
+        from cartographer import serve
+        srv = serve.make_server(0)
+        port = srv.server_address[1]
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+
+        def req(method, path, body=None, host=None):
+            c = http.client.HTTPConnection("127.0.0.1", port, timeout=5)
+            headers = {"Content-Type": "application/x-www-form-urlencoded"} if body is not None else {}
+            if host:
+                headers["Host"] = host
+            c.request(method, path, body=body, headers=headers)
+            r = c.getresponse()
+            data = r.read().decode("utf-8")
+            c.close()
+            return r.status, r.getheader("Location"), data
+
+        try:
+            status, _, body = req("GET", "/")
+            self.assertEqual(status, 200)
+            self.assertIn("Recent sessions", body)
+            self.assertEqual(req("GET", "/", host="evil.example:80")[0], 403)
+            self.assertEqual(req("POST", "/setup", "profile.coding=new")[0], 403)
+            status, loc, _ = req("POST", "/setup", "token=%s&profile.coding=new&voice=plain&wrap.mode=manual" % serve.TOKEN)
+            self.assertEqual((status, loc), (303, "/setup"))
+            self.assertEqual(config.load()["profile"]["coding"], "new")
+            with open(os.path.join(ROOT, "demo", "2026-09-24_claude-code_ca61170e.recap.json"), encoding="utf-8") as fh:
+                store.save_recap(json.load(fh), config.load())
+            slug = store.find_project("Cartographer")["slug"]
+            status, _, body = req("GET", "/replay/" + slug)
+            self.assertEqual(status, 200)
+            self.assertIn("Replay the build", body)
+            self.assertEqual(req("GET", "/replay/nope")[0], 404)
+            self.assertIn("Open map", req("GET", "/")[2])
+        finally:
+            srv.shutdown()
+            srv.server_close()
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -45,6 +45,6 @@ In the voice the brief specified:
 - 3–5 bullets: the decisions and dead ends.
 - One "how you build" observation.
 - If feedback is on: the coaching items, each with its rewrite when it's a prompt item.
-- The replay path, and offer to `open` it.
+- The replay path, and offer to `open` it. `cartographer open` opens the newest map; `cartographer serve --open` opens the dashboard with every project.
 
 Keep it short. The map is in the replay; the chat summary is the trailer.

@@ -13,6 +13,8 @@ The command is `"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}"`
 
 ## Empty: walk through the profile
 
+If the user would rather use a form, `cartographer serve --open` opens the local dashboard with the same questions under **Setup**. Otherwise:
+
 Ask these one at a time, in plain language, then set them with `config set`:
 
 | Question | Key | Values |

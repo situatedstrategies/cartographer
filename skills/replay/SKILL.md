@@ -18,4 +18,4 @@ Project from the user: `$ARGUMENTS`.
    "${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}" render --project "<project>"
    ```
 3. Read the recaps under `~/.cartographer/sessions/<slug>/` and tell the story of the build in 5–8 lines: how it started, the turning points, the biggest dead end, which branches carried which work, and what repeats across sessions (patterns that show up more than once). Use the voice the user configured (`cartographer config show` → `effective.voice`).
-4. Offer to `open` the replay. Inside it, **Replay the build** draws the map step by step across sessions; the branch filter and the plain/technical toggle are in the controls row.
+4. Offer to `open` the replay. Inside it, **Replay the build** draws the map step by step across sessions; the time strip under the map jumps to any minute; the branch filter, the plain/technical toggle and zoom are in the toolbar. `cartographer serve --open` shows every project on one dashboard.

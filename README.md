@@ -19,8 +19,17 @@ cartographer config init                  # aptitude profile, feedback, voice, m
 | In the agent | What happens |
 |---|---|
 | `/wrap` (Claude Code) · "wrap up this session" (Codex, Cursor) | `cartographer wrap` digests the transcript and writes a **brief**: session facts, your aptitude profile, what Cartographer knows about the languages used, a pragmatic reading of every prompt, the mapping rules and the timeline. The agent follows it, writes the recap, and `cartographer save` files it and renders the replay. |
-| `/replay <project>` | One animated map of every wrapped session in the repo, across agents and branches, plus the playbook. Space plays, arrow keys step. |
+| `/replay <project>` | One animated map of every wrapped session in the repo, across agents and branches, plus the playbook. Space plays, arrow keys step, the time strip jumps to any minute. |
 | `/cartographer-setup` | Change the profile, switch manual/auto, or backfill maps of old sessions. |
+
+The dashboard, for anyone who would rather click than type:
+
+```bash
+cartographer serve --open      # http://127.0.0.1:8765, this machine only
+cartographer open [project]    # open a replay directly (default: the newest)
+```
+
+It shows your projects with their maps, recent sessions with a **Map this session** button, the setup form, and Claude Code installation. Every button that changes something carries a per-run token, so a page open in another tab cannot trigger it, and nothing leaves your machine.
 
 From a shell:
 
@@ -54,7 +63,7 @@ config (aptitude, voice, feedback) ───────────────
 ## Layout
 
 ```
-cartographer/     package: adapters/, lang, digest, brief, recap, store, render, hooks, autowrap, cli
+cartographer/     package: adapters/, lang, digest, brief, recap, store, render, serve, hooks, autowrap, cli
 skills/           Claude Code skills: wrap, replay, cartographer-setup
 bin/cartographer  runs the CLI from a checkout
 tests/            python3 -m unittest discover -s tests -v
