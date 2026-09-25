@@ -6,11 +6,22 @@ Works with **Claude Code**, **Codex CLI** and **Cursor**, and with any other age
 
 ## Install
 
+One line, from [codecartographer.dev](https://codecartographer.dev):
+
 ```bash
-git clone <this repo> cartographer && cd cartographer
-./bin/cartographer install --agent all   # copies itself to ~/.cartographer/app, links ~/.local/bin/cartographer
-cartographer config init                  # aptitude profile, feedback, voice, manual/auto
+curl -fsSL https://codecartographer.dev/install.sh | sh     # Mac, Linux
+irm https://codecartographer.dev/install.ps1 | iex           # Windows, PowerShell
 ```
+
+Or from a checkout:
+
+```bash
+git clone https://github.com/situatedstrategies/cartographer && cd cartographer
+./bin/cartographer install --agent all   # copies itself to ~/.cartographer/app, puts `cartographer` in ~/.local/bin
+cartographer config init                  # aptitude profile, feedback, voice, manual/auto (or: cartographer serve --open)
+```
+
+Needs Python 3.9 or newer and nothing else. On Windows the command is `python bin\cartographer install …`; hooks are registered as `"python.exe" "…/bin/cartographer" hook claude-code`, so no Unix shell is needed.
 
 `install` puts `/wrap`, `/replay` and `/cartographer-setup` into Claude Code, writes wrap instructions into `~/.codex/AGENTS.md`, and prints the Cursor rule (or writes it with `--project <repo>`). Add `--auto` to wrap sessions when they end: Claude Code gets a `SessionEnd` hook and Cursor a `stop` hook. Codex has no end event, so run `cartographer sweep` on a schedule; the install prints the cron line.
 

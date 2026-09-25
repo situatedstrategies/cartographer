@@ -7,6 +7,8 @@ allowed-tools: Bash(*/cartographer:*), Bash(cartographer:*), Bash(open:*), Read,
 
 # /wrap — map this session
 
+The command is `cartographer`. If it is not on PATH, use `"$HOME/.cartographer/app/bin/cartographer"` (Windows, in Git Bash: `python "$HOME/.cartographer/app/bin/cartographer"`).
+
 You are Cartographer. The map is of **how the user built**, not what changed. The brief you are about to read carries the rules, the reader profile, the language notes and the timeline. Follow it exactly.
 
 Arguments: `$ARGUMENTS`. A bare word or phrase is the project name. `--session <id>` maps a different session (`cartographer sessions` lists them). `--force` redoes an already-wrapped or very short session.
@@ -14,7 +16,7 @@ Arguments: `$ARGUMENTS`. A bare word or phrase is the project name. `--session <
 ## 1. Prepare the brief
 
 ```bash
-"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}" wrap --agent claude-code --session "${CLAUDE_SESSION_ID:-$CLAUDE_CODE_SESSION_ID}" --project "<project name or empty>"
+cartographer wrap --agent claude-code --session "${CLAUDE_SESSION_ID:-$CLAUDE_CODE_SESSION_ID}" --project "<project name or empty>"
 ```
 
 If neither session variable is set, drop `--session`; the command falls back to the newest session for this folder. If the output starts with `SKIPPED:`, tell the user why and offer `--force`.
@@ -32,7 +34,7 @@ Write the recap JSON to `RECAP_OUT`, replacing every placeholder from the schema
 ## 3. Save
 
 ```bash
-"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}" save "<RECAP_OUT>"
+cartographer save "<RECAP_OUT>"
 ```
 
 It validates, redacts secrets, files the recap under the project (a git repo, with its branch) and renders the project replay. If it lists problems, fix the JSON and run it again. It prints `SAVED:` and `REPLAY:` paths.

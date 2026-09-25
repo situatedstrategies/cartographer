@@ -7,7 +7,9 @@ and prompting statistics. It is deterministic and cheap; judgment happens later.
 """
 from __future__ import annotations
 
+import ntpath
 import os
+import posixpath
 import re
 from collections import Counter
 from typing import Any, Dict, List, Optional
@@ -29,8 +31,13 @@ def clip(text: str, n: int) -> str:
 
 
 def relpath(path: str, root: Optional[str]) -> str:
-    if root and path.startswith(root.rstrip("/") + "/"):
-        return path[len(root.rstrip("/")) + 1:]
+    """Path relative to the repo root, with forward slashes, whichever OS wrote it."""
+    if not root:
+        return path
+    mod = ntpath if ("\\" in path or "\\" in root) else posixpath
+    p, r = mod.normcase(mod.normpath(path)), mod.normcase(mod.normpath(root)).rstrip(mod.sep)
+    if p.startswith(r + mod.sep):
+        return mod.normpath(path)[len(r) + 1:].replace("\\", "/")
     return path
 
 

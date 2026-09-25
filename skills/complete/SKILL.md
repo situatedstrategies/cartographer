@@ -7,7 +7,9 @@ allowed-tools: Bash(*/cartographer:*), Bash(cartographer:*), Bash(open:*), Read,
 
 # /complete — mark it done, then appraise honestly
 
-The command is `"${CARTOGRAPHER_BIN:-$HOME/.cartographer/app/bin/cartographer}"`. Arguments: `$ARGUMENTS` (a project name, optionally `--version <name>`). With no project, the repo you are in is the project.
+The command is `cartographer`. If it is not on PATH, use `"$HOME/.cartographer/app/bin/cartographer"` (Windows, in Git Bash: `python "$HOME/.cartographer/app/bin/cartographer"`).
+
+Arguments: `$ARGUMENTS` (a project name, optionally `--version <name>`). With no project, the repo you are in is the project.
 
 ## 1. Find the yardstick
 

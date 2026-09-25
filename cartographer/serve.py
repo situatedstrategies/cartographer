@@ -289,7 +289,7 @@ def save_setup(form: Dict[str, str]) -> None:
     now_auto = cfg["wrap"]["mode"] == "auto"
     if now_auto or was_auto:  # add or remove the SessionEnd hook to match
         try:
-            FLASH.extend(hooks.install_claude_code(now_auto, hooks.bin_path()))
+            FLASH.extend(hooks.install_claude_code(now_auto, hooks.command_prefix()))
         except (LookupError, OSError) as exc:
             FLASH.append("Could not update Claude Code hooks: %s" % exc)
 
@@ -297,7 +297,7 @@ def save_setup(form: Dict[str, str]) -> None:
 def do_connect(form: Dict[str, str]) -> None:
     cfg = config.load()
     try:
-        FLASH.extend(hooks.install(form.get("agent", "claude-code"), cfg["wrap"]["mode"] == "auto", None, hooks.bin_path()))
+        FLASH.extend(hooks.install(form.get("agent", "claude-code"), cfg["wrap"]["mode"] == "auto", None, hooks.command_prefix()))
     except (LookupError, OSError, KeyError) as exc:
         FLASH.append("Install failed: %s" % exc)
 

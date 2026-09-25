@@ -323,6 +323,18 @@ class StoreAndConfigTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             config.set_value(cfg, "voice", "loud")
 
+    def test_windows_shims_and_relpath(self):
+        tmp = tempfile.mkdtemp()
+        cmd, sh = hooks.write_shims(tmp, "C:\\Users\\o\\.cartographer\\app\\bin\\cartographer", python="C:\\Python312\\python.exe")
+        with open(cmd, newline="") as fh:
+            self.assertEqual(fh.read(), '@echo off\r\n"C:\\Python312\\python.exe" "C:\\Users\\o\\.cartographer\\app\\bin\\cartographer" %*\r\n')
+        with open(sh) as fh:
+            self.assertEqual(fh.read(), '#!/bin/sh\nexec "C:/Python312/python.exe" "C:/Users/o/.cartographer/app/bin/cartographer" "$@"\n')
+        self.assertEqual(digest.relpath("C:\\Users\\o\\proj\\src\\app.py", "C:\\Users\\o\\proj"), "src/app.py")
+        self.assertEqual(digest.relpath("/home/o/proj/src/app.py", "/home/o/proj/"), "src/app.py")
+        self.assertEqual(digest.relpath("/elsewhere/x.py", "/home/o/proj"), "/elsewhere/x.py")
+        self.assertTrue(hooks.command_prefix().startswith('"') and hooks.command_prefix().endswith('/bin/cartographer"'))
+
     def test_hook_in_manual_mode_only_records(self):
         cfg = json.loads(json.dumps(config.DEFAULTS))
         item = hooks.handle("claude-code", {"session_id": "abc", "cwd": "/repo", "transcript_path": "/t.jsonl", "hook_event_name": "SessionEnd"}, cfg)
