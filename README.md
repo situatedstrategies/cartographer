@@ -20,7 +20,10 @@ cartographer config init                  # aptitude profile, feedback, voice, m
 |---|---|
 | `/wrap` (Claude Code) · "wrap up this session" (Codex, Cursor) | `cartographer wrap` digests the transcript and writes a **brief**: session facts, your aptitude profile, what Cartographer knows about the languages used, a pragmatic reading of every prompt, the mapping rules and the timeline. The agent follows it, writes the recap, and `cartographer save` files it and renders the replay. |
 | `/replay <project>` | The story of every wrapped session in the repo, across agents and branches, told one move at a time, plus the playbook. Space plays, arrow keys step, the time strip jumps to any minute. |
+| `/complete <project>` | Mark a version shipped, partial or abandoned, say what actually happened, and get the **appraisal**: every session's moves judged against the outcome you declared, with evidence, minutes, and the technical implications now living in the result. |
 | `/cartographer-setup` | Change the profile, switch manual/auto, or backfill maps of old sessions. |
+
+Session maps are provisional. The source of truth is the outcome you wanted, and it is only known when a version is done, so `cartographer goal "…"` declares what done means, every wrap is judged against it, and `/complete` writes the honest reading at the end. Every move and every appraisal item must cite its evidence in the record (which prompt, which error, which repair, which pause), and `save` rejects praise words.
 
 The dashboard, for anyone who would rather click than type:
 
@@ -36,6 +39,8 @@ From a shell:
 ```bash
 cartographer sessions --all           # every session found, ✓ = wrapped
 cartographer wrap --session <id>      # brief for any past session; --run maps it with the agent's headless CLI
+cartographer goal "what done means"   # the yardstick for the current version of the repo you are in
+cartographer complete --result partial --actual "what happened"   # mark it done, get the appraisal brief; --run appraises headlessly
 cartographer save recap.json --check  # validate a recap without storing it
 cartographer backfill --cwd <repo>    # briefs for every past session of a repo; --run maps them
 cartographer render --project <name> --open
@@ -64,14 +69,14 @@ config (aptitude, voice, feedback) ───────────────
 
 ```
 cartographer/     package: adapters/, lang, digest, brief, recap, store, render, serve, hooks, autowrap, cli
-skills/           Claude Code skills: wrap, replay, cartographer-setup
+skills/           Claude Code skills: wrap, replay, complete, cartographer-setup
 bin/cartographer  runs the CLI from a checkout
 tests/            python3 -m unittest discover -s tests -v
 demo/             a wrapped session and its replay
 site/             codecartographer.dev pieces that are not the CLI (the mail worker)
 ```
 
-Everything lives under `~/.cartographer` (override with `CARTOGRAPHER_HOME`): `config.json`, `projects.json`, `sessions/<project>/<date>_<agent>_<id>.json`, `replays/`, `briefs/`, `digests/`. Which sessions are wrapped is read from the recap file names, so there is nothing else to keep in sync.
+Everything lives under `~/.cartographer` (override with `CARTOGRAPHER_HOME`): `config.json`, `projects.json` (projects and their versions: desired outcome, result, what happened), `sessions/<project>/<date>_<agent>_<id>.json` (one map per session) and `sessions/<project>/appraisal_<version>.json`, `replays/`, `briefs/`, `digests/`. Which sessions are wrapped is read from the recap file names, so there is nothing else to keep in sync.
 
 ## Status
 

@@ -78,9 +78,9 @@ def install_claude_code(auto: bool, bin_cmd: str, project: Optional[str] = None)
     if not os.path.isdir(src):
         raise LookupError("skills folder not found at %s; run install from the git checkout" % src)
     dst = os.path.join(HOME, ".claude", "skills")
-    for name in ("wrap", "replay", "cartographer-setup"):
+    for name in ("wrap", "replay", "complete", "cartographer-setup"):
         shutil.copytree(os.path.join(src, name), os.path.join(dst, name), dirs_exist_ok=True)
-    msgs = ["Claude Code: installed /wrap, /replay and /cartographer-setup into %s" % dst]
+    msgs = ["Claude Code: installed /wrap, /replay, /complete and /cartographer-setup into %s" % dst]
     settings_path = os.path.join(HOME, ".claude", "settings.json")
     settings = store.read_json(settings_path, {})
     hooks = settings.setdefault("hooks", {})

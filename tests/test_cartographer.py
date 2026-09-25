@@ -240,6 +240,51 @@ class RecapTest(unittest.TestCase):
         self.assertTrue(any("missing title" in e for e in recap.validate(recap.normalize(r))))
 
 
+class VersionsAndAppraisalTest(unittest.TestCase):
+    def test_goal_complete_and_appraisal_roundtrip(self):
+        old = store.PROJECTS, store.SESSIONS
+        tmp = tempfile.mkdtemp()
+        store.PROJECTS, store.SESSIONS = os.path.join(tmp, "projects.json"), os.path.join(tmp, "sessions")
+        try:
+            entry = store.register_project("github.com/me/app", "app", "/r", None)
+            self.assertIsNone(store.desired_for("github.com/me/app"))
+            v = store.set_goal("app", "A CLI that maps sessions")
+            self.assertEqual((v["name"], store.desired_for("github.com/me/app")), ("v1", "A CLI that maps sessions"))
+            v = store.complete("app", "partial", "shipped without Cursor")
+            self.assertEqual((v["name"], v["result"], v["actual"]), ("v1", "partial", "shipped without Cursor"))
+            self.assertIsNone(store.desired_for("github.com/me/app"))  # v1 is closed; no open version
+            self.assertEqual(store.set_goal("app", "next")["name"], "v2")
+            self.assertEqual(store.get_version("app", "v1")["result"], "partial")
+            with self.assertRaises(ValueError):
+                store.complete("app", "meh")
+            a = json.loads(json.dumps(recap.APPRAISAL_EXAMPLE))
+            a["project"] = {"id": "github.com/me/app"}
+            a["verdict"] = "It shipped without Cursor; the record shows the adapter was never run on real data."
+            self.assertEqual(recap.validate_appraisal(a), [])
+            bad = json.loads(json.dumps(a))
+            bad["got_you_there"][0].pop("evidence")
+            bad["verdict"] = "Great work all round."
+            errs = recap.validate_appraisal(bad)
+            self.assertTrue(any("evidence" in x for x in errs) and any("praise" in x for x in errs))
+            path = store.save_appraisal(a, json.loads(json.dumps(config.DEFAULTS)))
+            self.assertTrue(path.endswith("appraisal_v1.json"))
+            self.assertEqual(store.load_recaps("app"), [])  # appraisals are not session maps
+            self.assertEqual(store.load_appraisals(entry["slug"])[0]["version"], "v1")
+            self.assertEqual(store.projects()["github.com/me/app"]["versions"][0]["appraisal"], path)
+        finally:
+            store.PROJECTS, store.SESSIONS = old
+
+    def test_moves_need_evidence_shape_and_no_praise(self):
+        moves = [{"id": "m%d" % i, "t": i, "phase": "A", "you": "you did %d" % i, "happened": "it %d" % i, "outcome": "worked", "evidence": ["prompt #%d" % i]} for i in range(1, 4)]
+        r = {"title": "t", "goal": "g", "outcome": "o", "phases": [{"name": "A"}], "moves": moves}
+        self.assertEqual(recap.validate(recap.normalize(r)), [])
+        r["moves"][0]["evidence"] = "prompt #1"
+        r["moves"][1]["consequence"] = "A great choice that shipped nicely."
+        errs = recap.validate(recap.normalize(r))
+        self.assertTrue(any("evidence must be a list" in x for x in errs))
+        self.assertTrue(any("praise word" in x for x in errs))
+
+
 class StoreAndConfigTest(unittest.TestCase):
     def test_redaction(self):
         text = "use sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123456789 and password: hunter2secret and ghp_" + "a" * 36
@@ -332,6 +377,17 @@ class ServeTest(unittest.TestCase):
             self.assertIn("Replay the build", body)
             self.assertEqual(req("GET", "/replay/nope")[0], 404)
             self.assertIn("Open map", req("GET", "/")[2])
+            status, _, body = req("GET", "/project/" + slug)
+            self.assertEqual(status, 200)
+            self.assertIn("The yardstick", body)
+            status, loc, _ = req("POST", "/goal", "token=%s&project=%s&desired=A+CLI+that+maps+sessions" % (serve.TOKEN, slug))
+            self.assertEqual((status, loc), (303, "/project/" + slug))
+            self.assertEqual(store.desired_for("local:cartographer"), "A CLI that maps sessions")
+            status, _, body = req("POST", "/complete", "token=%s&project=%s&result=shipped&actual=it+shipped" % (serve.TOKEN, slug))
+            self.assertEqual(status, 200)
+            self.assertIn("/complete", body)
+            self.assertIn("Done meant: A CLI that maps sessions", body)
+            self.assertTrue(store.get_version("local:cartographer", "v1")["completed_at"])
         finally:
             srv.shutdown()
             srv.server_close()

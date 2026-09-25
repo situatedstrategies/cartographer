@@ -1,0 +1,34 @@
+{
+ "schema": "cartographer.appraisal/v1",
+ "project": {"id": "local:cartographer", "name": "Cartographer"},
+ "version": "v1",
+ "desired": "A working /wrap that turns a Claude Code session into a replayable map, structured so that Codex and Cursor can be added, with tests.",
+ "result": "partial",
+ "actual": "v0.2 shipped as a package with three adapters, a prompt-pragmatics layer, config, hooks, skills and tests. Only the Claude Code adapter was verified on real data.",
+ "verdict": "The version reached its core: a Claude Code session can be wrapped into a replay, and the package is laid out so that adding an agent is one file. It fell short on the part of 'agent-agnostic' that matters in use: the Codex and Cursor adapters were written from documentation and synthetic fixtures and never ran on real history (session ca61170e m9, m11). Whether the prompt-reading layer reads prompts accurately beyond one session is unclear from the record.",
+ "got_you_there": [
+  {"what": "Four decisions in one message after a 19-minute pause", "why": "The agent could order the whole build around the replay without a clarification round; the build phase started in the same minute.", "evidence": ["session ca61170e m2", "pause 19m"]},
+  {"what": "Reading Claude Code's on-disk format before writing anything", "why": "Capture needed no new infrastructure, so v1 was a reader plus a renderer and took about four minutes of build.", "evidence": ["session ca61170e m3", "session ca61170e m4"]},
+  {"what": "Smoke-testing the generated brief on the live session before calling it done", "why": "Surfaced three misreads (HEAD as a branch, 'version' read as config, an intent tie-break) that would otherwise have shipped.", "evidence": ["session ca61170e m11"]}
+ ],
+ "cost_you": [
+  {"what": "The rebuild request carried eight capabilities and a quality adjective but no done-condition; the first attempt was restarted at a higher effort level.", "minutes": 2.4, "evidence": ["session ca61170e m8", "session ca61170e m9"]},
+  {"what": "Preview of the replay blocked by the browser pane refusing file:// URLs; worked around by serving over localhost.", "evidence": ["session ca61170e m5", "session ca61170e m6"]},
+  {"what": "56 minutes between v1 delivery and the rebuild request. The record does not say whether this was thinking time or time elsewhere.", "minutes": 56, "evidence": ["pause 56m", "session ca61170e m7"]}
+ ],
+ "carried_forward": [
+  {"what": "Codex CLI and Cursor adapters that have never parsed real history.", "since": "session ca61170e m9", "risk": "The first real user of either agent will hit format drift, and the adapters will need rework under time pressure. The README says so; the code does not.", "evidence": ["session ca61170e m9", "session ca61170e m11"]},
+  {"what": "A package layout chosen by the agent under a prompt with no acceptance criteria.", "since": "session ca61170e m8", "risk": "adapters / lang / digest / brief / recap / render reflects the agent's defaults, not stated requirements. Later constraints (team maps, a hosted store) may fight the split between store and render.", "evidence": ["session ca61170e m8", "session ca61170e m9"]},
+  {"what": "Python 3.9 as the floor, chosen from the machine the agent found, not from the users.", "since": "session ca61170e m8", "risk": "Rules out newer syntax and stdlib features; cheap now, a constraint if the package grows.", "evidence": ["session ca61170e m8"]}
+ ],
+ "prompting": [
+  {"pattern": "Batches decisions after stepping away, rather than iterating in chat.", "effect": "Compressed the decide phase to one message; the agent never had to ask twice.", "evidence": ["session ca61170e m2", "pause 19m"]},
+  {"pattern": "Large-scope requests with quality adjectives ('advanced enough to capture nuances') and no acceptance criteria.", "effect": "The agent defined what done meant; one restart followed, and the architecture is the agent's.", "evidence": ["session ca61170e m8", "session ca61170e m9"]},
+  {"pattern": "Corrects framing, not details.", "effect": "The product thesis and the killer moment were set by two corrections in the first twenty minutes; nothing below that level was ever corrected.", "evidence": ["session ca61170e m1", "session ca61170e m2"]}
+ ],
+ "next_time": [
+  "Write the acceptance list before a rebuild-sized prompt; it becomes the test list (m8).",
+  "Do not call an adapter done until it has parsed real history from that agent, or mark it unverified in the code as well as the README (m9).",
+  "Keep the live-session smoke test as the last step of every version; it is where the real bugs surfaced (m11)."
+ ]
+}

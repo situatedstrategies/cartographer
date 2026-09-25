@@ -38,12 +38,12 @@ form.setup{display:grid;gap:18px;max-width:640px}form.setup label{display:grid;g
 .ok{color:var(--k-fix)}.warn{color:var(--k-dead_end)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
 ul.plain{margin:0;padding-left:18px}ul.plain li{margin:0 0 8px}
 """
-FAVICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f6f78"/>'
+FAVICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#2f4a72"/>'
            '<path d="M8 22 L14 10 L19 18 L24 12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'
-           '<circle cx="24" cy="12" r="2.5" fill="#d9a21b"/></svg>')
+           '<circle cx="24" cy="12" r="2.5" fill="#d3b076"/></svg>')
 SHELL = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>%(title)s · Cartographer</title><link rel="icon" href="/favicon.ico"><style>%(css)s</style></head><body><div class="wrap">
-<nav class="nav"><a href="/" class="brand">Cartographer</a>%(links)s<span class="grow"></span><span class="meta">v%(version)s · this machine only</span></nav>
+<title>%(title)s · Cartographer</title><link rel="icon" href="/favicon.ico"><style>%(css)s</style><script>%(js)s</script></head><body><div class="wrap">
+<nav class="nav"><a href="/" class="brand">Cartographer</a>%(links)s<span class="grow"></span><span class="meta">v%(version)s · this machine only</span><button class="small" data-theme-btn aria-label="Theme"></button></nav>
 %(flash)s%(body)s
 <footer>Local dashboard · started with <kbd>cartographer serve</kbd> · nothing here leaves your machine</footer></div></body></html>"""
 
@@ -52,7 +52,7 @@ def page(title: str, body: str, here: str = "/") -> str:
     links = "".join('<a href="%s"%s>%s</a>' % (p, ' class="here"' if p == here else "", n) for p, n in (("/", "Home"), ("/setup", "Setup"), ("/connect", "Connect")))
     flash = "".join('<div class="notice">%s</div>' % e(m) for m in FLASH)
     FLASH.clear()
-    return SHELL % {"title": e(title), "css": render.BASE_CSS + CSS, "links": links, "version": __version__, "flash": flash, "body": body}
+    return SHELL % {"title": e(title), "css": render.BASE_CSS + CSS, "js": render.THEME_JS, "links": links, "version": __version__, "flash": flash, "body": body}
 
 
 def token_field() -> str:
@@ -87,8 +87,12 @@ def home(q: Dict[str, str]) -> str:
     for pid, p in sorted(reg.items(), key=lambda kv: kv[1].get("name", "")):
         recaps = store.load_recaps(p["slug"])
         latest = recaps[-1] if recaps else {}
-        rows.append('<div class="row"><div class="grow"><b>%s</b><span class="meta">%s · %d session%s%s</span></div><a class="btn small primary" href="/replay/%s">Open map</a></div>'
-                    % (e(p["name"]), e(pid), len(recaps), "" if len(recaps) == 1 else "s", (" · last " + e(latest.get("date") or "")) if latest else "", e(p["slug"])))
+        v = store.open_version(p) or ((p.get("versions") or [None])[-1])
+        state = ("%s · %s" % (v["name"], ("done means: " + v["desired"][:60] + ("…" if len(v["desired"]) > 60 else "")) if v.get("desired") else "no desired outcome yet")) if v and not v.get("completed_at") \
+            else ("%s %s%s" % (v["name"], v.get("result"), "" if v.get("appraisal") else " · not appraised")) if v else "no desired outcome yet"
+        rows.append('<div class="row"><div class="grow"><b>%s</b><span class="meta">%s · %d session%s%s</span><span class="meta">%s</span></div>'
+                    '<a class="btn small" href="/project/%s">Outcome</a><a class="btn small primary" href="/replay/%s">Open map</a></div>'
+                    % (e(p["name"]), e(pid), len(recaps), "" if len(recaps) == 1 else "s", (" · last " + e(latest.get("date") or "")) if latest else "", e(state), e(p["slug"]), e(p["slug"])))
     out.append('<div class="card panel"><h2>Projects</h2>%s</div>' % ("".join(rows) or '<p class="sub">No maps yet. Map a session on the right, or type <kbd>/wrap</kbd> in Claude Code at the end of one.</p>'))
     # sessions
     rows = []
@@ -139,21 +143,93 @@ def connect_page(q: Dict[str, str]) -> str:
     skills = os.path.join(os.path.expanduser("~"), ".claude", "skills", "wrap", "SKILL.md")
     installed = os.path.exists(skills)
     body = ('<div class="eyebrow">Connect</div><h1>Claude Code</h1>'
-            '<p class="sub">Installing puts three commands into Claude Code: <kbd>/wrap</kbd> maps the session you are in, <kbd>/replay</kbd> replays a project, '
-            '<kbd>/cartographer-setup</kbd> changes this profile from inside the agent.%s</p>'
+            '<p class="sub">Installing puts four commands into Claude Code: <kbd>/wrap</kbd> maps the session you are in, <kbd>/replay</kbd> tells the story of a project, '
+            '<kbd>/complete</kbd> marks a version done and appraises it, <kbd>/cartographer-setup</kbd> changes this profile from inside the agent.%s</p>'
             '<div class="card panel"><p><span class="dot" style="background:%s"></span>%s</p>'
             '<form method="post" action="/connect" style="margin-top:12px">%s<input type="hidden" name="agent" value="claude-code"><button class="primary">%s</button></form></div>'
             '<div class="card panel" style="margin-top:18px"><h2>Then, in Claude Code</h2><ul class="plain">'
             '<li>Work as usual. Cartographer reads the history Claude Code already keeps; nothing runs during the session.</li>'
             '<li>At the end, type <kbd>/wrap</kbd>. The agent writes the map and tells you where the replay is.</li>'
             '<li>Come back here, or run <kbd>cartographer open</kbd>, to watch the build.</li>'
-            '<li>Old sessions: press <b>Map this session</b> on the home page, or <kbd>/cartographer-setup backfill</kbd>.</li></ul></div>'
+            '<li>Old sessions: press <b>Map this session</b> on the home page, or <kbd>/cartographer-setup backfill</kbd>.</li>'
+            '<li>When a version is done, <kbd>/complete</kbd> marks it shipped, partial or abandoned and writes the honest appraisal against the outcome you declared (set it under a project\'s <b>Outcome</b>, or with <kbd>cartographer goal</kbd>).</li></ul></div>'
             '<p class="sub" style="margin-top:18px">Codex CLI and Cursor are available from the command line (<kbd>cartographer install --agent codex</kbd>, <kbd>--agent cursor --project &lt;repo&gt;</kbd>) '
             'and are not yet verified against real history.</p>'
             % (" Auto-wrap is on, so a hook will also map each session when it ends." if auto else "",
                "var(--k-fix)" if installed else "var(--line)", "Installed in ~/.claude/skills" if installed else "Not installed yet",
                token_field(), "Reinstall / update" if installed else "Install into Claude Code"))
     return page("Connect", body, "/connect")
+
+
+def project_page(slug: str) -> Optional[str]:
+    entry = store.find_project(slug)
+    if not entry:
+        return None
+    versions = entry.get("versions") or []
+    open_v = store.open_version(entry)
+    rows = []
+    for v in versions:
+        if v.get("completed_at"):
+            appraise = ('<a class="btn small" href="/replay/%s">See appraisal</a>' % e(entry["slug"])) if v.get("appraisal") else \
+                ('<form method="post" action="/complete">%s<input type="hidden" name="project" value="%s"><input type="hidden" name="version" value="%s"><button class="small primary">Appraise</button></form>'
+                 % (token_field(), e(entry["id"]), e(v["name"])))
+            rows.append('<div class="row"><span class="dot" style="background:%s"></span><div class="grow"><b>%s · %s</b><span class="meta">done meant: %s</span><span class="meta">what happened: %s</span></div>%s</div>'
+                        % ({"shipped": "var(--k-fix)", "partial": "var(--k-artifact)"}.get(v.get("result"), "var(--k-dead_end)"), e(v["name"]), e(v.get("result") or ""),
+                           e(v.get("desired") or "never declared"), e(v.get("actual") or "(not given)"), appraise))
+    goal_form = ('<form method="post" action="/goal" class="setup">%s<input type="hidden" name="project" value="%s">'
+                 '<label>What does done mean for %s?<small>In your words. Every map of this project is judged against this, and the appraisal at completion uses it.</small>'
+                 '<textarea name="desired" rows="3" style="font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink)">%s</textarea></label>'
+                 '<div><button class="primary">Save</button></div></form>'
+                 % (token_field(), e(entry["id"]), e(open_v["name"] if open_v else "the next version"), e((open_v or {}).get("desired") or "")))
+    results = "".join('<option value="%s">%s</option>' % (r, r) for r in store.RESULTS)
+    complete_form = ('<form method="post" action="/complete" class="setup">%s<input type="hidden" name="project" value="%s">'
+                     '<label>Result<select name="result">%s</select></label>'
+                     '<label>What actually happened<small>One or two sentences. This is the other half of the yardstick.</small>'
+                     '<textarea name="actual" rows="3" style="font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink)"></textarea></label>'
+                     '<div><button class="primary">Mark %s complete and appraise</button></div></form>'
+                     % (token_field(), e(entry["id"]), results, e(open_v["name"] if open_v else "v%d" % (len(versions) + 1))))
+    body = ('<div class="eyebrow">Project</div><h1>%s</h1><p class="sub">%s · %d wrapped session%s. Session maps are provisional; the appraisal at completion is the honest reading against the outcome you declared.</p>'
+            '<div class="grid"><div class="card panel"><h2>The yardstick</h2>%s</div><div class="card panel"><h2>Mark complete</h2>%s</div></div>'
+            '%s<p><a href="/">Back</a> · <a href="/replay/%s">Open map</a></p>'
+            % (e(entry["name"]), e(entry["id"]), len(store.load_recaps(entry["slug"])), "" if len(store.load_recaps(entry["slug"])) == 1 else "s", goal_form, complete_form,
+               ('<div class="card panel"><h2>Versions</h2>%s</div>' % "".join(rows)) if rows else "", e(entry["slug"])))
+    return page(entry["name"], body)
+
+
+def complete_page(form: Dict[str, str]) -> str:
+    cfg = config.load()
+    try:
+        res = autowrap.appraise(form.get("project", ""), cfg, form.get("version") or None, form.get("result") or None, form.get("actual", ""))
+    except (LookupError, ValueError, OSError) as exc:
+        return page("Complete", '<h1>Could not prepare the appraisal</h1><p class="warn">%s</p><p><a href="/">Back</a></p>' % e(str(exc)))
+    headless = autowrap.headless_command("claude-code", cfg)
+    run_form = ('<form method="post" action="/complete-run">%s<input type="hidden" name="project" value="%s"><input type="hidden" name="version" value="%s">'
+                '<button>Appraise in the background with <kbd>%s</kbd></button><small class="meta" style="display:block;margin-top:8px">A few minutes. The home page shows progress.</small></form>'
+                % (token_field(), e(form.get("project", "")), e(res["version"]), e(headless[0]))) if headless else '<p class="sub"><kbd>claude</kbd> is not on PATH, so the background option is unavailable here.</p>'
+    body = ('<div class="eyebrow">Appraisal</div><h1>%s · %s · %s</h1><p class="sub">Done meant: %s</p>'
+            '<div class="grid"><div class="card panel"><h2>Best: from inside Claude Code</h2><p>In the repo, type:</p><code>/complete %s</code>'
+            '<p class="meta" style="margin-top:8px">It reads the brief, writes the appraisal against your declared outcome from %d session map%s, and saves it.</p></div>'
+            '<div class="card panel"><h2>Or: headless</h2>%s</div></div><p class="meta">Brief prepared at <kbd>%s</kbd></p><p><a href="/">Back</a></p>'
+            % (e(res["project"]), e(res["version"]), e(res["result"] or ""), e(res.get("desired") or "never declared"), e(res["project"]), res["sessions"], "" if res["sessions"] == 1 else "s", run_form, e(res["brief"])))
+    return page("Appraisal", body)
+
+
+def start_appraisal(form: Dict[str, str]) -> None:
+    project, version = form.get("project", ""), form.get("version") or None
+    key = "appraise:%s:%s" % (project, version)
+    if JOBS.get(key, {}).get("status") == "running":
+        return
+
+    def work():
+        try:
+            res = autowrap.appraise(project, None, version, None, "", True)
+            JOBS[key] = {"status": "done" if res.get("ok") else "error", "result": res, "error": res.get("error") or "; ".join(res.get("errors") or [])}
+        except Exception as exc:
+            JOBS[key] = {"status": "error", "error": str(exc)}
+
+    JOBS[key] = {"status": "running"}
+    threading.Thread(target=work, daemon=True).start()
+    FLASH.append("Appraising in the background; refresh in a few minutes.")
 
 
 def wrap_page(form: Dict[str, str]) -> str:
@@ -229,7 +305,7 @@ def do_connect(form: Dict[str, str]) -> None:
 def replay_page(slug: str) -> Optional[str]:
     entry = store.find_project(slug)
     recaps = store.load_recaps(entry["slug"]) if entry else []
-    return render.render_html(recaps, entry["name"]) if recaps else None
+    return render.render_html(recaps, entry["name"], store.load_appraisals(entry["slug"])) if recaps else None
 
 
 # -------------------------------------------------------------- server
@@ -269,6 +345,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, setup_page(q))
             if u.path == "/connect":
                 return self._send(200, connect_page(q))
+            if u.path.startswith("/project/"):
+                body = project_page(u.path[len("/project/"):])
+                return self._send(200, body) if body else self._send(404, page("Not found", "<h1>No such project</h1><p><a href='/'>Back</a></p>"))
             if u.path.startswith("/replay/"):
                 body = replay_page(u.path[len("/replay/"):])
                 return self._send(200, body) if body else self._send(404, page("Not found", "<h1>No map for that project yet</h1><p><a href='/'>Back</a></p>"))
@@ -299,6 +378,16 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, wrap_page(form))
             if path == "/wrap-run":
                 start_run(form)
+                return self._send(303, location="/")
+            if path == "/goal":
+                v = store.set_goal(form.get("project", ""), form.get("desired", ""), form.get("version") or None)
+                FLASH.append("Saved: done for %s means %s" % (v["name"], v["desired"]))
+                entry = store.find_project(form.get("project", ""))
+                return self._send(303, location="/project/%s" % (entry["slug"] if entry else ""))
+            if path == "/complete":
+                return self._send(200, complete_page(form))
+            if path == "/complete-run":
+                start_appraisal(form)
                 return self._send(303, location="/")
         except (ValueError, LookupError, OSError) as exc:
             FLASH.append("Error: %s" % exc)

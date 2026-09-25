@@ -81,6 +81,16 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
         w("- Files changed: " + ", ".join(digest["files"][:15]) + (" …" if len(digest["files"]) > 15 else ""))
     w("")
 
+    w("## The yardstick\n")
+    if digest.get("desired"):
+        w("The user declared what done means for this version: **%s**\n" % digest["desired"])
+        w("Judge every move against it. `outcome` on a move is provisional: how it looked at the time. The real verdict comes "
+          "when the version is marked complete and appraised.\n")
+    else:
+        w("No desired outcome has been declared for this project, so there is no yardstick yet. Judge against the goal the user "
+          "stated in the session, put that goal in `goal`, and say in `outcome` that none was declared. (`cartographer goal "
+          "\"...\"` sets one; the appraisal at completion uses it.)\n")
+
     w("## Reader profile and register\n")
     w("- Coding aptitude: **%s**. %s" % (eff["coding"], CODING_LEVEL[eff["coding"]]))
     w("- Prompting aptitude: **%s**. %s" % (eff["prompting"], PROMPTING_LEVEL[eff["prompting"]]))
@@ -128,6 +138,12 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
       "(something made). Leave it out on ordinary moves.")
     w("- **Read the response honestly**: the detector marks the next prompt as accept, repair or something else. A repair "
       "means the previous move went wrong for the user even if the code ran; say so in that move's `outcome` and `consequence`.")
+    w("- **Honest appraisal**: every `consequence` names the technical implication: what the choice committed the project to "
+      "(a dependency, a data shape, a shortcut left in, a test not written) and what it cost or saved, in minutes where the "
+      "timeline shows it. No praise words and no softening; a detour is called a detour. Where the record does not show "
+      "something, write 'unclear from the record' instead of guessing.")
+    w("- **Evidence**: every move lists `evidence`: the timeline items it rests on, as written there ('prompt #3', 'error at "
+      "12.4m', 'pause 19m', 'repair at 20.1m'). A move without evidence is invented, and `save` rejects praise words.")
     w("- **Branches**: set `branch` on moves when the session touched more than one.")
     w("- **Language-aware reading**: when a prompt uses aesthetic or physical words (\"snappier\", \"cleaner\", \"make it "
       "pop\"), map what the agent *interpreted* them as, in the target language's terms. When a fix loop is really a "
@@ -195,3 +211,68 @@ def _timeline_line(item: Dict[str, Any]) -> str:
     if k == "pause":
         return "%s  pause: %d min of no activity" % (t, item["minutes"])
     return "%s  note: %s" % (t, item.get("text", ""))
+
+
+def build_appraisal(entry: Dict[str, Any], version: Dict[str, Any], recaps: List[Dict[str, Any]], cfg: Dict[str, Any], out_path: str) -> str:
+    """The end-of-version brief: judge every session's moves against the declared desired outcome."""
+    eff = config.effective(cfg)
+    out: List[str] = []
+    w = out.append
+    w("# Cartographer appraisal brief\n")
+    w("You are Cartographer. **%s** version **%s** has been marked complete (result: **%s**). Judge the whole build against the "
+      "desired outcome the user declared, using only the session maps below as evidence. This is an appraisal, not a celebration: "
+      "the user asked for an honest reading of how they worked and prompted, what it cost, and what it produced.\n"
+      % (entry.get("name"), version.get("name"), version.get("result")))
+    w("## The yardstick\n")
+    w("- Desired outcome (declared %s): **%s**" % ((version.get("set_at") or "?")[:10],
+      version.get("desired") or "never declared. Say so in the verdict, and judge against the goals the sessions state."))
+    w("- Result: **%s**. What actually happened, in the user's words: %s\n" % (version.get("result"), version.get("actual") or "(not given)"))
+    w("## Reader profile and register\n")
+    w("- Coding aptitude: **%s**. %s" % (eff["coding"], CODING_LEVEL[eff["coding"]]))
+    w("- Prompting aptitude: **%s**. %s" % (eff["prompting"], PROMPTING_LEVEL[eff["prompting"]]))
+    w("- Voice: **%s**. %s\n" % (eff["voice"], VOICE_RULES[eff["voice"]]))
+    w("## Rules\n")
+    w("- **Evidence**: every item cites the moves it rests on as `session <id> <move id>` (ids as given below). Items without "
+      "evidence are rejected by `save`.")
+    w("- **Technical implications**: `carried_forward` names what is now in the result because of a move (a shortcut, a "
+      "dependency, a data shape, a missing test) and what it will cost later. Cite the move that put it there.")
+    w("- **Minutes** come from the sessions: durations, time sinks, move times. Do not estimate what the record does not show.")
+    w("- **Record versus inference**: say what the record shows; when you infer, say 'likely' and why.")
+    w("- **Prompting**: tie each pattern to its effect on the outcome, using the sessions' prompt readings and repair turns. "
+      "Neutral phrasing, no praise words, no softening.")
+    w("- Never copy secrets, keys, tokens, or personal data.\n")
+    w("## Format\n")
+    w("Write JSON with exactly this shape (values are placeholders):\n")
+    w("```json\n%s\n```\n" % json.dumps(recap.APPRAISAL_EXAMPLE, indent=1, ensure_ascii=False))
+    w("Set `project` to `%s`, `version` to `%s`, `result` to `%s`, and copy `desired` and `actual` from the yardstick.\n"
+      % (json.dumps({"id": entry.get("id"), "name": entry.get("name")}), version.get("name"), version.get("result")))
+    w("## Sessions (%d)\n" % len(recaps))
+    for r in recaps:
+        sid = (r.get("session_id") or "")[:8]
+        w("### session %s · %s · %s · %s min · %s" % (sid, r.get("date"), r.get("title"), r.get("duration_min"), r.get("agent")))
+        w("- goal: %s" % r.get("goal"))
+        w("- outcome at the time: %s" % r.get("outcome"))
+        for m in r.get("moves") or []:
+            bits = ["%s t=%s [%s%s]" % (m.get("id"), m.get("t"), m.get("outcome"), (", " + m["mark"]) if m.get("mark") else "")]
+            for key in ("you", "happened", "consequence", "response"):
+                if m.get(key):
+                    bits.append("%s: %s" % (key, m[key]))
+            if m.get("evidence"):
+                bits.append("evidence: " + "; ".join(m["evidence"]))
+            w("  - " + " | ".join(bits))
+        if r.get("time_sinks"):
+            w("- time sinks: " + "; ".join("%s (%s min)" % (t.get("what"), t.get("minutes")) for t in r["time_sinks"]))
+        if r.get("patterns"):
+            w("- patterns noted then: " + "; ".join(r["patterns"]))
+        p = r.get("prompting") or {}
+        if p.get("prompts"):
+            w("- prompting numbers: %d prompts, specificity %s/3, anchored %s, vague %s, repairs %s, go-aheads %s"
+              % (p["prompts"], p.get("avg_specificity"), _pct(p.get("anchored_ratio")), _pct(p.get("vague_ratio")), _pct(p.get("repair_ratio")), _pct(p.get("accept_ratio"))))
+        w("")
+    w("## Output\n")
+    w("1. Write the appraisal JSON to `%s`." % out_path)
+    w("2. Run: `cartographer save \"%s\"` — it validates (evidence on every item, no praise words), files the appraisal under the "
+      "project and renders the replay with it. If it reports problems, fix the JSON and run it again." % out_path)
+    w("3. Tell the user, in the configured voice: the verdict; what got them there; what cost them, with minutes; what was carried "
+      "into the result and what it will cost later; one prompting pattern tied to the outcome; what to do next time; the replay path.")
+    return "\n".join(out)

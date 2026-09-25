@@ -116,6 +116,94 @@ def find_project(query: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+# ------------------------------------------------------------ versions
+# A version is the unit of truth: the user declares what done means, builds,
+# then marks it complete with what actually happened. Session maps are
+# provisional until then; the appraisal judges them against this.
+
+RESULTS = ("shipped", "partial", "abandoned")
+
+
+def open_version(entry: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """The version still being built: the last one not marked complete."""
+    for v in reversed(entry.get("versions") or []):
+        if not v.get("completed_at"):
+            return v
+    return None
+
+
+def _version(entry: Dict[str, Any], name: Optional[str], create: bool = True) -> Optional[Dict[str, Any]]:
+    vs = entry.setdefault("versions", [])
+    v = next((x for x in vs if x.get("name") == name), None) if name else open_version(entry)
+    if v is None and create:
+        v = {"name": name or "v%d" % (len(vs) + 1), "desired": None, "set_at": None, "completed_at": None, "result": None, "actual": None, "appraisal": None}
+        vs.append(v)
+    return v
+
+
+def set_goal(project: str, desired: str, version: Optional[str] = None) -> Dict[str, Any]:
+    reg = projects()
+    entry = find_project(project)
+    if not entry:
+        raise LookupError("no project matching %r; wrap a session first, or run `cartographer goal` inside the repo" % project)
+    v = _version(reg[entry["id"]], version)
+    v["desired"], v["set_at"] = desired.strip(), datetime.now(timezone.utc).isoformat()
+    write_json(PROJECTS, reg)
+    return v
+
+
+def complete(project: str, result: str, actual: str = "", version: Optional[str] = None) -> Dict[str, Any]:
+    if result not in RESULTS:
+        raise ValueError("result must be one of: %s" % ", ".join(RESULTS))
+    reg = projects()
+    entry = find_project(project)
+    if not entry:
+        raise LookupError("no project matching %r" % project)
+    v = _version(reg[entry["id"]], version)
+    v.update(completed_at=datetime.now(timezone.utc).isoformat(), result=result, actual=(actual or "").strip() or None)
+    write_json(PROJECTS, reg)
+    return v
+
+
+def get_version(project: str, name: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    """A named version, or the open one, without creating anything."""
+    entry = find_project(project)
+    return _version(entry, name, create=False) if entry else None
+
+
+def desired_for(pid: str) -> Optional[str]:
+    entry = projects().get(pid or "")
+    v = open_version(entry) if entry else None
+    return (v or {}).get("desired")
+
+
+def appraisal_path(slug: str, version: str) -> str:
+    return os.path.join(SESSIONS, slug, "appraisal_%s.json" % project_slug(version))
+
+
+def save_appraisal(appraisal: Dict[str, Any], cfg: Optional[Dict[str, Any]] = None) -> str:
+    cfg = cfg or config.load()
+    proj = appraisal.get("project") or {}
+    entry = find_project(proj.get("id") or proj.get("slug") or proj.get("name") or "")
+    if not entry:
+        raise LookupError("appraisal names a project that is not wrapped: %r" % proj)
+    appraisal["project"] = {"id": entry["id"], "name": entry["name"], "slug": entry["slug"]}
+    appraisal["saved_at"] = datetime.now(timezone.utc).isoformat()
+    if cfg["privacy"].get("redact_secrets", True):
+        appraisal = redact(appraisal)
+    path = write_json(appraisal_path(entry["slug"], appraisal.get("version") or "v1"), appraisal)
+    reg = projects()
+    v = _version(reg[entry["id"]], appraisal.get("version") or "v1")
+    v["appraisal"] = path
+    write_json(PROJECTS, reg)
+    return path
+
+
+def load_appraisals(slug: str) -> List[Dict[str, Any]]:
+    out = [read_json(p, None) for p in sorted(glob.glob(os.path.join(SESSIONS, slug, "appraisal_*.json")))]
+    return [a for a in out if isinstance(a, dict)]
+
+
 # -------------------------------------------------------------- recaps
 
 def recap_path(recap: Dict[str, Any], slug: str) -> str:
@@ -147,6 +235,8 @@ def load_recaps(project: Optional[str] = None) -> List[Dict[str, Any]]:
         pattern = os.path.join(SESSIONS, "*", "*.json")
     out = []
     for path in glob.glob(pattern):
+        if os.path.basename(path).startswith("appraisal_"):
+            continue
         data = read_json(path, None)
         if isinstance(data, dict):
             data["_path"] = path

@@ -18,19 +18,19 @@ from typing import Any, Dict, List, Optional
 from . import recap, store
 
 
-def render_html(recaps: List[Dict[str, Any]], title: str) -> str:
+def render_html(recaps: List[Dict[str, Any]], title: str, appraisals: Optional[List[Dict[str, Any]]] = None) -> str:
     clean = []
     for r in recaps:
         r = recap.normalize(r) if not r.get("moves") else r   # older maps: typed steps -> moves
         clean.append({k: v for k, v in r.items() if k != "_path"})
-    payload = json.dumps({"title": title, "sessions": clean}, ensure_ascii=False).replace("</", "<\\/")
-    return TEMPLATE.replace("__CSS__", BASE_CSS + STORY_CSS).replace("__TITLE__", html.escape(title)).replace("__DATA__", payload)
+    payload = json.dumps({"title": title, "sessions": clean, "appraisals": appraisals or []}, ensure_ascii=False).replace("</", "<\\/")
+    return TEMPLATE.replace("__CSS__", BASE_CSS + STORY_CSS).replace("__JS__", THEME_JS).replace("__TITLE__", html.escape(title)).replace("__DATA__", payload)
 
 
-def render_recaps(recaps: List[Dict[str, Any]], title: str, out: str) -> str:
+def render_recaps(recaps: List[Dict[str, Any]], title: str, out: str, appraisals: Optional[List[Dict[str, Any]]] = None) -> str:
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     with open(out, "w", encoding="utf-8") as fh:
-        fh.write(render_html(recaps, title))
+        fh.write(render_html(recaps, title, appraisals))
     return out
 
 
@@ -41,18 +41,29 @@ def render_project(project: str, out: Optional[str] = None) -> str:
     recaps = store.load_recaps(entry["slug"])
     if not recaps:
         raise LookupError("project %s has no wrapped sessions yet" % entry["name"])
-    return render_recaps(recaps, entry["name"], out or os.path.join(store.REPLAYS, "%s.html" % entry["slug"]))
+    return render_recaps(recaps, entry["name"], out or os.path.join(store.REPLAYS, "%s.html" % entry["slug"]), store.load_appraisals(entry["slug"]))
 
 
 # Monospace is for things that are literally code or the user's exact words: prompts, commands, file names. Everything else is the sans.
-BASE_CSS = r"""
-:root{--sans:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-  --bg:#dfe5e0;--panel:#f3f6f3;--panel2:#e7ece8;--ink:#121915;--muted:#4d5a54;--line:#c1ccc4;--accent:#155a63;--accent-ink:#fff;
-  --shadow:0 1px 2px rgba(18,25,21,.06),0 12px 30px rgba(18,25,21,.09);
-  --k-prompt:#2a5fa3;--k-decision:#6747a3;--k-question:#177f7c;--k-dead_end:#b0362a;--k-fix:#2a7a42;--k-artifact:#9c6c16;--k-pivot:#bf5520;--k-insight:#526270;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#0c1110;--panel:#141a18;--panel2:#1b2320;--ink:#e4ebe6;--muted:#93a39b;--line:#28332e;--accent:#5fb9c2;--accent-ink:#0c1110;
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.32);
-  --k-prompt:#79a9e8;--k-decision:#b090e8;--k-question:#52c2bc;--k-dead_end:#ee7062;--k-fix:#66c586;--k-artifact:#e2b05a;--k-pivot:#f28f5a;--k-insight:#9fb0bf;color-scheme:dark}}
+# Cool tan paper with map-ink blue in the light; warm charcoal with a tan accent in the dark. Outcome colours stay semantic.
+LIGHT = ("--bg:#d9d2c5;--panel:#f3efe8;--panel2:#e8e2d7;--ink:#1e1a15;--muted:#5e564b;--line:#c7bdad;--accent:#2f4a72;--accent-ink:#fff;"
+         "--shadow:0 1px 2px rgba(50,40,25,.07),0 12px 30px rgba(50,40,25,.10);"
+         "--k-prompt:#2f4a72;--k-question:#3f6aa3;--k-fix:#4f7d43;--k-artifact:#b08528;--k-dead_end:#b0402f;--k-pivot:#c0672a;--k-insight:#6a625a;--k-decision:#6b4d8f;color-scheme:light")
+DARK = ("--bg:#1b1916;--panel:#262320;--panel2:#302b26;--ink:#ece6db;--muted:#a89f92;--line:#403931;--accent:#d3b076;--accent-ink:#1b1916;"
+        "--shadow:0 1px 2px rgba(0,0,0,.35),0 12px 30px rgba(0,0,0,.30);"
+        "--k-prompt:#93b3e8;--k-question:#89ade0;--k-fix:#8cc07a;--k-artifact:#dfb861;--k-dead_end:#e77862;--k-pivot:#ea995f;--k-insight:#a89f93;--k-decision:#b79fdc;color-scheme:dark")
+THEME_CSS = (":root{--sans:-apple-system,BlinkMacSystemFont,\"SF Pro Text\",Inter,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif;"
+             "--mono:ui-monospace,\"SF Mono\",Menlo,Consolas,monospace;%s}\n"
+             ":root[data-theme=dark]{%s}\n@media (prefers-color-scheme:dark){:root:not([data-theme=light]){%s}}") % (LIGHT, DARK, DARK)
+# Runs in <head> so a remembered theme applies before first paint. Buttons marked data-theme-btn cycle auto -> dark -> light.
+THEME_JS = r"""(function(){var k='cartographer-theme',d=document.documentElement,t=null;try{t=localStorage.getItem(k)}catch(e){}if(t)d.dataset.theme=t;
+function label(){var c=d.dataset.theme||'auto';return c==='dark'?'\u263E Dark':c==='light'?'\u2600 Light':'\u25D0 Auto'}
+function paint(){document.querySelectorAll('[data-theme-btn]').forEach(function(b){b.textContent=label()})}
+window.setTheme=function(v){try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}if(v)d.dataset.theme=v;else delete d.dataset.theme;paint()};
+window.cycleTheme=function(){var c=d.dataset.theme||'auto';setTheme(c==='auto'?'dark':c==='dark'?'light':null)};
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[data-theme-btn]').forEach(function(b){b.onclick=cycleTheme});paint()})})();"""
+
+BASE_CSS = THEME_CSS + r"""
 *{box-sizing:border-box}[hidden],.hidden{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
 a{color:var(--accent)}
@@ -123,16 +134,16 @@ TEMPLATE = r"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__TITLE__ · Cartographer</title>
-<style>__CSS__</style></head>
+<style>__CSS__</style><script>__JS__</script></head>
 <body><div class="wrap">
-<header><div class="eyebrow">Cartographer · the story of the build</div><h1 id="title"></h1><p class="sub" id="subtitle"></p><div class="chips" id="meta"></div></header>
+<header><div class="eyebrow">Cartographer · the story of the build</div><h1 id="title"></h1><p class="sub" id="subtitle"></p><p class="sub" id="desired" hidden></p><div class="chips" id="meta"></div></header>
 <div class="tiles" id="stats"></div>
 <div class="panel">
   <div class="toolbar">
     <button class="primary" id="play">▶ Replay the build</button>
     <button class="small" id="prev" aria-label="Previous move">◀</button><button class="small" id="next" aria-label="Next move">▶</button>
     <span class="count" id="count"></span><span class="grow"></span>
-    <select id="branch" aria-label="Branch filter" hidden></select><button class="small" id="voice" hidden>Plain words</button>
+    <select id="branch" aria-label="Branch filter" hidden></select><button class="small" id="voice" hidden>Plain words</button><button class="small" data-theme-btn aria-label="Theme"></button>
   </div>
   <div class="story" id="story"></div>
 </div>
@@ -186,6 +197,7 @@ function renderStory() {
           + (k === 'you' && b.prompt ? `<blockquote>${esc(b.prompt)}</blockquote>` : '')
           + (k === 'happened' && (b.files || []).length ? `<div class="files">${b.files.map(f => `<span>${esc(f)}</span>`).join('')}</div>` : '') + '</div></div>').join('')
       + (coachingBy[b.gid] || []).map(c => `<div class="coach"><b>${esc(c.focus)} coaching</b>${esc(c.observation)}<span>${esc(c.suggestion)}</span>${c.rewrite ? `<code>${esc(c.rewrite)}</code>` : ''}</div>`).join('')
+      + ((b.evidence || []).length ? `<div class="meta" style="padding:6px 0 4px">Evidence: ${esc(b.evidence.join(' · '))}</div>` : '')
       + '</article>';
   });
   $('story').innerHTML = out;
@@ -201,6 +213,10 @@ renderStory(); renderStrip();
 const totalMin = D.sessions.reduce((n, s) => n + (s.duration_min || 0), 0), sum = k => D.sessions.reduce((n, s) => n + ((s.stats || {})[k] || 0), 0);
 $('title').textContent = D.title;
 $('subtitle').textContent = nS > 1 ? `${nS} sessions · ${[D.sessions[0].date, last.date].filter(Boolean).join(' → ')}` : (last.goal || last.date || '');
+const appr = (D.appraisals || []).at(-1), desired = (appr && appr.desired) || last.desired;
+if (appr) $('subtitle').textContent += ` · ${appr.version || ''} ${appr.result || ''}`.replace(/\s+$/, '');
+if (desired) { $('desired').hidden = false; $('desired').innerHTML = `<b>Done meant:</b> ${esc(desired)}${appr && appr.actual ? ` <span class="meta">· what happened: ${esc(appr.actual)}</span>` : ''}`; }
+else if (!appr) { $('desired').hidden = false; $('desired').innerHTML = `<span class="meta">No desired outcome declared yet, so every verdict here is provisional. <b>cartographer goal "…"</b> sets the yardstick; <b>/complete</b> appraises against it.</span>`; }
 const agents = [...new Set(D.sessions.map(s => s.agent).filter(Boolean))], langs = [...new Set(D.sessions.flatMap(s => s.languages || []))].slice(0, 8);
 $('meta').innerHTML = [proj.id ? `<span class="chip">${esc(proj.id)}</span>` : '', ...agents.map(a => `<span class="chip agent">${esc(a)}</span>`),
   ...branches.map(b => `<span class="chip">⎇ ${esc(b)}</span>`), ...langs.map(l => `<span class="chip">${esc(l)}</span>`)].join('');
@@ -251,6 +267,15 @@ if (ticks.length) show(0, false);
 function renderPlaybook() {
   const all = k => D.sessions.flatMap(s => s[k] || []), cards = [];
   const coaching = all('coaching'), prompts = all('reusable_prompts'), pats = all('patterns'), sinks = all('time_sinks'), next = last.next_steps || [];
+  const ev = i => (i && i.evidence && i.evidence.length) ? `<div class="meta">${esc(i.evidence.join(' · '))}</div>` : '';
+  const section = (h, items, f) => (items && items.length) ? `<h2 style="margin-top:16px">${h}</h2><ul>${items.map(i => `<li>${f(i)}${ev(i)}</li>`).join('')}</ul>` : '';
+  (D.appraisals || []).forEach(a => cards.push([`Appraisal · ${esc(a.version || '')} · ${esc(a.result || '')}`,
+    `<p style="margin:0 0 6px;font-size:16px"><b>${esc(a.verdict || '')}</b></p>`
+    + section('What got you there', a.got_you_there, i => `${esc(i.what)}${i.why ? `<br><small>${esc(i.why)}</small>` : ''}`)
+    + section('What cost you', a.cost_you, i => `${i.minutes != null ? `<b>${esc(i.minutes)}m</b> · ` : ''}${esc(i.what)}`)
+    + section('Carried into the result', a.carried_forward, i => `${esc(i.what)}<br><small>${esc(i.risk || '')}${i.since ? ' · since ' + esc(i.since) : ''}</small>`)
+    + section('How you prompted, and what it did', a.prompting, i => `${esc(i.pattern || i.what || '')}${i.effect ? `<br><small>${esc(i.effect)}</small>` : ''}`)
+    + section('Next time', a.next_time, i => esc(i)), true]));
   if (coaching.length) cards.push(['Coaching', `<ul>${coaching.map(c => `<li><span class="tag">${esc(c.focus)}</span>${esc(c.observation)}<br><small>${esc(c.suggestion)}</small>${c.rewrite ? `<code>${esc(c.rewrite)}</code>` : ''}</li>`).join('')}</ul>`, true]);
   if (prompts.length) cards.push(['Prompts worth reusing', `<ul>${prompts.map(p => `<li>${p.language ? `<span class="tag">${esc(p.language)}</span>` : ''}<code>${esc(p.prompt)}</code><small>${esc(p.why || '')}</small></li>`).join('')}</ul>`]);
   if (pats.length) cards.push(['How you build', `<ul>${pats.map(p => `<li>${esc(p)}</li>`).join('')}</ul>`]);

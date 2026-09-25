@@ -2,6 +2,8 @@
 
     sessions    list sessions found for every installed agent (✓ = wrapped)
     wrap        write the mapping brief for a session; --run maps it headlessly
+    goal        declare what done means for the project's current version (the yardstick)
+    complete    mark a version complete and write the appraisal brief; --run appraises headlessly
     save        validate, store and render a recap (--check only validates)
     serve       local dashboard: projects, sessions, replays, setup (this machine only)
     open        open a project's replay in the browser (default: the newest)
@@ -23,7 +25,7 @@ import sys
 from datetime import datetime
 from typing import Any, List, Optional
 
-from . import __version__, adapters, autowrap, config, hooks, render, serve, store
+from . import __version__, adapters, autowrap, config, gitinfo, hooks, recap, render, serve, store
 
 
 def _print(obj: Any) -> None:
@@ -97,6 +99,41 @@ def cmd_wrap(a) -> int:
     return 0
 
 
+def _project_arg(name: Optional[str]) -> str:
+    """An explicit project, else the repo we are standing in (registered if needed)."""
+    if name:
+        return name
+    info = gitinfo.inspect(os.getcwd(), config.load()["projects"].get("identity", "git"))
+    if info.get("id") and not store.find_project(info["id"]):
+        store.register_project(info["id"], info.get("name") or "project", info.get("root"), info.get("remote"))
+    return info.get("id") or ""
+
+
+def cmd_goal(a) -> int:
+    entry = store.find_project(_project_arg(a.project))
+    v = store.set_goal(entry["id"], a.text, a.version) if entry else None
+    if not v:
+        print("no project found; run this inside the repo or pass --project", file=sys.stderr)
+        return 1
+    print("%s %s: done means\n  %s" % (entry["name"], v["name"], v["desired"]))
+    return 0
+
+
+def cmd_complete(a) -> int:
+    res = autowrap.appraise(_project_arg(a.project), config.load(), a.version, a.result, a.actual or "", a.run, _agent_arg(a.runner))
+    if a.run:
+        _print(res)
+        return 0 if res.get("ok") else 1
+    if a.print_brief:
+        with open(res["brief"], encoding="utf-8") as fh:
+            print(fh.read())
+        return 0
+    for key, val in (("BRIEF", res["brief"]), ("RECAP_OUT", res["recap_out"]), ("PROJECT", res["project"]), ("VERSION", res["version"]),
+                     ("RESULT", res["result"]), ("DESIRED", res.get("desired") or "(never declared)"), ("SESSIONS", res["sessions"])):
+        print("%s: %s" % (key, val))
+    return 0
+
+
 def cmd_save(a) -> int:
     res = autowrap.save_recap_file(a.recap, config.load(), a.digest, a.check)
     if not res["ok"]:
@@ -105,7 +142,7 @@ def cmd_save(a) -> int:
     if a.check:
         print("ok")
         return 0
-    print("SAVED: %s" % res["saved"])
+    print("SAVED: %s%s" % (res["saved"], (" (appraisal of %s)" % res["appraisal"]) if res.get("appraisal") else ""))
     if res.get("replay"):
         print("REPLAY: %s" % res["replay"])
         print("OPEN: cartographer open %s   (or `cartographer serve --open` for the dashboard)" % (res.get("slug") or ""))
@@ -122,10 +159,15 @@ def cmd_render(a) -> int:
             return 1
         path = render.render_recaps(recaps, a.title or "All projects", a.out or os.path.join(store.REPLAYS, "all-projects.html"))
     elif a.files:
-        recaps = [store.read_json(p, {}) for p in a.files]
+        loaded = [store.read_json(p, {}) for p in a.files]
+        recaps = [r for r in loaded if not recap.is_appraisal(r)]
+        appraisals = [r for r in loaded if recap.is_appraisal(r)]
+        if not recaps:
+            print("no session maps among those files", file=sys.stderr)
+            return 1
         title = a.title or (recaps[-1].get("project") or {}).get("name") or recaps[-1].get("title") or "Replay"
         out = a.out or os.path.join(store.REPLAYS, "%s.html" % store.project_slug(title))
-        path = render.render_recaps(sorted(recaps, key=lambda r: r.get("started_at") or ""), title, out)
+        path = render.render_recaps(sorted(recaps, key=lambda r: r.get("started_at") or ""), title, out, appraisals)
     elif a.project:
         path = render.render_project(a.project, a.out)
     else:
@@ -165,6 +207,9 @@ def cmd_projects(a) -> int:
     for pid, p in sorted(reg.items(), key=lambda kv: kv[1].get("name", "")):
         n = len(store.load_recaps(p["slug"]))
         print("%-28s %-3d session%s  %s" % (p["name"], n, "" if n == 1 else "s", pid))
+        for v in p.get("versions") or []:
+            state = ("%s%s" % (v["result"], ", appraised" if v.get("appraisal") else ", not yet appraised: `cartographer complete`")) if v.get("completed_at") else "open"
+            print("    %-6s %-40s %s" % (v["name"], state, ("done means: " + v["desired"]) if v.get("desired") else "no desired outcome declared (`cartographer goal`)"))
     return 0
 
 
@@ -262,7 +307,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("sessions", help="list sessions"); s.add_argument("--agent"); s.add_argument("--cwd"); s.add_argument("--all", action="store_true"); s.add_argument("--limit", type=int, default=40); s.set_defaults(fn=cmd_sessions)
     s = sub.add_parser("wrap", help="write the mapping brief for a session"); session_args(s); s.add_argument("--project", help="project name override"); s.add_argument("--force", action="store_true", help="redo an already wrapped or very short session"); s.add_argument("--print-brief", action="store_true"); s.add_argument("--run", action="store_true", help="also map it with the agent's headless CLI"); s.add_argument("--runner", help="which agent CLI does the mapping (with --run)"); s.set_defaults(fn=cmd_wrap)
-    s = sub.add_parser("save", help="validate, store and render a recap"); s.add_argument("recap"); s.add_argument("--digest"); s.add_argument("--check", action="store_true", help="validate only"); s.add_argument("--open", action="store_true"); s.set_defaults(fn=cmd_save)
+    s = sub.add_parser("goal", help="declare what done means for the current version"); s.add_argument("text"); s.add_argument("--project"); s.add_argument("--version", dest="version", help="version name (default: the open one, or v1)"); s.set_defaults(fn=cmd_goal)
+    s = sub.add_parser("complete", help="mark a version complete and prepare the appraisal"); s.add_argument("--project"); s.add_argument("--version", dest="version"); s.add_argument("--result", choices=list(store.RESULTS), help="omit to re-prepare an already completed version"); s.add_argument("--actual", help="what actually happened, in a sentence"); s.add_argument("--run", action="store_true", help="appraise with the headless CLI"); s.add_argument("--runner"); s.add_argument("--print-brief", action="store_true"); s.set_defaults(fn=cmd_complete)
+    s = sub.add_parser("save", help="validate, store and render a recap or an appraisal"); s.add_argument("recap"); s.add_argument("--digest"); s.add_argument("--check", action="store_true", help="validate only"); s.add_argument("--open", action="store_true"); s.set_defaults(fn=cmd_save)
     s = sub.add_parser("render", help="render a replay"); s.add_argument("--project"); s.add_argument("files", nargs="*"); s.add_argument("--all", action="store_true"); s.add_argument("--out"); s.add_argument("--title"); s.add_argument("--open", action="store_true"); s.set_defaults(fn=cmd_render)
     s = sub.add_parser("serve", help="local dashboard in the browser"); s.add_argument("--port", type=int, default=8765); s.add_argument("--open", action="store_true", help="open the browser"); s.set_defaults(fn=cmd_serve)
     s = sub.add_parser("open", help="open a project's replay (default: newest)"); s.add_argument("project", nargs="?"); s.set_defaults(fn=cmd_open)

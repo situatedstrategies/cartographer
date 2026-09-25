@@ -25,8 +25,9 @@ EXAMPLE: Dict[str, Any] = {
     "project": {"id": "github.com/me/app", "name": "app", "root": "/path/to/repo", "remote": "git@github.com:me/app.git"},
     "branch": "feature/auth", "branches": ["main", "feature/auth"],
     "date": "YYYY-MM-DD", "started_at": "…", "ended_at": "…", "duration_min": 0,
-    "goal": "what you set out to do, in your own terms",
-    "outcome": "where it actually landed",
+    "desired": "the desired outcome declared for this version (copied from the project; null when none was declared)",
+    "goal": "what you set out to do this session, in your own terms",
+    "outcome": "where the session actually landed, judged against `desired` when there is one",
     "voice": "technical",
     "languages": ["typescript"], "frameworks": ["Next.js"], "files": ["src/auth.ts"],
     "tags": ["nextjs", "auth", "webapp"],
@@ -40,6 +41,7 @@ EXAMPLE: Dict[str, Any] = {
         "outcome": "worked",
         "response": "How you responded: accepted it, repaired it, went back, changed direction.",
         "mark": "decision",
+        "evidence": ["prompt #3", "error at 12.4m", "repair at 20.1m"],
         "files": ["src/auth.ts"],
         "plain": {"you": "same move in everyday words", "happened": "…", "consequence": "…", "response": "only when voice is 'both'"},
     }],
@@ -50,7 +52,21 @@ EXAMPLE: Dict[str, Any] = {
                   "rewrite": "an improved version of a real prompt from this session", "move": "m3"}],
     "next_steps": ["unfinished work, phrased so the next session can pick it up"],
 }
-DERIVED = ("agent", "session_id", "title", "started_at", "ended_at", "duration_min", "branch", "branches", "frameworks", "files", "project")
+DERIVED = ("agent", "session_id", "title", "started_at", "ended_at", "duration_min", "branch", "branches", "frameworks", "files", "project", "desired")
+PRAISE = re.compile(r"\b(?:great|excellent|brilliant|smart|impressive|nicely|beautifully|perfect(?:ly)?|well done|good job|wonderful|amazing|fantastic)\b", re.I)
+RESULTS = ("shipped", "partial", "abandoned")
+APPRAISAL_SCHEMA = "cartographer.appraisal/v1"
+APPRAISAL_EXAMPLE: Dict[str, Any] = {
+    "schema": APPRAISAL_SCHEMA,
+    "project": {"id": "github.com/me/app", "name": "app"}, "version": "v1",
+    "desired": "what done meant, as declared", "result": "shipped", "actual": "what actually shipped, as declared",
+    "verdict": "Two or three sentences: did the build reach the desired outcome, and what the record shows about why. Say 'unclear from the record' where it is.",
+    "got_you_there": [{"what": "a move or habit that produced the result", "why": "the mechanism, technically", "evidence": ["session a1b2c3d4 m4"]}],
+    "cost_you": [{"what": "a detour, a loop, a wrong turn", "minutes": 0, "evidence": ["session a1b2c3d4 m7", "pause 56m"]}],
+    "carried_forward": [{"what": "a technical implication now living in the result: a shortcut, a dependency, a missing test, a data shape", "since": "session a1b2c3d4 m9", "risk": "what it will cost later", "evidence": ["session a1b2c3d4 m9"]}],
+    "prompting": [{"pattern": "how you prompted, neutrally", "effect": "how it showed up in the outcome", "evidence": ["session a1b2c3d4 prompt #2"]}],
+    "next_time": ["one concrete change per line, tied to an item above"],
+}
 LEGACY_OUTCOME = {"dead_end": "wrong_way", "fix": "worked", "artifact": "worked", "decision": "worked", "pivot": "opened", "question": "opened", "insight": "opened"}
 
 
@@ -98,6 +114,13 @@ def validate(recap: Dict[str, Any]) -> List[str]:
             errs.append("move %s: t must be a number (minutes from start)" % mid)
         if m.get("phase") and names and m["phase"] not in names:
             errs.append("move %s: phase %r is not in phases" % (mid, m["phase"]))
+        ev = m.get("evidence")
+        if ev is not None and (not isinstance(ev, list) or not all(isinstance(x, str) and x.strip() for x in ev)):
+            errs.append("move %s: evidence must be a list of strings naming timeline items" % mid)
+        for key in ("happened", "consequence"):
+            hit = PRAISE.search(m.get(key) or "")
+            if hit:
+                errs.append("move %s: praise word %r in %s; state the implication instead" % (mid, hit.group(0), key))
     if len(moves) < 3:
         errs.append("fewer than 3 moves; a story needs at least what you set out to do, a turning point and where it landed")
     if len(moves) > 30:
@@ -178,3 +201,37 @@ def normalize(recap: Dict[str, Any], digest: Optional[Dict[str, Any]] = None) ->
         if isinstance(c, dict) and c.get("step") and not c.get("move"):
             c["move"] = c.pop("step")
     return r
+
+
+# ------------------------------------------------------------ appraisal
+
+def is_appraisal(data: Any) -> bool:
+    return isinstance(data, dict) and str(data.get("schema") or "").startswith("cartographer.appraisal")
+
+
+def validate_appraisal(a: Dict[str, Any]) -> List[str]:
+    errs: List[str] = []
+    if not isinstance(a, dict):
+        return ["appraisal must be a JSON object"]
+    if _unset("verdict", a.get("verdict")) or a.get("verdict") == APPRAISAL_EXAMPLE["verdict"]:
+        errs.append("missing verdict")
+    hit = PRAISE.search(a.get("verdict") or "")
+    if hit:
+        errs.append("verdict: praise word %r; say what the record shows instead" % hit.group(0))
+    if a.get("result") not in RESULTS:
+        errs.append("result must be one of %s" % ", ".join(RESULTS))
+    for key in ("got_you_there", "cost_you", "carried_forward", "prompting"):
+        items = a.get(key)
+        if not isinstance(items, list):
+            errs.append("missing %s (use [] when the record shows nothing)" % key)
+            continue
+        for i, it in enumerate(items):
+            if not isinstance(it, dict) or not (it.get("what") or it.get("pattern")):
+                errs.append("%s[%d]: needs `what`" % (key, i))
+            elif not (isinstance(it.get("evidence"), list) and it["evidence"]):
+                errs.append("%s[%d]: needs evidence (session ids and move ids); an item without evidence is invented" % (key, i))
+            elif key == "cost_you" and it.get("minutes") is not None and not _num(it["minutes"]):
+                errs.append("cost_you[%d]: minutes must be a number" % i)
+    if not isinstance(a.get("next_time"), list):
+        errs.append("missing next_time")
+    return errs
