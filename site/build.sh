@@ -12,6 +12,6 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$ROOT/site/www"
 mkdir -p "$OUT"
 cp "$ROOT/demo/cartographer-replay.html" "$OUT/demo.html"
-git -C "$ROOT" archive --format=tar.gz --prefix=cartographer/ -o "$OUT/cartographer.tar.gz" HEAD -- bin cartographer skills pyproject.toml README.md
-git -C "$ROOT" archive --format=zip --prefix=cartographer/ -o "$OUT/cartographer.zip" HEAD -- bin cartographer skills pyproject.toml README.md
+git -C "$ROOT" archive --format=tar.gz --prefix=cartographer/ -o "$OUT/cartographer.tar.gz" HEAD -- bin cartographer skills pyproject.toml README.md LICENSE
+git -C "$ROOT" archive --format=zip --prefix=cartographer/ -o "$OUT/cartographer.zip" HEAD -- bin cartographer skills pyproject.toml README.md LICENSE
 echo "site built in $OUT ($(du -h "$OUT/cartographer.tar.gz" | cut -f1) tarball, $(du -h "$OUT/cartographer.zip" | cut -f1) zip)"
