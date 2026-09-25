@@ -11,7 +11,14 @@ Everything for the domain that is not the CLI itself.
 ## Deploy the site (Cloudflare Pages)
 
 1. Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git → this repository, production branch `main`.
-2. Build command: `sh site/build.sh`. Build output directory: `site/www`. No framework preset, no environment variables.
+2. Build settings. The **Root directory** field decides how the other two are written; Cloudflare runs the build command inside it. Either row works, but the three fields must come from the same row:
+
+   | Root directory (advanced) | Build command | Build output directory |
+   |---|---|---|
+   | *(empty, the repository root)* | `sh site/build.sh` | `site/www` |
+   | `site` | `sh build.sh` | `www` |
+
+   Framework preset: None. No environment variables. If the log says `cannot open site/build.sh: No such file`, the root directory is set to `site` while the command still says `site/build.sh`; pick one row.
 3. Custom domain: `codecartographer.dev` (Pages → Custom domains). Cloudflare adds the DNS record.
 4. Check `https://codecartographer.dev/install.sh` and `https://codecartographer.dev/cartographer.tar.gz` both download, then run the one-liner on a clean machine.
 
