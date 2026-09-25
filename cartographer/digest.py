@@ -71,7 +71,7 @@ def build(session: Session, cfg: Optional[Dict[str, Any]] = None) -> Dict[str, A
             profiles.append(profile)
             text = e.text if eff["keep_exact_prompts"] else clip(e.text, 240)
             timeline.append({"t": t_of(e), "kind": "prompt", "n": stats["prompts"], "text": text,
-                             "read": _profile_line(profile), "pasted": bool(e.meta.get("pasted")),
+                             "read": _profile_line(profile), "pasted": bool(e.meta.get("pasted")), "mid_turn": bool(e.meta.get("mid_turn")),
                              "attached": [relpath(p, root) for p in e.meta.get("attached", [])][:6]})
         elif e.kind == REPLY:
             stats["replies"] += 1

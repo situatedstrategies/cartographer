@@ -198,6 +198,8 @@ def _timeline_line(item: Dict[str, Any]) -> str:
             extra += " [attached: %s]" % ", ".join(item["attached"])
         if item.get("pasted"):
             extra += " [pasted content]"
+        if item.get("mid_turn"):
+            extra += " [sent while the agent was still working]"
         text = item["text"].replace("\n", "\n         ")
         return "%s  PROMPT #%d%s\n         %s\n         read: %s" % (t, item["n"], extra, text, item["read"])
     if k == "reply":

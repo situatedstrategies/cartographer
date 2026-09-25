@@ -44,11 +44,14 @@ class ClaudeCodeTest(unittest.TestCase):
             {"type": "user", "isSidechain": True, "timestamp": "2026-09-01T10:03:00Z", "message": {"role": "user", "content": [{"type": "text", "text": "subagent chatter"}]}},
             {"type": "user", "timestamp": "2026-09-01T10:04:00Z", "cwd": "/repo", "gitBranch": "feature/login",
              "message": {"role": "user", "content": [{"type": "text", "text": "<command-name>/wrap</command-name><command-message>wrap</command-message><command-args></command-args>"}]}},
+            {"type": "attachment", "timestamp": "2026-09-01T10:05:00Z",
+             "rendered": [{"content": "<system-reminder>\nThe user sent a new message while you were working:\nmake it smaller\n\nThis is how Claude Code surfaces messages the user sends mid-turn.\n</system-reminder>"}]},
         ]
         path = write(os.path.join(tmp, "-repo", "abc.jsonl"), "\n".join(json.dumps(l) for l in lines))
         ad = claude_code.ClaudeCodeAdapter(projects_dir=tmp)
         s = ad.load_path(path)
-        self.assertEqual([e.kind for e in s.events], [PROMPT, REPLY, TOOL, "branch", ERROR, NOTE])
+        self.assertEqual([e.kind for e in s.events], [PROMPT, REPLY, TOOL, "branch", ERROR, NOTE, PROMPT])
+        self.assertEqual((s.events[6].text, s.events[6].meta.get("mid_turn")), ("make it smaller", True))
         self.assertEqual(s.title, "Auth work")
         self.assertEqual(s.events[0].text, "Add login to src/app.ts")
         self.assertEqual(s.events[2].files, ["/repo/src/app.ts"])

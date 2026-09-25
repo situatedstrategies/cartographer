@@ -23,6 +23,9 @@ NOISE_TAGS = ("system-reminder", "command-name", "command-message", "command-arg
               "local-command-stdout", "local-command-caveat", "ide_opened_file", "ide_selection")
 PASTED_RE = re.compile(r"<pasted_content[^>]*>(.*?)</pasted_content[^>]*>", re.S)
 COMMAND_RE = re.compile(r"<command-name>(.*?)</command-name>", re.S)
+# A message the user sends while the agent is still working is not a user turn in the transcript: Claude Code
+# hands it to the agent inside a system reminder, kept on the record under `rendered`.
+MID_TURN_RE = re.compile(r"The user sent a new message while you were working:\n(.*?)\n\nThis is how Claude Code surfaces", re.S)
 FILE_TOOLS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
 READ_TOOLS = {"Read"}
 
@@ -110,13 +113,19 @@ class ClaudeCodeAdapter(Adapter):
                 if kind == "system" and r.get("subtype") == "compact_boundary":
                     s.events.append(Event(parse_ts(r.get("timestamp")), NOTE, "context compacted"))
                     continue
-                if kind not in ("user", "assistant"):
-                    continue
                 if r.get("isSidechain"):
                     s.meta["subagent_events"] = s.meta.get("subagent_events", 0) + 1
                     continue
-                s.cwd = s.cwd or r.get("cwd")
                 ts = parse_ts(r.get("timestamp"))
+                for item in r.get("rendered") or []:  # any record type can carry one (seen on "attachment" records)
+                    for m in MID_TURN_RE.finditer(str(item.get("content") or "") if isinstance(item, dict) else ""):
+                        ev = self._prompt(ts, m.group(1))
+                        if ev:
+                            ev.meta["mid_turn"] = True
+                            s.events.append(ev)
+                if kind not in ("user", "assistant"):
+                    continue
+                s.cwd = s.cwd or r.get("cwd")
                 branch = r.get("gitBranch")
                 if branch == "HEAD":  # Claude Code writes HEAD when the folder isn't a repo
                     branch = None
