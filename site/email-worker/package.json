@@ -1,0 +1,14 @@
+{
+  "name": "codecartographer-mail",
+  "private": true,
+  "description": "Cloudflare Email Worker for codecartographer.dev: tags mail by the mailbox it was sent to and forwards it.",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^4.139.0"
+  }
+}
