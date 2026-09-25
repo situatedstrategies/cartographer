@@ -48,6 +48,9 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);color:v
 .lockup span{font:400 clamp(44px,11vw,116px)/.9 var(--serif);letter-spacing:-.02em}
 .hero h1{font-size:clamp(26px,3.6vw,38px);line-height:1.15;max-width:26ch;margin-bottom:16px}
 .home nav .brand{visibility:hidden}
+.points{list-style:none;counter-reset:pt;padding:0;margin:0 0 26px;max-width:640px;border-bottom:1px solid var(--line)}
+.points li{counter-increment:pt;display:grid;grid-template-columns:40px 1fr;align-items:baseline;padding:11px 0;border-top:1px solid var(--line);font-size:18px}
+.points li::before{content:counter(pt,decimal-leading-zero);font:500 13px var(--mono);color:var(--gold)}
 
 /* .hl: rows fade back and a dashed route draws across the one you're on */
 .hl td,.hl .item,.hl details{background:repeating-linear-gradient(90deg,var(--gold) 0 6px,transparent 6px 11px) no-repeat 0 -1px/0 2px;transition:opacity .25s ease,background-size .4s ease}
