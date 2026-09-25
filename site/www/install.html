@@ -17,30 +17,31 @@
   <div class="eyebrow">Install</div>
   <h1>Two things to install. Claude Code, then Cartographer.</h1>
   <p class="lead">Both are one line in a terminal. Cartographer downloads into a folder in your home directory and adds four commands to Claude Code. Nothing runs in the background unless you ask for it.</p>
+  <p class="meta">Works with Claude Code today. Codex and Cursor coming soon.</p>
 </header>
 
 <section>
   <h2>Step 1 · Claude Code</h2>
   <p class="sub">Skip this if you already type <kbd>claude</kbd> in a terminal. Cartographer reads the history Claude Code keeps, so Claude Code has to be there first.</p>
-  <p class="meta" style="margin:0">Mac and Linux (Terminal):</p>
+  <p class="meta">Mac and Linux (Terminal):</p>
   <div class="cmd"><span>curl -fsSL https://claude.ai/install.sh | bash</span><button onclick="navigator.clipboard.writeText('curl -fsSL https://claude.ai/install.sh | bash').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
-  <p class="meta" style="margin:0">Windows (PowerShell):</p>
+  <p class="meta">Windows (PowerShell):</p>
   <div class="cmd"><span>irm https://claude.ai/install.ps1 | iex</span><button onclick="navigator.clipboard.writeText('irm https://claude.ai/install.ps1 | iex').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
-  <p class="meta">Then open a new terminal, type <kbd>claude --version</kbd> to check it is there, go to a project folder, type <kbd>claude</kbd> and press Enter: a browser window opens to sign in (a Claude subscription or an API key). <kbd>claude doctor</kbd> checks the install; <kbd>claude update</kbd> updates it. Windows: install Git for Windows too (<kbd>winget install Git.Git</kbd>); it gives Claude Code its Bash tool and gives Cartographer Git Bash. Other ways in: <kbd>brew install --cask claude-code</kbd>, <kbd>winget install Anthropic.ClaudeCode</kbd>, or <kbd>npm install -g @anthropic-ai/claude-code</kbd> with Node 22+. The official steps live at <a href="https://code.claude.com/docs/en/setup">code.claude.com/docs</a>.</p>
+  <p class="sub">Then open a new terminal, type <kbd>claude --version</kbd> to check it is there, go to a project folder, type <kbd>claude</kbd> and press Enter: a browser window opens to sign in (a Claude subscription or an API key). <kbd>claude doctor</kbd> checks the install; <kbd>claude update</kbd> updates it. Windows: install Git for Windows too (<kbd>winget install Git.Git</kbd>); it gives Claude Code its Bash tool and gives Cartographer Git Bash. Other ways in: <kbd>brew install --cask claude-code</kbd>, <kbd>winget install Anthropic.ClaudeCode</kbd>, or <kbd>npm install -g @anthropic-ai/claude-code</kbd> with Node 22+. The official steps live at <a href="https://code.claude.com/docs/en/setup">code.claude.com/docs</a>.</p>
 </section>
 
 <section>
   <h2>Step 2 · Cartographer</h2>
-  <p class="meta" style="margin:0">Mac and Linux (Terminal):</p>
+  <p class="meta">Mac and Linux (Terminal):</p>
   <div class="cmd"><span>curl -fsSL https://codecartographer.dev/install.sh | sh</span><button onclick="navigator.clipboard.writeText('curl -fsSL https://codecartographer.dev/install.sh | sh').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
-  <p class="meta" style="margin:0">Windows (PowerShell):</p>
+  <p class="meta">Windows (PowerShell):</p>
   <div class="cmd"><span>irm https://codecartographer.dev/install.ps1 | iex</span><button onclick="navigator.clipboard.writeText('irm https://codecartographer.dev/install.ps1 | iex').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
 
   <div class="two">
-    <div class="panel">
-      <span class="tag">Plain language</span>
+    <div>
+      <div class="eyebrow">Plain language</div>
       <h3>If you don't live in a terminal</h3>
-      <ol class="steps">
+      <ol class="hl steps">
         <li><b>Open a terminal.</b> Mac: press <kbd>⌘ Space</kbd>, type <em>Terminal</em>, Enter. Windows: press the Windows key, type <em>PowerShell</em>, Enter. A window with a blinking cursor appears.</li>
         <li><b>Paste the line for your system and press Enter.</b> It prints what it is doing. Thirty seconds, no questions. If it says Python is missing: on a Mac run <kbd>xcode-select --install</kbd>; on Windows run <kbd>winget install Python.Python.3.12</kbd>; then open a new terminal and paste the line again.</li>
         <li><b>Open your dashboard.</b> Type <kbd>cartographer serve --open</kbd> and press Enter. A page opens in your browser. Only your computer can see it.</li>
@@ -49,10 +50,10 @@
         <li><b>At the end of a session, type <kbd>/wrap</kbd>.</b> Claude writes the map and tells you where the replay is. Come back to the dashboard, or type <kbd>cartographer open</kbd>, to watch it.</li>
       </ol>
     </div>
-    <div class="panel">
-      <span class="tag">Technical</span>
+    <div>
+      <div class="eyebrow">Technical</div>
       <h3>What the script does, exactly</h3>
-      <ol class="steps">
+      <ol class="hl steps">
         <li><b>Checks for <kbd>python3</kbd> 3.9+.</b> Nothing else is required. No pip, no venv, no npm.</li>
         <li><b>Downloads <kbd>cartographer.tar.gz</kbd></b> from this site (built from <kbd>main</kbd> on every deploy), falling back to <kbd>git clone</kbd>.</li>
         <li><b>Runs <kbd>bin/cartographer install --agent claude-code</kbd>.</b> That copies the checkout to <kbd>~/.cartographer/app</kbd>, symlinks <kbd>~/.local/bin/cartographer</kbd>, and copies the skills to <kbd>~/.claude/skills/</kbd> (wrap, replay, complete, cartographer-setup).</li>
@@ -67,7 +68,7 @@
 <section>
   <h2>Manual install</h2>
 <code>git clone https://github.com/situatedstrategies/cartographer && cd cartographer
-./bin/cartographer install --agent claude-code    # add --all for Codex CLI and Cursor, --auto for hooks
+./bin/cartographer install --agent claude-code    # add --auto for hooks
 cartographer config init                          # or: cartographer serve --open
 cartographer doctor                               # what is installed, where, and what it found</code>
   <h3>Update</h3>

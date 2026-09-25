@@ -23,20 +23,20 @@
   <table class="hl">
     <thead><tr><th>Command</th><th>What it does</th></tr></thead>
     <tbody>
-    <tr><td>cartographer serve --open</td><td>The dashboard in your browser, this machine only: profile, recent sessions with a <b>Map this session</b> button, projects, maps, outcomes and completion.</td></tr>
-    <tr><td>cartographer open [project]</td><td>Open a replay directly. Newest project if you name none.</td></tr>
-    <tr><td>cartographer sessions --all</td><td>Every session found for every installed agent. ✓ means already mapped.</td></tr>
-    <tr><td>cartographer wrap [--session id] [--force] [--run]</td><td>Write the brief for a session. <kbd>--run</kbd> also maps it with the agent's headless CLI, no human in the loop.</td></tr>
-    <tr><td>cartographer goal "…"</td><td>Declare what done means for the current version of the repo you are in. The source of truth for every map and the appraisal.</td></tr>
-    <tr><td>cartographer complete --result shipped|partial|abandoned --actual "…"</td><td>Close the version and write the appraisal brief. <kbd>--run</kbd> appraises headlessly.</td></tr>
-    <tr><td>cartographer save file.json [--check]</td><td>Validate, redact, file and render a map or an appraisal. <kbd>--check</kbd> only validates. This is what Claude runs at the end of <kbd>/wrap</kbd>.</td></tr>
-    <tr><td>cartographer projects</td><td>Every project with its sessions, versions, declared outcomes and appraisals.</td></tr>
-    <tr><td>cartographer render --project name [--open]</td><td>Rebuild a replay page. Also takes map and appraisal files directly.</td></tr>
-    <tr><td>cartographer backfill --cwd repo [--run]</td><td>Briefs (or, with <kbd>--run</kbd>, maps) for every past session of a repo. Retrospective maps.</td></tr>
-    <tr><td>cartographer sweep [--dry]</td><td>Map every session that has gone quiet and isn't mapped yet. For agents with no session-end event; run it on a schedule.</td></tr>
-    <tr><td>cartographer config show | set key value | init</td><td>Your profile and settings, in the terminal. <kbd>init</kbd> is the wizard.</td></tr>
-    <tr><td>cartographer install --agent claude-code|codex|cursor|all [--auto]</td><td>What the installer runs. Rerun after updating.</td></tr>
-    <tr><td>cartographer doctor</td><td>Version, home folder, mode, which agents were found and how many sessions, headless runners.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">serve</span> <span class="tok">--open</span></td><td>The dashboard in your browser, this machine only: profile, recent sessions with a <b>Map this session</b> button, projects, maps, outcomes and completion.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">open</span> <span class="tok">[project]</span></td><td>Open a replay directly. Newest project if you name none.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">sessions</span> <span class="tok">--all</span></td><td>Every session found for every installed agent. ✓ means already mapped.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">wrap</span> <span class="tok">[--session</span> <span class="tok">id]</span> <span class="tok">[--force]</span> <span class="tok">[--run]</span></td><td>Write the brief for a session. <kbd>--run</kbd> also maps it with the agent's headless CLI, no human in the loop.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">goal</span> <span class="tok">"…"</span></td><td>Declare what done means for the current version of the repo you are in. The source of truth for every map and the appraisal.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">complete</span> <span class="tok">--result</span> <span class="tok">shipped|partial|abandoned</span> <span class="tok">--actual</span> <span class="tok">"…"</span></td><td>Close the version and write the appraisal brief. <kbd>--run</kbd> appraises headlessly.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">save</span> <span class="tok">file.json</span> <span class="tok">[--check]</span></td><td>Validate, redact, file and render a map or an appraisal. <kbd>--check</kbd> only validates. This is what Claude runs at the end of <kbd>/wrap</kbd>.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">projects</span></td><td>Every project with its sessions, versions, declared outcomes and appraisals.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">render</span> <span class="tok">--project</span> <span class="tok">name</span> <span class="tok">[--open]</span></td><td>Rebuild a replay page. Also takes map and appraisal files directly.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">backfill</span> <span class="tok">--cwd</span> <span class="tok">repo</span> <span class="tok">[--run]</span></td><td>Briefs (or, with <kbd>--run</kbd>, maps) for every past session of a repo. Retrospective maps.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">sweep</span> <span class="tok">[--dry]</span></td><td>Map every session that has gone quiet and isn't mapped yet. For agents with no session-end event; run it on a schedule.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">config</span> <span class="tok">show</span> <span class="tok">|</span> <span class="tok">set</span> <span class="tok">key</span> <span class="tok">value</span> <span class="tok">|</span> <span class="tok">init</span></td><td>Your profile and settings, in the terminal. <kbd>init</kbd> is the wizard.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">install</span> <span class="tok">--agent</span> <span class="tok">claude-code|codex|cursor|all</span> <span class="tok">[--auto]</span></td><td>What the installer runs. Rerun after updating.</td></tr>
+    <tr><td><span class="tok">cartographer</span> <span class="tok">doctor</span></td><td>Version, home folder, mode, which agents were found and how many sessions, headless runners.</td></tr>
     </tbody>
   </table>
   <p class="meta">Windows: the same commands work in PowerShell, cmd and Git Bash. If <kbd>cartographer</kbd> is not found, open a new terminal so the PATH change takes effect.</p>
