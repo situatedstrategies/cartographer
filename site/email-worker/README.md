@@ -18,7 +18,7 @@ Anything sent to another name at the domain is rejected, unless `FALLBACK` is se
 4. **Route the addresses to the worker.** Email → Email Routing → Routing rules → Create address: `support` → Send to a Worker → `codecartographer-mail`. Repeat for `mapit`. Set the catch-all rule to "Send to a Worker" as well if you want the worker to handle (reject or fall back) unknown names.
 5. **Send two test mails** from another account, one to each address. Both should arrive in the inbox with the original `To:` intact and the `X-Codecartographer-*` headers added.
 
-The public site is a separate Cloudflare project (Pages, not Workers) from the same repository: see `site/README.md`. One repo, two Cloudflare projects, each pointed at its own folder.
+The public site is a separate Cloudflare Worker (`cartographer`, deployed by Workers Builds) from the same repository: see `site/README.md`. One repo, two Cloudflare projects, each pointed at its own folder.
 
 ## Labels
 

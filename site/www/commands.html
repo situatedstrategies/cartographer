@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commands · Cartographer</title>
+<meta name="description" content="Every Cartographer CLI command and what it does.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f4a72'/%3E%3Cpath d='M8 22 L14 10 L19 18 L24 12' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='12' r='2.5' fill='%23d3b076'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><i></i>Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands" class="on">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">Commands</div>
+  <h1>The same engine from a shell.</h1>
+  <p class="lead">You rarely need these if you use the Claude Code commands and the dashboard, but they are all there.</p>
+</header>
+
+<section>
+  <div class="panel">
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td>cartographer serve --open</td><td>The dashboard in your browser, this machine only: profile, recent sessions with a <b>Map this session</b> button, projects, maps, outcomes and completion.</td></tr>
+    <tr><td>cartographer open [project]</td><td>Open a replay directly. Newest project if you name none.</td></tr>
+    <tr><td>cartographer sessions --all</td><td>Every session found for every installed agent. ✓ means already mapped.</td></tr>
+    <tr><td>cartographer wrap [--session id] [--force] [--run]</td><td>Write the brief for a session. <kbd>--run</kbd> also maps it with the agent's headless CLI, no human in the loop.</td></tr>
+    <tr><td>cartographer goal "…"</td><td>Declare what done means for the current version of the repo you are in. The source of truth for every map and the appraisal.</td></tr>
+    <tr><td>cartographer complete --result shipped|partial|abandoned --actual "…"</td><td>Close the version and write the appraisal brief. <kbd>--run</kbd> appraises headlessly.</td></tr>
+    <tr><td>cartographer save file.json [--check]</td><td>Validate, redact, file and render a map or an appraisal. <kbd>--check</kbd> only validates. This is what Claude runs at the end of <kbd>/wrap</kbd>.</td></tr>
+    <tr><td>cartographer projects</td><td>Every project with its sessions, versions, declared outcomes and appraisals.</td></tr>
+    <tr><td>cartographer render --project name [--open]</td><td>Rebuild a replay page. Also takes map and appraisal files directly.</td></tr>
+    <tr><td>cartographer backfill --cwd repo [--run]</td><td>Briefs (or, with <kbd>--run</kbd>, maps) for every past session of a repo. Retrospective maps.</td></tr>
+    <tr><td>cartographer sweep [--dry]</td><td>Map every session that has gone quiet and isn't mapped yet. For agents with no session-end event; run it on a schedule.</td></tr>
+    <tr><td>cartographer config show | set key value | init</td><td>Your profile and settings, in the terminal. <kbd>init</kbd> is the wizard.</td></tr>
+    <tr><td>cartographer install --agent claude-code|codex|cursor|all [--auto]</td><td>What the installer runs. Rerun after updating.</td></tr>
+    <tr><td>cartographer doctor</td><td>Version, home folder, mode, which agents were found and how many sessions, headless runners.</td></tr>
+  </table>
+  </div>
+  <p class="meta">Windows: the same commands work in PowerShell, cmd and Git Bash. If <kbd>cartographer</kbd> is not found, open a new terminal so the PATH change takes effect.</p>
+</section>
+
+<div class="next"><a href="/claude-code">← In Claude Code</a><a href="/how-it-works">How it works →</a></div>
+<footer>
+  <span>Cartographer is made by Situated Strategies.</span>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+</footer>
+</div></body></html>

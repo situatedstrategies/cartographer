@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install · Cartographer</title>
+<meta name="description" content="Install Claude Code, then Cartographer, in one line each. Plain-language and technical steps, manual install, update, uninstall.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f4a72'/%3E%3Cpath d='M8 22 L14 10 L19 18 L24 12' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='12' r='2.5' fill='%23d3b076'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><i></i>Cartographer</a><a href="/install" class="on">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">Install</div>
+  <h1>Two things to install. Claude Code, then Cartographer.</h1>
+  <p class="lead">Both are one line in a terminal. Cartographer downloads into a folder in your home directory and adds four commands to Claude Code. Nothing runs in the background unless you ask for it.</p>
+</header>
+
+<section>
+  <h2>Step 1 · Claude Code</h2>
+  <p class="sub">Skip this if you already type <kbd>claude</kbd> in a terminal. Cartographer reads the history Claude Code keeps, so Claude Code has to be there first.</p>
+  <p class="meta" style="margin:0">Mac and Linux (Terminal):</p>
+  <div class="cmd"><span>curl -fsSL https://claude.ai/install.sh | bash</span><button onclick="navigator.clipboard.writeText('curl -fsSL https://claude.ai/install.sh | bash').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="meta" style="margin:0">Windows (PowerShell):</p>
+  <div class="cmd"><span>irm https://claude.ai/install.ps1 | iex</span><button onclick="navigator.clipboard.writeText('irm https://claude.ai/install.ps1 | iex').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="meta">Then open a new terminal, type <kbd>claude --version</kbd> to check it is there, go to a project folder, type <kbd>claude</kbd> and press Enter: a browser window opens to sign in (a Claude subscription or an API key). <kbd>claude doctor</kbd> checks the install; <kbd>claude update</kbd> updates it. Windows: install Git for Windows too (<kbd>winget install Git.Git</kbd>); it gives Claude Code its Bash tool and gives Cartographer Git Bash. Other ways in: <kbd>brew install --cask claude-code</kbd>, <kbd>winget install Anthropic.ClaudeCode</kbd>, or <kbd>npm install -g @anthropic-ai/claude-code</kbd> with Node 22+. The official steps live at <a href="https://code.claude.com/docs/en/setup">code.claude.com/docs</a>.</p>
+</section>
+
+<section>
+  <h2>Step 2 · Cartographer</h2>
+  <p class="meta" style="margin:0">Mac and Linux (Terminal):</p>
+  <div class="cmd"><span>curl -fsSL https://codecartographer.dev/install.sh | sh</span><button onclick="navigator.clipboard.writeText('curl -fsSL https://codecartographer.dev/install.sh | sh').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="meta" style="margin:0">Windows (PowerShell):</p>
+  <div class="cmd"><span>irm https://codecartographer.dev/install.ps1 | iex</span><button onclick="navigator.clipboard.writeText('irm https://codecartographer.dev/install.ps1 | iex').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+
+  <div class="two">
+    <div class="panel">
+      <span class="tag">Plain language</span>
+      <h3>If you don't live in a terminal</h3>
+      <ol class="steps">
+        <li><b>Open a terminal.</b> Mac: press <kbd>⌘ Space</kbd>, type <em>Terminal</em>, Enter. Windows: press the Windows key, type <em>PowerShell</em>, Enter. A window with a blinking cursor appears.</li>
+        <li><b>Paste the line for your system and press Enter.</b> It prints what it is doing. Thirty seconds, no questions. If it says Python is missing: on a Mac run <kbd>xcode-select --install</kbd>; on Windows run <kbd>winget install Python.Python.3.12</kbd>; then open a new terminal and paste the line again.</li>
+        <li><b>Open your dashboard.</b> Type <kbd>cartographer serve --open</kbd> and press Enter. A page opens in your browser. Only your computer can see it.</li>
+        <li><b>Answer six questions.</b> How comfortable you are with code, how experienced with prompting, what the map should sound like. This decides how Cartographer speaks to you. You can change it any time.</li>
+        <li><b>Work in Claude Code as usual.</b> Cartographer does nothing during the session.</li>
+        <li><b>At the end of a session, type <kbd>/wrap</kbd>.</b> Claude writes the map and tells you where the replay is. Come back to the dashboard, or type <kbd>cartographer open</kbd>, to watch it.</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <span class="tag">Technical</span>
+      <h3>What the script does, exactly</h3>
+      <ol class="steps">
+        <li><b>Checks for <kbd>python3</kbd> 3.9+.</b> Nothing else is required. No pip, no venv, no npm.</li>
+        <li><b>Downloads <kbd>cartographer.tar.gz</kbd></b> from this site (built from <kbd>main</kbd> on every deploy), falling back to <kbd>git clone</kbd>.</li>
+        <li><b>Runs <kbd>bin/cartographer install --agent claude-code</kbd>.</b> That copies the checkout to <kbd>~/.cartographer/app</kbd>, symlinks <kbd>~/.local/bin/cartographer</kbd>, and copies the skills to <kbd>~/.claude/skills/</kbd> (wrap, replay, complete, cartographer-setup).</li>
+        <li><b>Touches <kbd>~/.claude/settings.json</kbd> only with <kbd>--auto</kbd>,</b> adding a <kbd>SessionEnd</kbd> hook that maps each session when it ends. Default is manual.</li>
+        <li><b>Tells you if <kbd>~/.local/bin</kbd> is not on your PATH,</b> with the line to add.</li>
+        <li><b>Windows:</b> <kbd>install.ps1</kbd> does the same with <kbd>py</kbd> or <kbd>python</kbd>, unpacks <kbd>cartographer.zip</kbd>, writes <kbd>cartographer.cmd</kbd> (PowerShell, cmd) and a shim for Git Bash (which Claude Code uses) into <kbd>~\.local\bin</kbd>, and adds that folder to your user PATH. Hooks are registered as <kbd>"python.exe" "…/bin/cartographer" hook claude-code</kbd>, so they run without a Unix shell.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Manual install</h2>
+<code>git clone https://github.com/situatedstrategies/cartographer && cd cartographer
+./bin/cartographer install --agent claude-code    # add --all for Codex CLI and Cursor, --auto for hooks
+cartographer config init                          # or: cartographer serve --open
+cartographer doctor                               # what is installed, where, and what it found</code>
+  <h3>Update</h3>
+  <p class="sub">Run the install line again. It replaces <kbd>~/.cartographer/app</kbd> and the skills; your maps and config stay.</p>
+  <h3>Uninstall</h3>
+<code>rm -rf ~/.cartographer ~/.local/bin/cartographer ~/.claude/skills/{wrap,replay,complete,cartographer-setup}
+# Windows (PowerShell): Remove-Item -Recurse ~\.cartographer, ~\.local\bin\cartographer*, ~\.claude\skills\wrap, ~\.claude\skills\replay, ~\.claude\skills\complete, ~\.claude\skills\cartographer-setup
+# and, if you used --auto, remove the cartographer SessionEnd hook from ~/.claude/settings.json</code>
+  <p class="meta">Everything lives under <kbd>~/.cartographer</kbd> (or <kbd>$CARTOGRAPHER_HOME</kbd>): config, one JSON map per session, appraisals, rendered replays. Raw transcripts are never copied there. Secrets are redacted before anything is written.</p>
+</section>
+
+<div class="next"><a href="/">← Home</a><a href="/claude-code">In Claude Code →</a></div>
+<footer>
+  <span>Cartographer is made by Situated Strategies.</span>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+</footer>
+</div></body></html>
