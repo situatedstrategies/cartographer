@@ -3,96 +3,310 @@
  "agent": "claude-code",
  "session_id": "ca61170e-9218-40b1-8512-1a18ca773353",
  "title": "Naming Cartographer, then rebuilding it properly",
- "project": {"id": "local:cartographer", "name": "Cartographer", "root": null, "remote": null},
+ "project": {
+  "id": "local:cartographer",
+  "name": "Cartographer",
+  "root": null,
+  "remote": null
+ },
  "branch": null,
  "branches": [],
  "date": "2026-09-24",
  "duration_min": 106,
  "goal": "Put a fuzzy idea into words (a tool that records vibecoding sessions and maps how you build), then make it real: a concept doc and a working /wrap prototype, then a rebuild that is agent-agnostic, language-aware and configurable.",
  "outcome": "Named it Cartographer; set solo + teams tiers with the end-of-project replay as the core moment; shipped a v1 prototype in 6 minutes of build time; then rebuilt it as a package with three agent adapters, a prompt-pragmatics layer, aptitude-based config, git-repo projects with branches, auto-wrap hooks, tests and skills.",
- "voice": "technical",
- "languages": ["python", "html", "toml"],
- "frameworks": ["Claude Code skills", "SQLite"],
- "files": ["cartographer/adapters/base.py", "cartographer/adapters/claude_code.py", "cartographer/adapters/codex_cli.py", "cartographer/adapters/cursor.py", "cartographer/lang.py", "cartographer/digest.py", "cartographer/brief.py", "cartographer/recap.py", "cartographer/render.py", "cartographer/hooks.py", "cartographer/autowrap.py", "cartographer/cli.py", "skills/wrap/SKILL.md", "tests/test_cartographer.py"],
- "tags": ["devtools", "claude-code", "codex", "cursor", "python", "product-concept", "cli"],
- "stats": {"prompts": 4, "files_touched": 14},
+ "voice": "both",
+ "languages": [
+  "python",
+  "html",
+  "toml"
+ ],
+ "frameworks": [
+  "Claude Code skills",
+  "SQLite"
+ ],
+ "files": [
+  "cartographer/adapters/base.py",
+  "cartographer/adapters/claude_code.py",
+  "cartographer/adapters/codex_cli.py",
+  "cartographer/adapters/cursor.py",
+  "cartographer/lang.py",
+  "cartographer/digest.py",
+  "cartographer/brief.py",
+  "cartographer/recap.py",
+  "cartographer/render.py",
+  "cartographer/hooks.py",
+  "cartographer/autowrap.py",
+  "cartographer/cli.py",
+  "skills/wrap/SKILL.md",
+  "tests/test_cartographer.py"
+ ],
+ "tags": [
+  "devtools",
+  "claude-code",
+  "codex",
+  "cursor",
+  "python",
+  "product-concept",
+  "cli"
+ ],
+ "stats": {
+  "prompts": 4,
+  "files_touched": 14
+ },
  "phases": [
-  {"name": "Articulate", "summary": "A brain-dump becomes a framing and a pitch"},
-  {"name": "Decide", "summary": "Four product calls in one message, after a 19-minute pause"},
-  {"name": "Prototype v1", "summary": "Parser, replay page and two skills in about 6 minutes of build"},
-  {"name": "Rebuild", "summary": "Agent-agnostic package with adapters, pragmatics, config, hooks and tests"}
+  {
+   "name": "Articulate",
+   "summary": "A brain-dump becomes a framing and a pitch"
+  },
+  {
+   "name": "Decide",
+   "summary": "Four product calls in one message, after a 19-minute pause"
+  },
+  {
+   "name": "Prototype v1",
+   "summary": "Parser, replay page and two skills in about 6 minutes of build"
+  },
+  {
+   "name": "Rebuild",
+   "summary": "Agent-agnostic package with adapters, pragmatics, config, hooks and tests"
+  }
  ],
  "moves": [
-  {"id": "m1", "t": 0, "phase": "Articulate", "outcome": "partly", "mark": "insight",
+  {
+   "id": "m1",
+   "t": 0,
+   "phase": "Articulate",
+   "outcome": "partly",
+   "mark": "insight",
    "you": "You brain-dumped the idea: a connector that records AI coding sessions and maps how you work over time, and asked for help putting it into words.",
    "prompt": "OKAY. i have an app idea, designed for the future of vibecoding. It's a connector to your AI agent that records and analyzes your workflow in the CLI or agent itself… im having trouble aritculating this. help me.",
    "happened": "The agent framed it as a flight recorder for vibecoding: git records what changed, chat logs record everything, nothing records how you thought. It proposed that the magic moment was surfacing an old playbook when a new project starts, and closed with three questions: who is it for, private or social, and what is the killer moment.",
    "consequence": "The framing stuck and became the product's one-line thesis. The proposed magic moment missed.",
-   "response": "You stepped away for nineteen minutes, then answered all three questions in one message and corrected the moment."},
-  {"id": "m2", "t": 19.6, "phase": "Decide", "outcome": "worked", "mark": "decision",
+   "response": "You stepped away for nineteen minutes, then answered all three questions in one message and corrected the moment.",
+   "plain": {
+    "you": "You told the agent your idea in a rush: something that sits next to an AI coding tool, records the session, and shows you how you work over time. You asked for help saying it clearly.",
+    "happened": "The agent gave it a shape: git keeps what changed, chat logs keep everything, nothing keeps how you thought. It suggested the best moment would be seeing an old playbook when you start something new, and asked three questions: who is it for, private or shared, and what is the one moment that sells it.",
+    "consequence": "That one-line shape stuck and became the product's pitch. The suggested best moment turned out to be wrong.",
+    "response": "You went away for nineteen minutes, then answered all three questions in one message and corrected the moment."
+   }
+  },
+  {
+   "id": "m2",
+   "t": 19.6,
+   "phase": "Decide",
+   "outcome": "worked",
+   "mark": "decision",
    "you": "You made four decisions at once: two editions (solo and teams), social as an option, the killer moment is the end-of-project replay, and the name is Cartographer. You asked for a concept doc and a /wrap prototype.",
    "prompt": "I want to make two versions- solo and teams. You have the option to make it social- we'd need a database backend for that. What do you mean by killer moment? The killer moment is the replay- when you get to see your workflow at the end of the project version. I want a concept doc AND a /wrap protoype. Cartographer is a good name.",
    "happened": "The agent reordered the whole build around the replay: replay page first, profile later. The name gave the doc and the page one identity.",
    "consequence": "One message set the direction for everything that followed, and the agent could start building immediately.",
-   "response": "You let it look before it built."},
-  {"id": "m3", "t": 19.9, "phase": "Prototype v1", "outcome": "opened", "mark": "question",
+   "response": "You let it look before it built.",
+   "plain": {
+    "you": "You made four calls at once: a solo edition and a team edition, sharing as an option, the big moment is replaying a finished project, and the name is Cartographer. You asked for a concept document and a first version of /wrap.",
+    "happened": "The agent reordered the whole build around the replay: the replay page first, your profile later. The name gave the document and the page one identity.",
+    "consequence": "One message set the direction for everything that followed, and the agent could start building right away.",
+    "response": "You let it look around before it built."
+   }
+  },
+  {
+   "id": "m3",
+   "t": 19.9,
+   "phase": "Prototype v1",
+   "outcome": "opened",
+   "mark": "question",
    "you": "You let the agent inspect what already existed before writing anything.",
    "happened": "It read Claude Code's transcript format: one JSONL file per session under ~/.claude/projects, with prompts, replies, tool calls, git branch and timestamps.",
    "consequence": "Capture needed no new infrastructure. The tool could read history the agent already keeps.",
-   "response": "Nothing to correct; you waited while it built."},
-  {"id": "m4", "t": 21.1, "phase": "Prototype v1", "outcome": "worked", "mark": "artifact",
+   "response": "Nothing to correct; you waited while it built.",
+   "plain": {
+    "you": "You let the agent look at what already existed before writing anything.",
+    "happened": "It read how Claude Code stores a session: one file per session in a hidden folder, holding your prompts, the replies, the tools it ran, the git branch and the times.",
+    "consequence": "Nothing new had to be recorded. The tool could read history that was already there.",
+    "response": "Nothing to correct; you waited while it built."
+   }
+  },
+  {
+   "id": "m4",
+   "t": 21.1,
+   "phase": "Prototype v1",
+   "outcome": "worked",
+   "mark": "artifact",
    "you": "You waited while it built the first version.",
    "happened": "In under four minutes the agent wrote a transcript compressor, an animated replay page and two skills, /wrap and /replay, and tested them on this very session.",
-   "files": ["skills/wrap/scripts/digest.py", "skills/wrap/scripts/render.py", "skills/wrap/SKILL.md", "skills/replay/SKILL.md"],
+   "files": [
+    "skills/wrap/scripts/digest.py",
+    "skills/wrap/scripts/render.py",
+    "skills/wrap/SKILL.md",
+    "skills/replay/SKILL.md"
+   ],
    "consequence": "A working prototype existed twenty-one minutes into the session.",
-   "response": "You asked to see it."},
-  {"id": "m5", "t": 23.4, "phase": "Prototype v1", "outcome": "broke", "mark": "dead_end",
+   "response": "You asked to see it.",
+   "plain": {
+    "you": "You waited while it built the first version.",
+    "happened": "In under four minutes the agent wrote a reader for the session file, an animated replay page and two commands, /wrap and /replay, and tried them on this very session.",
+    "consequence": "A working first version existed twenty-one minutes into the session.",
+    "response": "You asked to see it."
+   }
+  },
+  {
+   "id": "m5",
+   "t": 23.4,
+   "phase": "Prototype v1",
+   "outcome": "broke",
+   "mark": "dead_end",
    "you": "You tried to preview the replay in the browser pane.",
    "happened": "The pane refused the file:// URL.",
    "consequence": "Not a code bug but a tooling constraint; the page itself was fine.",
-   "response": "You took the workaround the agent offered: serve it over localhost."},
-  {"id": "m6", "t": 23.4, "phase": "Prototype v1", "outcome": "worked", "mark": "fix",
+   "response": "You took the workaround the agent offered: serve it over localhost.",
+   "plain": {
+    "you": "You tried to open the replay in the built-in browser pane.",
+    "happened": "The pane refused to open a file straight from disk.",
+    "consequence": "Not a bug in the page but a limit of the tool; the page itself was fine.",
+    "response": "You took the way around that the agent offered: serve the page from a tiny local web server."
+   }
+  },
+  {
+   "id": "m6",
+   "t": 23.4,
+   "phase": "Prototype v1",
+   "outcome": "worked",
+   "mark": "fix",
    "you": "You accepted the localhost workaround.",
    "happened": "The agent added .claude/launch.json with a python http.server entry. Playback and the playbook section then verified in the browser.",
    "consequence": "Preview unblocked, and the same trick now serves every demo.",
-   "response": "You moved on to the concept doc."},
-  {"id": "m7", "t": 24.0, "phase": "Prototype v1", "outcome": "worked", "mark": "artifact",
+   "response": "You moved on to the concept doc.",
+   "plain": {
+    "you": "You accepted the local-server workaround.",
+    "happened": "The agent added a small launch setting that starts a local web server. The playback and the playbook section then checked out in the browser.",
+    "consequence": "Preview unblocked, and the same trick now serves every demo.",
+    "response": "You moved on to the concept document."
+   }
+  },
+  {
+   "id": "m7",
+   "t": 24.0,
+   "phase": "Prototype v1",
+   "outcome": "worked",
+   "mark": "artifact",
    "you": "You wanted the story alongside the thing: the concept doc.",
    "happened": "The agent published the doc as an artifact with a survey-map identity and retrofitted its palette onto the replay page.",
    "consequence": "Doc and product read as one thing.",
-   "response": "You left for fifty-six minutes and came back with a much bigger ask."},
-  {"id": "m8", "t": 82.1, "phase": "Rebuild", "outcome": "opened", "mark": "pivot",
+   "response": "You left for fifty-six minutes and came back with a much bigger ask.",
+   "plain": {
+    "you": "You wanted the story alongside the thing: the concept document.",
+    "happened": "The agent published the document as a page with a survey-map look and gave the replay page the same colours.",
+    "consequence": "Document and product read as one thing.",
+    "response": "You left for fifty-six minutes and came back with a much bigger ask."
+   }
+  },
+  {
+   "id": "m8",
+   "t": 82.1,
+   "phase": "Rebuild",
+   "outcome": "opened",
+   "mark": "pivot",
    "you": "You asked for a rebuild: agent-agnostic, built for the three most popular coding agents, language-aware prompt pragmatics, retrospective maps, manual or auto wrap, aptitude-based feedback, projects as git repos with branches, and a pricing sketch.",
    "prompt": "Rebuild this using Fable. I want the code written advanced enough to capture nuances regardless of the model used to do the coding. Basically, agent agnostic for creating the map but should be built for the three most popular coding agents…",
    "happened": "The agent first checked the machine: Python 3.9.6 and only Claude Code history on disk. It set two constraints for itself, write to 3.9 and cover Codex and Cursor with synthetic fixtures, and started.",
    "consequence": "Eight capabilities and one quality constraint but no done-condition, so the agent chose the architecture.",
-   "response": "You raised the effort level and asked for a restart."},
-  {"id": "m9", "t": 84.5, "phase": "Rebuild", "outcome": "worked", "mark": "decision",
+   "response": "You raised the effort level and asked for a restart.",
+   "plain": {
+    "you": "You asked for a rebuild: work with any coding agent, cover the three most popular ones, read prompts in the language of the code, map old sessions too, wrap by hand or automatically, adjust feedback to your level, treat projects as git repositories with branches, and sketch pricing.",
+    "happened": "The agent first checked the machine: an older Python and only Claude Code history on it. It set two rules for itself, write for that older Python and cover the other two agents with made-up sample data, and started.",
+    "consequence": "Eight things to build and one quality rule, but nothing that said what done looks like, so the agent picked the overall design itself.",
+    "response": "You turned up the effort level and asked for a restart."
+   }
+  },
+  {
+   "id": "m9",
+   "t": 84.5,
+   "phase": "Rebuild",
+   "outcome": "worked",
+   "mark": "decision",
    "you": "You restarted at a higher effort level.",
    "prompt": "restart with the effort level changed",
    "happened": "The folder had already been reset, so the rebuild proceeded from a clean layout. The agent chose a common event model with one adapter per agent, and a Markdown brief any agent can follow, so the mapping is not tied to Claude.",
-   "files": ["cartographer/adapters/base.py", "cartographer/adapters/claude_code.py", "cartographer/adapters/codex_cli.py", "cartographer/adapters/cursor.py", "cartographer/brief.py"],
+   "files": [
+    "cartographer/adapters/base.py",
+    "cartographer/adapters/claude_code.py",
+    "cartographer/adapters/codex_cli.py",
+    "cartographer/adapters/cursor.py",
+    "cartographer/brief.py"
+   ],
    "consequence": "Adding an agent became one file, and the same brief now serves Claude Code, Codex and Cursor.",
-   "response": "You let it run without interrupting."},
-  {"id": "m10", "t": 90.0, "phase": "Rebuild", "outcome": "worked", "mark": "artifact",
+   "response": "You let it run without interrupting.",
+   "plain": {
+    "you": "You restarted at a higher effort level.",
+    "happened": "The folder had already been cleared, so the rebuild started clean. The agent chose one shared shape for events with one reader per agent, and a written brief any agent can follow, so the mapping is not tied to Claude.",
+    "consequence": "Adding an agent became one file, and the same brief now serves Claude Code, Codex and Cursor.",
+    "response": "You let it run without interrupting."
+   }
+  },
+  {
+   "id": "m10",
+   "t": 90.0,
+   "phase": "Rebuild",
+   "outcome": "worked",
+   "mark": "artifact",
    "you": "No prompt from you here; the agent was still working through your rebuild request.",
    "happened": "It wrote the language layer: language and framework detection from files, pasted code and mentions, plus a reading of every prompt (act, anchoring, specificity, vagueness, delegation, scope) with coaching signals and a standing note per language.",
-   "files": ["cartographer/lang.py"],
+   "files": [
+    "cartographer/lang.py"
+   ],
    "consequence": "The prompt-pragmatics layer became the part of the product no other tool has.",
-   "response": "The agent went on to test the whole thing on the live session."},
-  {"id": "m11", "t": 100.3, "phase": "Rebuild", "outcome": "broke", "mark": "dead_end",
+   "response": "The agent went on to test the whole thing on the live session.",
+   "plain": {
+    "you": "No prompt from you here; the agent was still working through your rebuild request.",
+    "happened": "It wrote the language layer: spotting which languages and frameworks are involved from files, pasted code and mentions, plus a reading of every prompt (what it asks for, what it points at, how specific it is, how vague, how much it hands over, how big), with coaching hints and a standing note per language.",
+    "consequence": "The prompt-reading layer became the part of the product no other tool has.",
+    "response": "The agent went on to test the whole thing on the live session."
+   }
+  },
+  {
+   "id": "m11",
+   "t": 100.3,
+   "phase": "Rebuild",
+   "outcome": "broke",
+   "mark": "dead_end",
    "you": "Still no prompt from you; the agent smoke-tested the generated brief on this session.",
    "happened": "Three misreads surfaced: Claude Code writes HEAD as the branch when the folder is not a repo, prompt #3 was read as 'config' because of generic words like 'version', and one test failed because 'make it look nicer… you decide the colors' scored as build.",
    "consequence": "Three real bugs found by dogfooding before you ever saw them.",
-   "response": "The agent fixed all three: HEAD means no repo, intent matching became stem-tolerant, and ties break away from build. 12 of 12 tests passed."},
-  {"id": "m12", "t": 106.0, "phase": "Rebuild", "outcome": "worked", "mark": "artifact",
+   "response": "The agent fixed all three: HEAD means no repo, intent matching became stem-tolerant, and ties break away from build. 12 of 12 tests passed.",
+   "plain": {
+    "you": "Still no prompt from you; the agent tried the generated brief on this session.",
+    "happened": "Three misreads showed up: Claude Code writes HEAD as the branch when the folder is not a git repository, prompt three was read as a settings change because of generic words like 'version', and one test failed because 'make it look nicer… you decide the colors' counted as a build request.",
+    "consequence": "Three real bugs found by using the tool on itself before you ever saw them.",
+    "response": "The agent fixed all three: HEAD means no repository, word matching now tolerates endings, and ties no longer default to build. 12 of 12 tests passed."
+   }
+  },
+  {
+   "id": "m12",
+   "t": 106.0,
+   "phase": "Rebuild",
+   "outcome": "worked",
+   "mark": "artifact",
    "you": "You wrapped the session with the rebuilt tool.",
    "happened": "This map was written by following the generated brief and saved with cartographer save.",
-   "consequence": "The product mapped its own making."}
+   "consequence": "The product mapped its own making.",
+   "plain": {
+    "you": "You wrapped the session with the rebuilt tool.",
+    "happened": "This map was written by following the generated brief and saved with the save command.",
+    "consequence": "The product mapped its own making."
+   }
+  }
  ],
  "reusable_prompts": [
-  {"prompt": "I have an idea for <thing>. I'm having trouble articulating it. Help me.", "why": "Returns a framing, a structure, pitch variants and the questions that sharpen the idea.", "language": null},
-  {"prompt": "Rebuild <thing> so that it is <property 1>, <property 2>, <property 3>. It must support <A>, <B>, <C>. A <unit of work> is <definition>.", "why": "Batching every requirement into one message let the agent design the architecture once instead of iterating; the cost is that the agent picks the architecture.", "language": "python"}
+  {
+   "prompt": "I have an idea for <thing>. I'm having trouble articulating it. Help me.",
+   "why": "Returns a framing, a structure, pitch variants and the questions that sharpen the idea.",
+   "language": null
+  },
+  {
+   "prompt": "Rebuild <thing> so that it is <property 1>, <property 2>, <property 3>. It must support <A>, <B>, <C>. A <unit of work> is <definition>.",
+   "why": "Batching every requirement into one message let the agent design the architecture once instead of iterating; the cost is that the agent picks the architecture.",
+   "language": "python"
+  }
  ],
  "patterns": [
   "Starts from a messy brain-dump and lets the agent find the words, then corrects the framing.",
@@ -102,14 +316,39 @@
   "Raises scope sharply after seeing a first version work, and sets quality constraints ('advanced enough to capture nuances') without done-conditions."
  ],
  "time_sinks": [
-  {"what": "Thinking pause between pitch and decisions (productive)", "minutes": 19},
-  {"what": "Pause between v1 delivery and the rebuild request", "minutes": 56},
-  {"what": "Writing the rebuild: adapters, lang, digest, brief, render, hooks, cli, tests", "minutes": 20}
+  {
+   "what": "Thinking pause between pitch and decisions (productive)",
+   "minutes": 19
+  },
+  {
+   "what": "Pause between v1 delivery and the rebuild request",
+   "minutes": 56
+  },
+  {
+   "what": "Writing the rebuild: adapters, lang, digest, brief, render, hooks, cli, tests",
+   "minutes": 20
+  }
  ],
  "coaching": [
-  {"focus": "prompt", "move": "m8", "observation": "The rebuild prompt listed eight capabilities but no done-condition, so 'done' was whatever the agent decided to ship.", "suggestion": "Add one acceptance line per capability you care most about; it becomes the test list.", "rewrite": "Rebuild this as an agent-agnostic package. Done means: (1) `cartographer wrap` works on a Claude Code, Codex and Cursor session, (2) the brief includes a per-prompt reading and language notes, (3) config switches voice and feedback by aptitude, (4) projects are git repos with branches shown in the replay, (5) tests pass on Python 3.9."},
-  {"focus": "workflow", "move": "m2", "observation": "Batching four decisions after a pause worked well: the agent could start building immediately.", "suggestion": "Keep doing this; when you batch, also say which item matters most so the agent can order the work."},
-  {"focus": "code", "move": "m9", "observation": "The Codex and Cursor adapters are written from format knowledge and synthetic fixtures, not real data.", "suggestion": "Before relying on them, run `cartographer sessions --agent codex` on a machine with Codex history and fix whatever the adapter misses; the formats shift between releases."}
+  {
+   "focus": "prompt",
+   "move": "m8",
+   "observation": "The rebuild prompt listed eight capabilities but no done-condition, so 'done' was whatever the agent decided to ship.",
+   "suggestion": "Add one acceptance line per capability you care most about; it becomes the test list.",
+   "rewrite": "Rebuild this as an agent-agnostic package. Done means: (1) `cartographer wrap` works on a Claude Code, Codex and Cursor session, (2) the brief includes a per-prompt reading and language notes, (3) config switches voice and feedback by aptitude, (4) projects are git repos with branches shown in the replay, (5) tests pass on Python 3.9."
+  },
+  {
+   "focus": "workflow",
+   "move": "m2",
+   "observation": "Batching four decisions after a pause worked well: the agent could start building immediately.",
+   "suggestion": "Keep doing this; when you batch, also say which item matters most so the agent can order the work."
+  },
+  {
+   "focus": "code",
+   "move": "m9",
+   "observation": "The Codex and Cursor adapters are written from format knowledge and synthetic fixtures, not real data.",
+   "suggestion": "Before relying on them, run `cartographer sessions --agent codex` on a machine with Codex history and fix whatever the adapter misses; the formats shift between releases."
+  }
  ],
  "next_steps": [
   "Move the checkout into the new repo and run `./bin/cartographer install --agent all`.",

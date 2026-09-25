@@ -31,7 +31,7 @@ DEFAULTS: Dict[str, Any] = {
         "focus": "auto",           # prompts | code | both | auto
         "max_items": 4,
     },
-    "voice": "auto",               # plain | technical | both | auto
+    "voice": "auto",               # plain | native | both | auto
     "privacy": {
         "keep_exact_prompts": True,
         "redact_secrets": True,
@@ -49,7 +49,7 @@ ENUMS = {
     "wrap.mode": ("manual", "auto"),
     "profile.coding": LEVELS, "profile.prompting": LEVELS,
     "feedback.focus": ("prompts", "code", "both", "auto"),
-    "voice": ("plain", "technical", "both", "auto"),
+    "voice": ("plain", "native", "both", "auto"),
     "projects.identity": ("git", "folder"),
 }
 
@@ -108,6 +108,8 @@ def coerce(raw: str) -> Any:
 
 def set_value(cfg: Dict[str, Any], dotted: str, raw: str) -> Any:
     value = coerce(raw) if isinstance(raw, str) else raw
+    if dotted == "voice" and value == "technical":
+        value = "native"   # the old name for the native voice
     if dotted in ENUMS and value not in ENUMS[dotted]:
         raise ValueError("%s must be one of: %s" % (dotted, ", ".join(str(v).lower() for v in ENUMS[dotted])))
     parts = dotted.split(".")
@@ -126,7 +128,7 @@ def effective(cfg: Dict[str, Any]) -> Dict[str, Any]:
     prompting = cfg["profile"]["prompting"]
     voice = cfg["voice"]
     if voice == "auto":
-        voice = "plain" if coding == "new" else "technical"
+        voice = "plain" if coding == "new" else "native"
     focus = cfg["feedback"]["focus"]
     if focus == "auto":
         if prompting == "new" and coding != "advanced":
@@ -162,7 +164,7 @@ HELP = {
     "profile.coding": "new: maps in everyday words and feedback that explains what the code did. advanced: code-level feedback with files cited.",
     "profile.prompting": "new: concrete rewrites of your real prompts. advanced: prompt-architecture feedback tied to your numbers.",
     "feedback.focus": "prompts, code, both, or auto, which picks from the two answers above.",
-    "voice": "plain = everyday words, technical = code terms, both = a toggle on every map, auto follows your coding level.",
+    "voice": "plain = everyday words, native = the words of the code (files, functions, errors), both = a toggle on every map, auto follows your coding level.",
     "wrap.mode": "manual: type /wrap at the end of a session. auto: a hook maps each Claude Code session when it ends.",
     "privacy.keep_exact_prompts": "false paraphrases your prompts in the map; the reading of them still works.",
 }

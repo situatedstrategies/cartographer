@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>In Claude Code · Cartographer</title>
+<meta name="description" content="The four Cartographer commands inside Claude Code: /wrap, /replay, /complete, /cartographer-setup, and what a session looks like.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f4a72'/%3E%3Cpath d='M8 22 L14 10 L19 18 L24 12' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='12' r='2.5' fill='%23d3b076'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><i></i>Cartographer</a><a href="/install">Install</a><a href="/claude-code" class="on">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">In Claude Code</div>
+  <h1>Four commands. Claude does the reading.</h1>
+  <p class="lead">Each one runs the CLI, hands Claude a brief, and lets Claude write. The map is written by the agent that was in the room, which is why it knows what you meant.</p>
+</header>
+
+<section>
+  <div class="grid">
+    <div class="card"><h3>/wrap</h3><p>At the end of a session. Cartographer digests the transcript into a timeline with a reading of every prompt, writes a brief tuned to your profile and the languages you used, and Claude writes the map: chapters, then moves (what you did, what happened, what it meant, how you responded), each citing its evidence. Then it files the map under the git repo you were in and renders the replay.</p><p class="meta"><kbd>/wrap myproject</kbd> names the project · <kbd>/wrap --session &lt;id&gt;</kbd> maps an older session · <kbd>--force</kbd> redoes one</p></div>
+    <div class="card"><h3>/replay</h3><p>The story of every wrapped session of a project, across branches, told one move at a time, with the playbook underneath: coaching, prompts worth reusing, how you build, where time went. <kbd>/replay myproject</kbd>, or just <kbd>/replay</kbd> to pick.</p></div>
+    <div class="card"><h3>/complete</h3><p>When a version is done. Claude asks what "done" meant, in your words, if you never declared it, then the result (shipped, partial, abandoned) and what actually happened. Then it writes the appraisal: what got you there, what cost you and how many minutes, what was carried into the result and what it will cost later, how you prompted and what it did. Every item cites session and move ids; praise words are rejected.</p></div>
+    <div class="card"><h3>/cartographer-setup</h3><p>Change your profile in conversation, switch manual and automatic wrapping, or backfill maps of old sessions. <kbd>/cartographer-setup backfill</kbd> lists past sessions and maps the ones you pick.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>What a session looks like</h2>
+  <ol class="steps">
+    <li><b>Before you start (optional, recommended):</b> <kbd>cartographer goal "what done means for this version"</kbd> in the repo. This is the yardstick every map is judged against.</li>
+    <li><b>Build as usual.</b> Prompts, corrections, dead ends, fixes. Cartographer is not running.</li>
+    <li><b><kbd>/wrap</kbd> at the end.</b> Claude reads the brief, writes the map, saves it, and gives you the trailer: one line on what happened, three to five beats, one observation about how you build, coaching if you turned it on, and the replay path.</li>
+    <li><b>Repeat across sessions.</b> Each one lands in the same project; the replay stitches them into one story.</li>
+    <li><b><kbd>/complete</kbd> when the version ships.</b> The honest reading of the whole build against what you wanted.</li>
+  </ol>
+  <p class="meta">Codex CLI and Cursor: install with <kbd>--all</kbd> and say "wrap up this session with cartographer". Their adapters follow the documented formats but have not yet been verified on real history; expect rough edges.</p>
+</section>
+
+<div class="next"><a href="/install">← Install</a><a href="/commands">Commands →</a></div>
+<footer>
+  <span>Cartographer is made by Situated Strategies.</span>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+</footer>
+</div></body></html>

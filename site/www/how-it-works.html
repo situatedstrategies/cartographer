@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works · Cartographer</title>
+<meta name="description" content="How Cartographer reads session history, reads every prompt, briefs the agent and judges the build against a yardstick.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f4a72'/%3E%3Cpath d='M8 22 L14 10 L19 18 L24 12' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='12' r='2.5' fill='%23d3b076'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><i></i>Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works" class="on">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">How it works</div>
+  <h1>Read what exists, read every prompt, hand the agent a brief, judge against a yardstick.</h1>
+</header>
+
+<section>
+  <div class="grid">
+    <div class="card"><h3>Reads what already exists</h3><p>Claude Code keeps one file per session. An adapter turns it into a plain stream of events: prompts, replies, tools, errors, branch changes. No capture, no plugin in the loop, no cloud.</p></div>
+    <div class="card"><h3>Reads every prompt</h3><p>What act it performs (build, fix, repair, accept, ask), what it anchors to (files, symbols, errors, pasted code), how it is said (imperative, question, hedged, delegated). A turn that starts with "no, I meant…" marks the previous move as having gone wrong for you, even if the code ran.</p></div>
+    <div class="card"><h3>Hands the agent a brief</h3><p>Facts, your profile, what Cartographer knows about the languages you used, the reading of each prompt, the rules, the timeline. The agent that was in the session writes the map. Any agent can follow the same brief.</p></div>
+    <div class="card"><h3>Judges against a yardstick</h3><p>Session maps are provisional. The outcome you wanted is only known when a version is done, so <kbd>/complete</kbd> is where the verdict lives. Every move and every appraisal item must cite its evidence in the record; praise words are rejected on save.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>The shape of a map</h2>
+  <p class="sub">A session map is a list of moves. Each move has the same five parts, in your words or in code terms depending on your profile.</p>
+  <div class="panel">
+  <table>
+    <tr><th>Part</th><th>Answers</th></tr>
+    <tr><td>you</td><td>What you did: the prompt, the correction, the decision, the pause.</td></tr>
+    <tr><td>happened</td><td>What the agent did with it and what the tools returned.</td></tr>
+    <tr><td>consequence</td><td>What that meant technically: the file that changed shape, the test that now passes, the assumption that got baked in.</td></tr>
+    <tr><td>outcome</td><td>worked · partly · broke · wrong way · opened a question. Judged from the record, not from tone.</td></tr>
+    <tr><td>response</td><td>How you responded next, and whether it repaired, accepted or moved on.</td></tr>
+  </table>
+  </div>
+  <p class="meta">Moves are grouped into chapters. Marks call out decisions, questions, dead ends, fixes, artifacts, pivots and insights. The replay plays them in order; the appraisal reads them against the yardstick.</p>
+</section>
+
+<div class="next"><a href="/commands">← Commands</a><a href="/questions">Questions →</a></div>
+<footer>
+  <span>Cartographer is made by Situated Strategies.</span>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+</footer>
+</div></body></html>

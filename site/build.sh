@@ -4,7 +4,8 @@
 #   cartographer.tar.gz  the current checkout (bin, package, skills), which install.sh downloads
 #   cartographer.zip     the same, for install.ps1 on Windows
 #
-# Cloudflare Pages settings: build command `sh site/build.sh`, output directory `site/www`.
+# Cloudflare Workers Builds settings: root directory `site`, build command `sh build.sh`, deploy `npx wrangler deploy`.
+# (Pages: build command `sh site/build.sh`, output directory `site/www`.)
 # Locally: `sh site/build.sh && python3 -m http.server -d site/www 8080`, then open http://localhost:8080/.
 set -eu
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

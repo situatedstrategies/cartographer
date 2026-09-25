@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questions · Cartographer</title>
+<meta name="description" content="Privacy, Windows, .pkg, updating, old sessions, and what honest means mechanically.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f4a72'/%3E%3Cpath d='M8 22 L14 10 L19 18 L24 12' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='12' r='2.5' fill='%23d3b076'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><i></i>Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions" class="on">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">Questions</div>
+  <h1>The things people ask first.</h1>
+</header>
+
+<section>
+  <details open><summary>Does anything leave my machine?</summary><p>No. Maps, config and replays live in <kbd>~/.cartographer</kbd>. The dashboard binds to 127.0.0.1 and refuses requests from anywhere else. The only network call is the installer downloading Cartographer. Team sharing, when it comes, will be a choice you make, not a default.</p></details>
+  <details><summary>Is there a Mac installer (.pkg)?</summary><p>Not yet. A signed and notarised package is on the list. The one-line installer does the same thing on Mac and Linux without needing Apple's signing, and it is what we test.</p></details>
+  <details><summary>Windows?</summary><p>Yes, natively: the PowerShell line on the <a href="/install">Install</a> page. It needs Python 3.9+ (<kbd>winget install Python.Python.3.12</kbd>) and Claude Code, which brings Git Bash with it. The Windows path is new and has had less real-world use than Mac and Linux; if anything breaks, <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a> with the output of the installer is enough to fix it. WSL works as well.</p></details>
+  <details><summary>Can I map sessions from before I installed it?</summary><p>Yes. <kbd>/cartographer-setup backfill</kbd> or <kbd>cartographer backfill --cwd &lt;repo&gt;</kbd> prepares a brief for every past session Claude Code still has on disk.</p></details>
+  <details><summary>What does "honest" mean here, mechanically?</summary><p>Three enforced rules. Every move lists the timeline items it rests on. "What it meant" has to name the technical implication, not an adjective. Saving rejects praise words in the map and the appraisal. And the verdict waits for completion, because a session cannot judge itself.</p></details>
+  <details><summary>How do I update?</summary><p>Run the install line again. It replaces <kbd>~/.cartographer/app</kbd> and the skills; your maps and config stay.</p></details>
+  <details><summary>Which agents?</summary><p>Claude Code is what we polish and test. Codex CLI and Cursor adapters exist, follow the documented formats, and are installed with <kbd>--all</kbd>; they have not yet been checked against real history.</p></details>
+  <details><summary>Something broke. Where do I write?</summary><p><a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a> with what you typed and what came back. Maps you'd like to show us, or thoughts on the maps you got: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>.</p></details>
+</section>
+
+<div class="next"><a href="/how-it-works">← How it works</a><a href="/demo.html" target="_blank" rel="noopener">See a map ↗</a></div>
+<footer>
+  <span>Cartographer is made by Situated Strategies.</span>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+</footer>
+</div></body></html>
