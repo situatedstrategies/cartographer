@@ -1,6 +1,6 @@
 ---
 name: cartographer-setup
-description: Configure Cartographer — aptitude profile (coding and prompting level), feedback focus, map voice (plain or technical), manual vs automatic wrap, exact-prompt retention, and retrospective backfill of past sessions. Use when the user asks to set up, configure or tune Cartographer, or wants maps of old sessions.
+description: Configure Cartographer — aptitude profile (coding and prompting level), feedback focus, map voice (plain or native), manual vs automatic wrap, exact-prompt retention, and retrospective backfill of past sessions. Use when the user asks to set up, configure or tune Cartographer, or wants maps of old sessions.
 argument-hint: "[key value] | backfill"
 allowed-tools: Bash(*/cartographer:*), Bash(cartographer:*), Read
 ---
@@ -22,7 +22,7 @@ Ask these one at a time, in plain language, then set them with `config set`:
 | How comfortable are you reading and writing code? | `profile.coding` | new · intermediate · advanced |
 | How experienced are you at prompting coding agents? | `profile.prompting` | new · intermediate · advanced |
 | Should feedback focus on your prompts, the code the agent wrote, or both? (auto picks from the two answers above) | `feedback.focus` | prompts · code · both · auto |
-| Should the map speak in everyday words, code terms, or offer a toggle? | `voice` | plain · technical · both · auto |
+| Should the map speak in everyday words, the native words of the code, or offer a toggle? | `voice` | plain · native · both · auto |
 | Wrap sessions yourself with /wrap, or automatically when a session ends? | `wrap.mode` | manual · auto |
 | Keep your exact prompt wording in recaps? | `privacy.keep_exact_prompts` | true · false |
 

@@ -319,7 +319,7 @@ class StoreAndConfigTest(unittest.TestCase):
         config.set_value(cfg, "profile.coding", "advanced")
         config.set_value(cfg, "profile.prompting", "advanced")
         eff = config.effective(cfg)
-        self.assertEqual((eff["voice"], eff["focus"]), ("technical", "both"))
+        self.assertEqual((eff["voice"], eff["focus"]), ("native", "both"))
         with self.assertRaises(ValueError):
             config.set_value(cfg, "voice", "loud")
 
@@ -340,6 +340,27 @@ class StoreAndConfigTest(unittest.TestCase):
         item = hooks.handle("claude-code", {"session_id": "abc", "cwd": "/repo", "transcript_path": "/t.jsonl", "hook_event_name": "SessionEnd"}, cfg)
         self.assertEqual((item["session_id"], item["cwd"], item["transcript"], item["event"]), ("abc", "/repo", "/t.jsonl", "SessionEnd"))
         self.assertNotIn("spawned", item)
+
+    def test_map_scores(self):
+        from cartographer import render
+        moves = [
+            {"id": "m1", "t": 0, "outcome": "worked", "mark": "decision", "prompt": "Fix the KeyError in cartographer/store.py: load_recaps must skip appraisal_ files. Done when tests pass."},
+            {"id": "m2", "t": 3, "outcome": "worked", "mark": "artifact"},                      # the agent's own work, governed by m1
+            {"id": "m3", "t": 5, "outcome": "broke", "mark": "dead_end", "prompt": "make it nicer"},
+            {"id": "m4", "t": 8, "outcome": "worked", "mark": "fix", "prompt": "no, I meant the dashboard, not the replay"},
+        ]
+        sc = render.score_moves([{"moves": moves}])
+        self.assertEqual(sorted(sc), ["0:m1", "0:m2", "0:m3", "0:m4"])
+        self.assertEqual(sc["0:m1"]["tier"], "achievement")           # worked, specific and anchored, not repaired
+        self.assertTrue(sc["0:m1"]["anchored"] and sc["0:m1"]["specificity"] >= 2)
+        self.assertEqual((sc["0:m2"]["tier"], sc["0:m2"]["prompt"]), ("achievement", 3))
+        self.assertIn("prompt (m1)", sc["0:m2"]["why"])
+        self.assertEqual(sc["0:m3"]["tier"], "setback")
+        self.assertTrue(sc["0:m3"]["repaired"])                       # m4 opens with "no, I meant"
+        self.assertEqual(sc["0:m4"]["tier"], "solid")                 # worked, but a bare repair prompt is not an achievement
+        html = render.render_html([{"schema": "cartographer.session/v3", "moves": moves}], "t")
+        self.assertIn('"scores"', html)
+        self.assertIn('data-v="map"', html)
 
     def test_digest_from_session(self):
         t0 = datetime(2026, 9, 1, 10, 0, tzinfo=timezone.utc)

@@ -30,7 +30,7 @@ Needs Python 3.9 or newer and nothing else. On Windows the command is `python bi
 | In the agent | What happens |
 |---|---|
 | `/wrap` (Claude Code) · "wrap up this session" (Codex, Cursor) | `cartographer wrap` digests the transcript and writes a **brief**: session facts, your aptitude profile, what Cartographer knows about the languages used, a pragmatic reading of every prompt, the mapping rules and the timeline. The agent follows it, writes the recap, and `cartographer save` files it and renders the replay. |
-| `/replay <project>` | The story of every wrapped session in the repo, across agents and branches, told one move at a time, plus the playbook. Space plays, arrow keys step, the time strip jumps to any minute. |
+| `/replay <project>` | The story of every wrapped session in the repo, across agents and branches, told one move at a time, plus the playbook. Switch **Story** to **Map** for the trail of the build (it climbs with outcomes that worked, dips with setbacks, and rings achievements in gold), and **Plain** to **Native** for everyday words or the words of the code. Space plays, arrow keys step, the time strip jumps to any minute. |
 | `/complete <project>` | Mark a version shipped, partial or abandoned, say what actually happened, and get the **appraisal**: every session's moves judged against the outcome you declared, with evidence, minutes, and the technical implications now living in the result. |
 | `/cartographer-setup` | Change the profile, switch manual/auto, or backfill maps of old sessions. |
 

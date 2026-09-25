@@ -28,7 +28,7 @@ EXAMPLE: Dict[str, Any] = {
     "desired": "the desired outcome declared for this version (copied from the project; null when none was declared)",
     "goal": "what you set out to do this session, in your own terms",
     "outcome": "where the session actually landed, judged against `desired` when there is one",
-    "voice": "technical",
+    "voice": "native",
     "languages": ["typescript"], "frameworks": ["Next.js"], "files": ["src/auth.ts"],
     "tags": ["nextjs", "auth", "webapp"],
     "phases": [{"name": "Explore", "summary": "one line", "branch": "main"}],
@@ -173,6 +173,8 @@ def normalize(recap: Dict[str, Any], digest: Optional[Dict[str, Any]] = None) ->
     """Fill derivable fields from the digest. The model's real values win; placeholders don't."""
     r = copy.deepcopy(recap)
     r["schema"] = SCHEMA
+    if r.get("voice") == "technical":
+        r["voice"] = "native"
     d = digest or {}
     for key in DERIVED:
         if _unset(key, r.get(key)) and not _unset(key, d.get(key)):

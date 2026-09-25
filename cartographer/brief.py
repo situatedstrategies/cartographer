@@ -18,11 +18,11 @@ VOICE_RULES = {
     "plain": (
         "Write every move in everyday words. Name a technical concept once with a short gloss in parentheses, then use "
         "the everyday word. Say what happened and why it mattered to the thing being built."),
-    "technical": (
-        "Write for someone who reads code. Use the real names of files, functions, libraries and errors. Be exact "
+    "native": (
+        "Write in the native language of the work, for someone who reads code. Use the real names of files, functions, libraries and errors. Be exact "
         "about what was tried and what changed. No glosses."),
     "both": (
-        "Write the moves in technical register, and add a `plain` object on every move with the same four parts in "
+        "Write the moves in the native register (the words of the code), and add a `plain` object on every move with the same four parts in "
         "everyday words (no jargon, one gloss per concept)."),
 }
 CODING_LEVEL = {
@@ -94,7 +94,7 @@ def build(digest: Dict[str, Any], cfg: Dict[str, Any], recap_out: str, project_n
     w("## Reader profile and register\n")
     w("- Coding aptitude: **%s**. %s" % (eff["coding"], CODING_LEVEL[eff["coding"]]))
     w("- Prompting aptitude: **%s**. %s" % (eff["prompting"], PROMPTING_LEVEL[eff["prompting"]]))
-    w("- Voice: **%s**. %s" % (eff["voice"], VOICE_RULES[eff["voice"]]))
+    w("- Voice: **%s**. %s" % (eff["voice"], VOICE_RULES.get(eff["voice"], VOICE_RULES["native"])))
     if eff["feedback"]:
         w("- Feedback: **on**, focus **%s**, at most %d items. %s Each item names the move it refers to and, for prompt "
           "items, includes a `rewrite` of the actual prompt." % (eff["focus"], eff["max_feedback"], FOCUS_RULES[eff["focus"]]))
@@ -232,7 +232,7 @@ def build_appraisal(entry: Dict[str, Any], version: Dict[str, Any], recaps: List
     w("## Reader profile and register\n")
     w("- Coding aptitude: **%s**. %s" % (eff["coding"], CODING_LEVEL[eff["coding"]]))
     w("- Prompting aptitude: **%s**. %s" % (eff["prompting"], PROMPTING_LEVEL[eff["prompting"]]))
-    w("- Voice: **%s**. %s\n" % (eff["voice"], VOICE_RULES[eff["voice"]]))
+    w("- Voice: **%s**. %s\n" % (eff["voice"], VOICE_RULES.get(eff["voice"], VOICE_RULES["native"])))
     w("## Rules\n")
     w("- **Evidence**: every item cites the moves it rests on as `session <id> <move id>` (ids as given below). Items without "
       "evidence are rejected by `save`.")
