@@ -37,19 +37,15 @@ DEFAULTS: Dict[str, Any] = {
         "redact_secrets": True,
         "store_replies": False,    # keep agent replies verbatim in recaps (they can be long)
     },
-    "projects": {
-        "identity": "git",         # git (repo = project, branches tracked) | folder
-        "track_branches": True,
-    },
-    "agents": {
+    "projects": {"identity": "git"},   # git: repo = project, branches tracked | folder: the cwd is the project
+    "agents": {  # enabled: include in sweeps; headless: override the command that maps a session non-interactively
         "claude-code": {"enabled": True, "headless": None},
         "codex": {"enabled": True, "headless": None},
         "cursor": {"enabled": True, "headless": None},
     },
-    "sync": {"enabled": False, "endpoint": None, "team": None},
-    "language": "en",
 }
 ENUMS = {
+    "privacy.keep_exact_prompts": (True, False),
     "wrap.mode": ("manual", "auto"),
     "profile.coding": LEVELS, "profile.prompting": LEVELS,
     "feedback.focus": ("prompts", "code", "both", "auto"),
@@ -113,7 +109,7 @@ def coerce(raw: str) -> Any:
 def set_value(cfg: Dict[str, Any], dotted: str, raw: str) -> Any:
     value = coerce(raw) if isinstance(raw, str) else raw
     if dotted in ENUMS and value not in ENUMS[dotted]:
-        raise ValueError("%s must be one of: %s" % (dotted, ", ".join(ENUMS[dotted])))
+        raise ValueError("%s must be one of: %s" % (dotted, ", ".join(str(v).lower() for v in ENUMS[dotted])))
     parts = dotted.split(".")
     cur = cfg
     for p in parts[:-1]:
@@ -149,26 +145,37 @@ def effective(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "max_feedback": int(cfg["feedback"].get("max_items", 4)),
         "keep_exact_prompts": bool(cfg["privacy"]["keep_exact_prompts"]),
         "store_replies": bool(cfg["privacy"].get("store_replies", False)),
-        "track_branches": bool(cfg["projects"].get("track_branches", True)),
         "wrap_mode": cfg["wrap"]["mode"],
     }
 
 
+# The same questions drive the terminal wizard and the dashboard's setup form.
 WIZARD: List[Tuple[str, str, Tuple[str, ...]]] = [
     ("profile.coding", "How would you describe your coding experience?", LEVELS),
     ("profile.prompting", "And your experience prompting coding agents?", LEVELS),
-    ("feedback.focus", "What should feedback focus on? (auto picks from the two answers above)", ENUMS["feedback.focus"]),
-    ("voice", "How should the map speak? plain = everyday words, technical = code terms, both = a toggle", ENUMS["voice"]),
-    ("wrap.mode", "Wrap sessions manually (/wrap) or automatically when a session ends?", ENUMS["wrap.mode"]),
+    ("feedback.focus", "What should feedback focus on?", ENUMS["feedback.focus"]),
+    ("voice", "How should the map speak?", ENUMS["voice"]),
+    ("wrap.mode", "Wrap sessions yourself, or automatically when one ends?", ENUMS["wrap.mode"]),
+    ("privacy.keep_exact_prompts", "Keep your exact prompt wording in maps?", ("true", "false")),
 ]
+HELP = {
+    "profile.coding": "new: maps in everyday words and feedback that explains what the code did. advanced: code-level feedback with files cited.",
+    "profile.prompting": "new: concrete rewrites of your real prompts. advanced: prompt-architecture feedback tied to your numbers.",
+    "feedback.focus": "prompts, code, both, or auto, which picks from the two answers above.",
+    "voice": "plain = everyday words, technical = code terms, both = a toggle on every map, auto follows your coding level.",
+    "wrap.mode": "manual: type /wrap at the end of a session. auto: a hook maps each Claude Code session when it ends.",
+    "privacy.keep_exact_prompts": "false paraphrases your prompts in the map; the reading of them still works.",
+}
 
 
 def wizard(cfg: Dict[str, Any], ask=input, say=print) -> Dict[str, Any]:
     say("Cartographer setup. Press Enter to keep the value in brackets.\n")
     for key, question, options in WIZARD:
         current = get(cfg, key)
+        current = ("true" if current else "false") if isinstance(current, bool) else current
+        say("%s\n  %s" % (question, HELP[key]))
         while True:
-            answer = ask("%s\n  %s [%s]: " % (question, " / ".join(options), current)).strip()
+            answer = ask("  %s [%s]: " % (" / ".join(options), current)).strip()
             if not answer:
                 break
             try:
@@ -176,7 +183,5 @@ def wizard(cfg: Dict[str, Any], ask=input, say=print) -> Dict[str, Any]:
                 break
             except ValueError as exc:
                 say("  %s" % exc)
-    keep = ask("Keep your exact prompt wording in recaps? [%s]: " % ("yes" if cfg["privacy"]["keep_exact_prompts"] else "no")).strip()
-    if keep:
-        cfg["privacy"]["keep_exact_prompts"] = coerce(keep) is True
+        say("")
     return cfg

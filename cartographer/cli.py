@@ -1,15 +1,19 @@
 """cartographer — map how you build with coding agents.
 
-    sessions     list sessions found for every installed agent
-    wrap         prepare a brief for a session (what /wrap runs)
-    save         validate + store a recap and render the replay
-    render       build a project replay
-    autowrap     wrap a session with the agent's headless CLI
-    sweep        auto-wrap sessions that ended or went idle
-    backfill     retrospective maps for every past session of a repo
-    config       show / set / init settings
-    install      install into Claude Code, Codex CLI or Cursor
-    doctor       what's installed, where things are
+    sessions    list sessions found for every installed agent (✓ = wrapped)
+    wrap        write the mapping brief for a session; --run maps it headlessly
+    goal        declare what done means for the project's current version (the yardstick)
+    complete    mark a version complete and write the appraisal brief; --run appraises headlessly
+    save        validate, store and render a recap (--check only validates)
+    serve       local dashboard: projects, sessions, replays, setup (this machine only)
+    open        open a project's replay in the browser (default: the newest)
+    render      build a project replay
+    projects    list wrapped projects
+    sweep       auto-wrap sessions that went idle
+    backfill    briefs (or, with --run, maps) for every past session of a repo
+    config      show | set KEY VALUE | init | path
+    install     install into Claude Code, Codex CLI and Cursor
+    doctor      what's installed, where things are
 """
 from __future__ import annotations
 
@@ -21,7 +25,7 @@ import sys
 from datetime import datetime
 from typing import Any, List, Optional
 
-from . import adapters, autowrap, config, digest, hooks, recap, render, store
+from . import __version__, adapters, autowrap, config, gitinfo, hooks, recap, render, serve, store
 
 
 def _print(obj: Any) -> None:
@@ -32,85 +36,118 @@ def _agent_arg(value: Optional[str]) -> Optional[str]:
     return adapters.get(value).name if value else None
 
 
+def _open(path: str) -> None:
+    opener = "open" if sys.platform == "darwin" else ("start" if os.name == "nt" else "xdg-open")
+    try:
+        subprocess.Popen([opener, path], shell=(os.name == "nt"))
+    except OSError:
+        pass
+
+
+def _stdin_json() -> dict:
+    """Hook payload from stdin, without blocking when nothing is piped in."""
+    if sys.stdin is None or sys.stdin.isatty():
+        return {}
+    try:
+        if os.name != "nt":
+            import select
+            if not select.select([sys.stdin], [], [], 2)[0]:
+                return {}
+        return json.loads(sys.stdin.read() or "{}")
+    except (OSError, ValueError):
+        return {}
+
+
 def cmd_sessions(a) -> int:
-    refs = adapters.list_all(cwd=None if a.all else (a.cwd or os.getcwd()), agent=_agent_arg(a.agent), limit=a.limit)
+    agent = _agent_arg(a.agent)
+    refs = adapters.list_all(cwd=None if a.all else (a.cwd or os.getcwd()), agent=agent, limit=a.limit)
     if not refs and not a.all:
-        refs = adapters.list_all(agent=_agent_arg(a.agent), limit=a.limit)
+        refs = adapters.list_all(agent=agent, limit=a.limit)
         if refs:
             print("(no sessions for this folder; showing all)\n", file=sys.stderr)
-    wrapped = store.wrapped()
+    done = store.wrapped()
     for r in refs:
         when = datetime.fromtimestamp(r.mtime).strftime("%Y-%m-%d %H:%M") if r.mtime else "?"
-        mark = "✓" if ("%s:%s" % (r.agent, r.id)) in wrapped else " "
-        print("%s %-12s %-14s %s  %s%s" % (mark, r.agent, r.id[:12], when, (r.cwd or ""), ("  · " + r.title) if r.title else ""))
+        mark = "✓" if ("%s:%s" % (r.agent, r.id[:8])) in done else " "
+        print("%s %-12s %-14s %s  %s%s" % (mark, r.agent, r.id[:12], when, r.cwd or "", ("  · " + r.title) if r.title else ""))
     if not refs:
         print("no sessions found", file=sys.stderr)
         return 1
     return 0
 
 
-def cmd_digest(a) -> int:
-    cfg = config.load()
-    session = adapters.load(a.session, a.transcript, _agent_arg(a.agent), a.cwd)
-    d = digest.build(session, cfg)
-    if a.out:
-        os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
-        with open(a.out, "w", encoding="utf-8") as fh:
-            json.dump(d, fh, indent=1, ensure_ascii=False)
-        print(a.out)
-    else:
-        _print(d)
-    return 0
-
-
 def cmd_wrap(a) -> int:
     cfg = config.load()
+    if a.run:
+        res = autowrap.run(_agent_arg(a.agent), a.session, a.transcript, cfg, a.project or "", a.force, _agent_arg(a.runner), a.cwd)
+        _print(res)
+        return 0 if res.get("ok") or res.get("skipped") else 1
     res = autowrap.prepare(_agent_arg(a.agent), a.session, a.transcript, cfg, a.project or "", a.force, a.cwd)
     if res.get("skipped"):
-        print("SKIPPED: %s" % res["skipped"])
-        if res.get("recap"):
-            print("RECAP: %s" % res["recap"])
+        print("SKIPPED: %s" % res["skipped"] + ("\nRECAP: %s" % res["recap"] if res.get("recap") else ""))
         return 2
     if a.print_brief:
         with open(res["brief"], encoding="utf-8") as fh:
             print(fh.read())
         return 0
-    print("BRIEF: %s" % res["brief"])
-    print("RECAP_OUT: %s" % res["recap_out"])
-    print("DIGEST: %s" % res["digest"])
-    print("AGENT: %s" % res["agent"])
-    print("SESSION: %s" % res["session_id"])
-    print("PROJECT: %s (%s)" % ((res["project"] or {}).get("name"), (res["project"] or {}).get("id")))
-    print("BRANCH: %s" % (res.get("branch") or ""))
-    print("DURATION_MIN: %s" % res.get("duration_min"))
-    print("PROMPTS: %s" % res.get("prompts"))
-    print("LANGUAGES: %s" % ", ".join(res.get("languages") or []))
+    proj = res["project"] or {}
+    for key, val in (("BRIEF", res["brief"]), ("RECAP_OUT", res["recap_out"]), ("DIGEST", res["digest"]), ("AGENT", res["agent"]),
+                     ("SESSION", res["session_id"]), ("PROJECT", "%s (%s)" % (proj.get("name"), proj.get("id"))),
+                     ("BRANCH", res.get("branch") or ""), ("DURATION_MIN", res.get("duration_min")), ("PROMPTS", res.get("prompts")),
+                     ("LANGUAGES", ", ".join(res.get("languages") or []))):
+        print("%s: %s" % (key, val))
+    return 0
+
+
+def _project_arg(name: Optional[str]) -> str:
+    """An explicit project, else the repo we are standing in (registered if needed)."""
+    if name:
+        return name
+    info = gitinfo.inspect(os.getcwd(), config.load()["projects"].get("identity", "git"))
+    if info.get("id") and not store.find_project(info["id"]):
+        store.register_project(info["id"], info.get("name") or "project", info.get("root"), info.get("remote"))
+    return info.get("id") or ""
+
+
+def cmd_goal(a) -> int:
+    entry = store.find_project(_project_arg(a.project))
+    v = store.set_goal(entry["id"], a.text, a.version) if entry else None
+    if not v:
+        print("no project found; run this inside the repo or pass --project", file=sys.stderr)
+        return 1
+    print("%s %s: done means\n  %s" % (entry["name"], v["name"], v["desired"]))
+    return 0
+
+
+def cmd_complete(a) -> int:
+    res = autowrap.appraise(_project_arg(a.project), config.load(), a.version, a.result, a.actual or "", a.run, _agent_arg(a.runner))
+    if a.run:
+        _print(res)
+        return 0 if res.get("ok") else 1
+    if a.print_brief:
+        with open(res["brief"], encoding="utf-8") as fh:
+            print(fh.read())
+        return 0
+    for key, val in (("BRIEF", res["brief"]), ("RECAP_OUT", res["recap_out"]), ("PROJECT", res["project"]), ("VERSION", res["version"]),
+                     ("RESULT", res["result"]), ("DESIRED", res.get("desired") or "(never declared)"), ("SESSIONS", res["sessions"])):
+        print("%s: %s" % (key, val))
     return 0
 
 
 def cmd_save(a) -> int:
-    res = autowrap.save_recap_file(a.recap, config.load(), a.digest)
+    res = autowrap.save_recap_file(a.recap, config.load(), a.digest, a.check)
     if not res["ok"]:
-        print("recap has problems:")
-        for e in res["errors"]:
-            print("  - " + e)
+        print("recap has problems:\n" + "\n".join("  - " + e for e in res["errors"]))
         return 1
-    print("SAVED: %s" % res["saved"])
+    if a.check:
+        print("ok")
+        return 0
+    print("SAVED: %s%s" % (res["saved"], (" (appraisal of %s)" % res["appraisal"]) if res.get("appraisal") else ""))
     if res.get("replay"):
         print("REPLAY: %s" % res["replay"])
-    if a.open and res.get("replay"):
-        _open(res["replay"])
-    return 0
-
-
-def cmd_validate(a) -> int:
-    with open(a.recap, encoding="utf-8") as fh:
-        errs = recap.validate(recap.normalize(json.load(fh)))
-    if errs:
-        for e in errs:
-            print("  - " + e)
-        return 1
-    print("ok")
+        print("OPEN: cartographer open %s   (or `cartographer serve --open` for the dashboard)" % (res.get("slug") or ""))
+        if a.open:
+            _open(res["replay"])
     return 0
 
 
@@ -120,25 +157,45 @@ def cmd_render(a) -> int:
         if not recaps:
             print("nothing wrapped yet", file=sys.stderr)
             return 1
-        out = a.out or os.path.join(store.REPLAYS, "all-projects.html")
-        print(render.render_recaps(recaps, "All projects", out))
-        return 0
-    if a.files:
-        recaps = []
-        for p in a.files:
-            with open(p, encoding="utf-8") as fh:
-                recaps.append(json.load(fh))
+        path = render.render_recaps(recaps, a.title or "All projects", a.out or os.path.join(store.REPLAYS, "all-projects.html"))
+    elif a.files:
+        loaded = [store.read_json(p, {}) for p in a.files]
+        recaps = [r for r in loaded if not recap.is_appraisal(r)]
+        appraisals = [r for r in loaded if recap.is_appraisal(r)]
+        if not recaps:
+            print("no session maps among those files", file=sys.stderr)
+            return 1
         title = a.title or (recaps[-1].get("project") or {}).get("name") or recaps[-1].get("title") or "Replay"
         out = a.out or os.path.join(store.REPLAYS, "%s.html" % store.project_slug(title))
-        path = render.render_recaps(sorted(recaps, key=lambda r: r.get("started_at") or ""), title, out)
-    else:
-        if not a.project:
-            print("give a project name (see `cartographer projects`) or recap files", file=sys.stderr)
-            return 1
+        path = render.render_recaps(sorted(recaps, key=lambda r: r.get("started_at") or ""), title, out, appraisals)
+    elif a.project:
         path = render.render_project(a.project, a.out)
+    else:
+        print("give a project name (see `cartographer projects`), recap files, or --all", file=sys.stderr)
+        return 1
     print(path)
     if a.open:
         _open(path)
+    return 0
+
+
+def cmd_serve(a) -> int:
+    serve.serve(a.port, a.open)
+    return 0
+
+
+def cmd_open(a) -> int:
+    if a.project:
+        path = render.render_project(a.project)
+    else:
+        recaps = store.load_recaps()
+        if not recaps:
+            print("nothing wrapped yet: type /wrap in Claude Code at the end of a session, or run `cartographer serve --open`", file=sys.stderr)
+            return 1
+        latest = max(recaps, key=lambda r: r.get("saved_at") or "")
+        path = render.render_project((latest.get("project") or {}).get("slug") or (latest.get("project") or {}).get("name") or "")
+    print(path)
+    _open(path)
     return 0
 
 
@@ -150,6 +207,9 @@ def cmd_projects(a) -> int:
     for pid, p in sorted(reg.items(), key=lambda kv: kv[1].get("name", "")):
         n = len(store.load_recaps(p["slug"]))
         print("%-28s %-3d session%s  %s" % (p["name"], n, "" if n == 1 else "s", pid))
+        for v in p.get("versions") or []:
+            state = ("%s%s" % (v["result"], ", appraised" if v.get("appraisal") else ", not yet appraised: `cartographer complete`")) if v.get("completed_at") else "open"
+            print("    %-6s %-40s %s" % (v["name"], state, ("done means: " + v["desired"]) if v.get("desired") else "no desired outcome declared (`cartographer goal`)"))
     return 0
 
 
@@ -177,57 +237,40 @@ def cmd_config(a) -> int:
 
 def cmd_install(a) -> int:
     cfg = config.load()
-    bin_cmd = hooks.self_install() if not a.no_copy else hooks.bin_path()
-    auto = a.auto or (cfg["wrap"]["mode"] == "auto" and not a.manual)
-    if a.auto:
-        config.set_value(cfg, "wrap.mode", "auto")
-    if a.manual:
-        config.set_value(cfg, "wrap.mode", "manual")
+    bin_cmd = hooks.bin_path() if a.no_copy else hooks.self_install()
+    if a.auto or a.manual:
+        config.set_value(cfg, "wrap.mode", "auto" if a.auto else "manual")
     config.save(cfg)
     store.ensure_dirs()
+    auto = cfg["wrap"]["mode"] == "auto"
     agents_list = ["claude-code", "codex", "cursor"] if (not a.agent or "all" in a.agent) else [adapters.get(x).name for x in a.agent]
     print("cartographer command: %s" % bin_cmd)
     for name in agents_list:
         for msg in hooks.install(name, auto, a.project, bin_cmd):
             print("• " + msg)
-    if a.launchd:
-        print("• launchd sweep installed: %s" % hooks.install_launchd(bin_cmd))
     print("\nmode: %s · config: %s" % (cfg["wrap"]["mode"], config.PATH))
-    if not os.path.exists(config.PATH) or a.init:
-        print("run `cartographer config init` to set your aptitude profile and feedback preferences")
+    print("next: `cartographer serve --open` opens the dashboard (setup, sessions, maps); `cartographer config init` does setup in the terminal")
     return 0
 
 
 def cmd_hook(a) -> int:
-    try:
-        payload = json.load(sys.stdin) if not sys.stdin.isatty() else {}
-    except json.JSONDecodeError:
-        payload = {}
+    payload = _stdin_json()
     if a.payload:
         try:
             payload.update(json.loads(a.payload))
         except json.JSONDecodeError:
             pass
-    res = hooks.handle(adapters.get(a.agent).name, payload, config.load())
-    autowrap._log("hook", res)
+    autowrap.log("hook", hooks.handle(adapters.get(a.agent).name, payload, config.load()))
     return 0
 
 
-def cmd_autowrap(a) -> int:
-    res = autowrap.run(_agent_arg(a.agent), a.session, a.transcript, config.load(), a.project or "", a.force, _agent_arg(a.runner))
-    _print(res)
-    return 0 if res.get("ok") or res.get("skipped") else 1
-
-
 def cmd_sweep(a) -> int:
-    res = autowrap.sweep(config.load(), a.idle, a.since_days, a.dry, _agent_arg(a.runner))
-    _print(res)
+    _print(autowrap.sweep(config.load(), a.idle, a.since_days, a.dry, _agent_arg(a.runner)))
     return 0
 
 
 def cmd_backfill(a) -> int:
-    res = autowrap.backfill(os.path.abspath(a.cwd or os.getcwd()), _agent_arg(a.agent), config.load(), a.limit, a.run, _agent_arg(a.runner))
-    _print(res)
+    _print(autowrap.backfill(os.path.abspath(a.cwd or os.getcwd()), _agent_arg(a.agent), config.load(), a.limit, a.run, _agent_arg(a.runner)))
     if not a.run:
         print("\nbriefs prepared; open each BRIEF in your agent, or rerun with --run to map them headlessly", file=sys.stderr)
     return 0
@@ -235,33 +278,25 @@ def cmd_backfill(a) -> int:
 
 def cmd_doctor(a) -> int:
     cfg = config.load()
-    print("cartographer %s" % hooks.bin_path())
+    print("cartographer %s (%s)" % (__version__, hooks.bin_path()))
     print("home        %s" % config.HOME)
     print("config      %s%s" % (config.PATH, "" if os.path.exists(config.PATH) else " (defaults; run `cartographer config init`)"))
     print("mode        %s" % cfg["wrap"]["mode"])
     print("effective   %s" % json.dumps(config.effective(cfg)))
     print("\nagents:")
     for ad in adapters.registry().values():
-        if ad.name == "generic":
-            continue
-        n = len(ad.list_sessions()) if ad.available() else 0
-        hl = autowrap.headless_command(ad.name, cfg)
-        print("  %-12s %s  sessions=%d  headless=%s" % (ad.name, "found" if ad.available() else "not found", n, " ".join(hl) if hl else "none"))
-    reg = store.projects()
-    print("\nprojects    %d wrapped project%s, %d recap%s" % (len(reg), "" if len(reg) == 1 else "s", len(store.wrapped()), "" if len(store.wrapped()) == 1 else "s"))
+        if ad.name != "generic":
+            hl = autowrap.headless_command(ad.name, cfg)
+            print("  %-12s %s  sessions=%d  headless=%s" % (ad.name, "found" if ad.available() else "not found",
+                                                           len(ad.list_sessions()) if ad.available() else 0, " ".join(hl) if hl else "none"))
+    reg, done = store.projects(), store.wrapped()
+    print("\nprojects    %d wrapped project%s, %d recap%s" % (len(reg), "" if len(reg) == 1 else "s", len(done), "" if len(done) == 1 else "s"))
     return 0
-
-
-def _open(path: str) -> None:
-    opener = "open" if sys.platform == "darwin" else ("start" if os.name == "nt" else "xdg-open")
-    try:
-        subprocess.Popen([opener, path], shell=(os.name == "nt"))
-    except OSError:
-        pass
 
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="cartographer", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--version", action="version", version="cartographer %s" % __version__)
     sub = p.add_subparsers(dest="cmd")
 
     def session_args(sp):
@@ -271,19 +306,19 @@ def build_parser() -> argparse.ArgumentParser:
         sp.add_argument("--cwd", help="folder whose newest session to use (default: current)")
 
     s = sub.add_parser("sessions", help="list sessions"); s.add_argument("--agent"); s.add_argument("--cwd"); s.add_argument("--all", action="store_true"); s.add_argument("--limit", type=int, default=40); s.set_defaults(fn=cmd_sessions)
-    s = sub.add_parser("digest", help="print the digest for a session"); session_args(s); s.add_argument("--out"); s.set_defaults(fn=cmd_digest)
-    s = sub.add_parser("wrap", help="prepare the mapping brief for a session"); session_args(s); s.add_argument("--project", help="project name override"); s.add_argument("--force", action="store_true"); s.add_argument("--print-brief", action="store_true"); s.set_defaults(fn=cmd_wrap)
-    s = sub.add_parser("brief", help="alias of wrap --print-brief"); session_args(s); s.add_argument("--project"); s.add_argument("--force", action="store_true"); s.set_defaults(fn=cmd_wrap, print_brief=True)
-    s = sub.add_parser("save", help="validate, store and render a recap"); s.add_argument("recap"); s.add_argument("--digest"); s.add_argument("--open", action="store_true"); s.set_defaults(fn=cmd_save)
-    s = sub.add_parser("validate", help="check a recap file"); s.add_argument("recap"); s.set_defaults(fn=cmd_validate)
+    s = sub.add_parser("wrap", help="write the mapping brief for a session"); session_args(s); s.add_argument("--project", help="project name override"); s.add_argument("--force", action="store_true", help="redo an already wrapped or very short session"); s.add_argument("--print-brief", action="store_true"); s.add_argument("--run", action="store_true", help="also map it with the agent's headless CLI"); s.add_argument("--runner", help="which agent CLI does the mapping (with --run)"); s.set_defaults(fn=cmd_wrap)
+    s = sub.add_parser("goal", help="declare what done means for the current version"); s.add_argument("text"); s.add_argument("--project"); s.add_argument("--version", dest="version", help="version name (default: the open one, or v1)"); s.set_defaults(fn=cmd_goal)
+    s = sub.add_parser("complete", help="mark a version complete and prepare the appraisal"); s.add_argument("--project"); s.add_argument("--version", dest="version"); s.add_argument("--result", choices=list(store.RESULTS), help="omit to re-prepare an already completed version"); s.add_argument("--actual", help="what actually happened, in a sentence"); s.add_argument("--run", action="store_true", help="appraise with the headless CLI"); s.add_argument("--runner"); s.add_argument("--print-brief", action="store_true"); s.set_defaults(fn=cmd_complete)
+    s = sub.add_parser("save", help="validate, store and render a recap or an appraisal"); s.add_argument("recap"); s.add_argument("--digest"); s.add_argument("--check", action="store_true", help="validate only"); s.add_argument("--open", action="store_true"); s.set_defaults(fn=cmd_save)
     s = sub.add_parser("render", help="render a replay"); s.add_argument("--project"); s.add_argument("files", nargs="*"); s.add_argument("--all", action="store_true"); s.add_argument("--out"); s.add_argument("--title"); s.add_argument("--open", action="store_true"); s.set_defaults(fn=cmd_render)
+    s = sub.add_parser("serve", help="local dashboard in the browser"); s.add_argument("--port", type=int, default=8765); s.add_argument("--open", action="store_true", help="open the browser"); s.set_defaults(fn=cmd_serve)
+    s = sub.add_parser("open", help="open a project's replay (default: newest)"); s.add_argument("project", nargs="?"); s.set_defaults(fn=cmd_open)
     s = sub.add_parser("projects", help="list wrapped projects"); s.set_defaults(fn=cmd_projects)
-    s = sub.add_parser("config", help="show | set KEY VALUE | init | path"); s.add_argument("action", nargs="?", default="show", choices=["show", "set", "init", "path"]); s.add_argument("key", nargs="?"); s.add_argument("value", nargs="?"); s.set_defaults(fn=cmd_config)
-    s = sub.add_parser("install", help="install into agents"); s.add_argument("--agent", action="append", help="claude-code, codex, cursor or all (repeatable)"); s.add_argument("--auto", action="store_true", help="wrap automatically when sessions end"); s.add_argument("--manual", action="store_true"); s.add_argument("--project", help="repo path for Cursor rule / Codex AGENTS.md"); s.add_argument("--launchd", action="store_true", help="macOS: sweep every 20 min"); s.add_argument("--no-copy", action="store_true", help="don't copy to ~/.cartographer/app"); s.add_argument("--init", action="store_true"); s.set_defaults(fn=cmd_install)
-    s = sub.add_parser("hook", help="(called by agents) record a session event from stdin JSON"); s.add_argument("agent"); s.add_argument("payload", nargs="?"); s.set_defaults(fn=cmd_hook)
-    s = sub.add_parser("autowrap", help="map a session with a headless agent"); session_args(s); s.add_argument("--project"); s.add_argument("--force", action="store_true"); s.add_argument("--runner", help="which agent CLI does the mapping"); s.set_defaults(fn=cmd_autowrap)
-    s = sub.add_parser("sweep", help="auto-wrap ended/idle sessions"); s.add_argument("--idle", type=int); s.add_argument("--since-days", type=int, default=7); s.add_argument("--dry", action="store_true"); s.add_argument("--runner"); s.set_defaults(fn=cmd_sweep)
+    s = sub.add_parser("sweep", help="auto-wrap idle sessions"); s.add_argument("--idle", type=int, help="minutes of quiet (default: wrap.idle_minutes)"); s.add_argument("--since-days", type=int, default=7); s.add_argument("--dry", action="store_true"); s.add_argument("--runner"); s.set_defaults(fn=cmd_sweep)
     s = sub.add_parser("backfill", help="retrospective maps for a repo's past sessions"); s.add_argument("--cwd"); s.add_argument("--agent"); s.add_argument("--limit", type=int); s.add_argument("--run", action="store_true", help="map headlessly instead of only preparing briefs"); s.add_argument("--runner"); s.set_defaults(fn=cmd_backfill)
+    s = sub.add_parser("config", help="show | set KEY VALUE | init | path"); s.add_argument("action", nargs="?", default="show", choices=["show", "set", "init", "path"]); s.add_argument("key", nargs="?"); s.add_argument("value", nargs="?"); s.set_defaults(fn=cmd_config)
+    s = sub.add_parser("install", help="install into agents"); s.add_argument("--agent", action="append", help="claude-code, codex, cursor or all (repeatable)"); s.add_argument("--auto", action="store_true", help="wrap automatically when sessions end"); s.add_argument("--manual", action="store_true"); s.add_argument("--project", help="repo path for the Cursor rule / Codex AGENTS.md"); s.add_argument("--no-copy", action="store_true", help="don't copy to ~/.cartographer/app"); s.set_defaults(fn=cmd_install)
+    s = sub.add_parser("hook", help="(called by agents) record a session event from stdin JSON"); s.add_argument("agent"); s.add_argument("payload", nargs="?"); s.set_defaults(fn=cmd_hook)
     s = sub.add_parser("doctor", help="environment check"); s.set_defaults(fn=cmd_doctor)
     return p
 
@@ -296,7 +331,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
     try:
         return a.fn(a) or 0
-    except (LookupError, KeyError, ValueError, OSError) as exc:
+    except (LookupError, ValueError, OSError) as exc:
         print("cartographer: %s" % exc, file=sys.stderr)
         return 1
 
