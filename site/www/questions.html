@@ -18,7 +18,7 @@
   <h1>The things people ask first.</h1>
 </header>
 
-<section>
+<section class="hl faq">
   <details open><summary>Does anything leave my machine?</summary><p>No. Maps, config and replays live in <kbd>~/.cartographer</kbd>. The dashboard binds to 127.0.0.1 and refuses requests from anywhere else. The only network call is the installer downloading Cartographer. Team sharing, when it comes, will be a choice you make, not a default.</p></details>
   <details><summary>Is there a Mac installer (.pkg)?</summary><p>Not yet. A signed and notarised package is on the list. The one-line installer does the same thing on Mac and Linux without needing Apple's signing, and it is what we test.</p></details>
   <details><summary>Windows?</summary><p>Yes, natively: the PowerShell line on the <a href="/install">Install</a> page. It needs Python 3.9+ (<kbd>winget install Python.Python.3.12</kbd>) and Claude Code, which brings Git Bash with it. The Windows path is new and has had less real-world use than Mac and Linux; if anything breaks, <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a> with the output of the installer is enough to fix it. WSL works as well.</p></details>

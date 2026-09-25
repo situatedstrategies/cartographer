@@ -10,11 +10,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
 <link rel="stylesheet" href="/site.css">
 </head>
-<body><div class="wrap">
+<body class="home"><div class="wrap">
 <nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
 
-<header>
-  <div class="eyebrow">A map of how you build with coding agents</div>
+<header class="hero">
+  <div class="lockup"><img src="/logo-lg.png" alt="" width="144" height="144"><span>Cartographer</span></div>
   <h1>Git records what changed. Cartographer records how you got there.</h1>
   <p class="lead">Cartographer reads the session history your coding agent already keeps and turns it into the story of how your project got built. When you finish a version, it checks the result against what you said you were making, and it points to the moments that back that up.</p>
   <div class="cta"><a class="btn primary" href="/install">Install</a><a class="btn" href="/demo.html" target="_blank" rel="noopener">Watch a real build replay ↗</a></div>
@@ -32,7 +32,7 @@
 
 <section>
   <h2>What you get</h2>
-  <table class="atlas">
+  <table class="atlas hl">
     <thead><tr><th>Command</th><th>When</th><th>What you get back</th></tr></thead>
     <tbody>
       <tr><td>/wrap</td><td>End of a session</td><td>A write-up of what you asked for, what the agent did, where things went sideways, and how you got back on track.<div class="more"><div><p>Each point links to the moment in the transcript it came from.</p><a href="/claude-code">In Claude Code →</a></div></div></td></tr>

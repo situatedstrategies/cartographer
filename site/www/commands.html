@@ -20,9 +20,9 @@
 </header>
 
 <section>
-  <div class="panel">
-  <table>
-    <tr><th>Command</th><th>What it does</th></tr>
+  <table class="hl">
+    <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+    <tbody>
     <tr><td>cartographer serve --open</td><td>The dashboard in your browser, this machine only: profile, recent sessions with a <b>Map this session</b> button, projects, maps, outcomes and completion.</td></tr>
     <tr><td>cartographer open [project]</td><td>Open a replay directly. Newest project if you name none.</td></tr>
     <tr><td>cartographer sessions --all</td><td>Every session found for every installed agent. ✓ means already mapped.</td></tr>
@@ -37,8 +37,8 @@
     <tr><td>cartographer config show | set key value | init</td><td>Your profile and settings, in the terminal. <kbd>init</kbd> is the wizard.</td></tr>
     <tr><td>cartographer install --agent claude-code|codex|cursor|all [--auto]</td><td>What the installer runs. Rerun after updating.</td></tr>
     <tr><td>cartographer doctor</td><td>Version, home folder, mode, which agents were found and how many sessions, headless runners.</td></tr>
+    </tbody>
   </table>
-  </div>
   <p class="meta">Windows: the same commands work in PowerShell, cmd and Git Bash. If <kbd>cartographer</kbd> is not found, open a new terminal so the PATH change takes effect.</p>
 </section>
 

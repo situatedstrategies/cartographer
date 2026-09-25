@@ -19,27 +19,27 @@
 </header>
 
 <section>
-  <div class="grid">
-    <div class="card"><h3>Reads what already exists</h3><p>Claude Code keeps one file per session. An adapter turns it into a plain stream of events: prompts, replies, tools, errors, branch changes. No capture, no plugin in the loop, no cloud.</p></div>
-    <div class="card"><h3>Reads every prompt</h3><p>What act it performs (build, fix, repair, accept, ask), what it anchors to (files, symbols, errors, pasted code), how it is said (imperative, question, hedged, delegated). A turn that starts with "no, I meant…" marks the previous move as having gone wrong for you, even if the code ran.</p></div>
-    <div class="card"><h3>Hands the agent a brief</h3><p>Facts, your profile, what Cartographer knows about the languages you used, the reading of each prompt, the rules, the timeline. The agent that was in the session writes the map. Any agent can follow the same brief.</p></div>
-    <div class="card"><h3>Judges against a yardstick</h3><p>Session maps are provisional. The outcome you wanted is only known when a version is done, so <kbd>/complete</kbd> is where the verdict lives. Every move and every appraisal item must cite its evidence in the record; praise words are rejected on save.</p></div>
+  <div class="hl list">
+    <div class="item"><div class="k">Reads what already exists</div><div class="d"><p>Claude Code keeps one file per session. An adapter turns it into a plain stream of events: prompts, replies, tools, errors, branch changes. No capture, no plugin in the loop, no cloud.</p></div></div>
+    <div class="item"><div class="k">Reads every prompt</div><div class="d"><p>What act it performs (build, fix, repair, accept, ask), what it anchors to (files, symbols, errors, pasted code), how it is said (imperative, question, hedged, delegated). A turn that starts with "no, I meant…" marks the previous move as having gone wrong for you, even if the code ran.</p></div></div>
+    <div class="item"><div class="k">Hands the agent a brief</div><div class="d"><p>Facts, your profile, what Cartographer knows about the languages you used, the reading of each prompt, the rules, the timeline. The agent that was in the session writes the map. Any agent can follow the same brief.</p></div></div>
+    <div class="item"><div class="k">Judges against a yardstick</div><div class="d"><p>Session maps are provisional. The outcome you wanted is only known when a version is done, so <kbd>/complete</kbd> is where the verdict lives. Every move and every appraisal item must cite its evidence in the record; praise words are rejected on save.</p></div></div>
   </div>
 </section>
 
 <section>
   <h2>The shape of a map</h2>
   <p class="sub">A session map is a list of moves. Each move has the same five parts, in your words or in code terms depending on your profile.</p>
-  <div class="panel">
-  <table>
-    <tr><th>Part</th><th>Answers</th></tr>
+  <table class="hl">
+    <thead><tr><th>Part</th><th>Answers</th></tr></thead>
+    <tbody>
     <tr><td>you</td><td>What you did: the prompt, the correction, the decision, the pause.</td></tr>
     <tr><td>happened</td><td>What the agent did with it and what the tools returned.</td></tr>
     <tr><td>consequence</td><td>What that meant technically: the file that changed shape, the test that now passes, the assumption that got baked in.</td></tr>
     <tr><td>outcome</td><td>worked · partly · broke · wrong way · opened a question. Judged from the record, not from tone.</td></tr>
     <tr><td>response</td><td>How you responded next, and whether it repaired, accepted or moved on.</td></tr>
+    </tbody>
   </table>
-  </div>
   <p class="meta">Moves are grouped into chapters. Marks call out decisions, questions, dead ends, fixes, artifacts, pivots and insights. The replay plays them in order; the appraisal reads them against the yardstick.</p>
 </section>
 
