@@ -7,3 +7,5 @@ dist/
 site/www/demo.html
 site/www/cartographer.tar.gz
 site/www/cartographer.zip
+.wrangler/
+node_modules/

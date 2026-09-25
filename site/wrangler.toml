@@ -1,0 +1,10 @@
+# The public site as a Cloudflare Worker that only serves static files (Workers Static Assets).
+# Workers Builds settings for this project: root directory `site`, build command `sh build.sh`,
+# deploy command `npx wrangler deploy`. `name` must match the Worker's name in the dashboard.
+name = "cartographer"
+compatibility_date = "2026-09-01"
+
+[assets]
+directory = "./www"
+html_handling = "auto-trailing-slash"
+not_found_handling = "none"

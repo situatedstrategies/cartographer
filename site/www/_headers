@@ -1,0 +1,14 @@
+# Served by Cloudflare with the static files. The installers must come back as text so that
+# `curl … | sh` and `irm … | iex` get a script, not a download.
+/install.sh
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: no-cache
+/install.ps1
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: no-cache
+/cartographer.tar.gz
+  Content-Type: application/gzip
+  Cache-Control: no-cache
+/cartographer.zip
+  Content-Type: application/zip
+  Cache-Control: no-cache
