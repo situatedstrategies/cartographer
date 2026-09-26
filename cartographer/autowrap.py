@@ -27,6 +27,11 @@ def prepare(agent: Optional[str] = None, session_id: Optional[str] = None, trans
     cfg = cfg or config.load()
     store.ensure_dirs()
     ad, ref = adapters.resolve(session_id, transcript, agent, cwd)
+    here = os.path.abspath(cwd or os.getcwd())
+    note = None
+    if not session_id and not transcript and ref.cwd and os.path.abspath(ref.cwd) != here:
+        note = ("no %s session is recorded for %s, so this is the newest one on the machine, from %s. If that is the wrong "
+                "session, list them with `cartographer sessions --all` and pass --session <id>." % (ad.name, here, ref.cwd))
     done = store.wrapped_path(ad.name, ref.id)
     if done and not force:
         return {"skipped": "already wrapped", "agent": ad.name, "session_id": ref.id, "recap": done}
@@ -40,7 +45,7 @@ def prepare(agent: Optional[str] = None, session_id: Optional[str] = None, trans
     brief_path = os.path.join(store.BRIEFS, key + ".md")
     with open(brief_path, "w", encoding="utf-8") as fh:
         fh.write(brief.build(d, cfg, recap_out, project_name))
-    return {"agent": ad.name, "session_id": ref.id, "transcript": ref.path, "brief": brief_path, "recap_out": recap_out,
+    return {"agent": ad.name, "session_id": ref.id, "transcript": ref.path, "brief": brief_path, "recap_out": recap_out, "note": note,
             "digest": digest_path, "project": d["project"], "branch": d.get("branch"), "duration_min": d.get("duration_min"),
             "prompts": d["stats"].get("prompts", 0), "languages": [l["lang"] for l in d["languages"][:4]]}
 
