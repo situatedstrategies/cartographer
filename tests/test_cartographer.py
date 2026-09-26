@@ -341,6 +341,32 @@ class StoreAndConfigTest(unittest.TestCase):
         self.assertEqual((item["session_id"], item["cwd"], item["transcript"], item["event"]), ("abc", "/repo", "/t.jsonl", "SessionEnd"))
         self.assertNotIn("spawned", item)
 
+    def test_slash_commands_for_cursor_and_codex(self):
+        home = tempfile.mkdtemp(); proj = os.path.join(home, "proj"); os.makedirs(proj)
+        old_home, old_codex = hooks.HOME, os.environ.get("CODEX_HOME")
+        hooks.HOME = home; os.environ["CODEX_HOME"] = os.path.join(home, ".codex")
+        try:
+            msgs = hooks.install_cursor(False, '"/x/bin/cartographer"', proj)
+            for d in (os.path.join(home, ".cursor", "commands"), os.path.join(proj, ".cursor", "commands")):
+                for name in ("wrap", "replay", "complete"):
+                    with open(os.path.join(d, name + ".md")) as fh:
+                        text = fh.read()
+                    self.assertTrue(text.startswith("# /" + name))
+                    self.assertIn('"/x/bin/cartographer"', text)
+            with open(os.path.join(home, ".cursor", "commands", "wrap.md")) as fh:
+                self.assertIn("wrap --agent cursor", fh.read())
+            self.assertTrue(os.path.isfile(os.path.join(proj, ".cursor", "rules", "cartographer.mdc")))
+            self.assertTrue(any("/wrap, /replay and /complete" in m for m in msgs))
+            hooks.install_codex(False, '"/x/bin/cartographer"', None)
+            with open(os.path.join(home, ".codex", "prompts", "wrap.md")) as fh:
+                self.assertIn("wrap --agent codex", fh.read())
+        finally:
+            hooks.HOME = old_home
+            if old_codex is None:
+                os.environ.pop("CODEX_HOME", None)
+            else:
+                os.environ["CODEX_HOME"] = old_codex
+
     def test_cursor_newer_layout(self):
         # Cursor 2.x: titles in a composerHeaders table, workspaceIdentifier on each chat, workspaceUris on bubbles,
         # an empty-state placeholder, and no per-workspace composer list.

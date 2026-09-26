@@ -12,7 +12,7 @@
 <header>
   <div class="eyebrow">In Claude Code</div>
   <h1>Four commands. Claude does the reading.</h1>
-  <p class="lead">Each one runs the CLI, hands Claude a brief, and lets Claude write. The map is written by the agent that was in the room, which is why it knows what you meant.</p>
+  <p class="lead">Each one runs the CLI, hands the agent a brief, and lets the agent write. The same three commands exist in Cursor and Codex. The map is written by the agent that was in the room, which is why it knows what you meant.</p>
 </header>
 
 <section>
@@ -33,7 +33,7 @@
     <li><b>Repeat across sessions.</b> Each one lands in the same project; the replay stitches them into one story.</li>
     <li><b><kbd>/complete</kbd> when the version ships.</b> The honest reading of the whole build against what you wanted.</li>
   </ol>
-  <p class="meta">Codex CLI and Cursor: install with <kbd>--all</kbd> and say "wrap up this session with cartographer". Their adapters follow the documented formats but have not yet been verified on real history; expect rough edges.</p>
+  <p class="meta">Cursor and Codex CLI: the same three commands, <kbd>/wrap</kbd>, <kbd>/replay</kbd> and <kbd>/complete</kbd>, installed with <kbd>--agent all</kbd> (Cursor reads them from <kbd>.cursor/commands</kbd>, Codex from <kbd>~/.codex/prompts</kbd>). If the agent you built in cannot write the map, for instance Cursor out of credit, <kbd>/wrap --agent cursor</kbd> in Claude Code writes it from the record. Cursor has been checked against a real 2.x install; Codex follows its documented layout and has not.</p>
 </section>
 
 <div class="next"><a href="/install">← Install</a><a href="/commands">Commands →</a></div>
