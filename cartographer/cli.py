@@ -286,6 +286,11 @@ def cmd_backfill(a) -> int:
 
 def cmd_doctor(a) -> int:
     cfg = config.load()
+    if a.dump:
+        ad = adapters.get(_agent_arg(a.dump))
+        dump = getattr(ad, "dump", None)
+        print(dump() if dump else "%s: nothing to dump" % ad.name)
+        return 0
     print("cartographer %s (%s)" % (__version__, hooks.bin_path()))
     print("home        %s" % config.HOME)
     print("config      %s%s" % (config.PATH, "" if os.path.exists(config.PATH) else " (defaults; run `cartographer config init`)"))
@@ -328,6 +333,7 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("install", help="install into agents"); s.add_argument("--agent", action="append", help="claude-code, codex, cursor or all (repeatable)"); s.add_argument("--auto", action="store_true", help="wrap automatically when sessions end"); s.add_argument("--manual", action="store_true"); s.add_argument("--project", help="repo path for the Cursor rule / Codex AGENTS.md"); s.add_argument("--no-copy", action="store_true", help="don't copy to ~/.cartographer/app"); s.set_defaults(fn=cmd_install)
     s = sub.add_parser("hook", help="(called by agents) record a session event from stdin JSON"); s.add_argument("agent"); s.add_argument("payload", nargs="?"); s.set_defaults(fn=cmd_hook)
     s = sub.add_parser("doctor", help="environment check"); s.set_defaults(fn=cmd_doctor)
+    s.add_argument("--dump", metavar="AGENT", help="print the shape of that agent's storage (keys, counts, no message text) to paste into a bug report")
     return p
 
 
