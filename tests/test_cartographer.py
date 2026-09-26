@@ -341,6 +341,30 @@ class StoreAndConfigTest(unittest.TestCase):
         self.assertEqual((item["session_id"], item["cwd"], item["transcript"], item["event"]), ("abc", "/repo", "/t.jsonl", "SessionEnd"))
         self.assertNotIn("spawned", item)
 
+    def test_cursor_newer_layout(self):
+        # Cursor 2.x: titles in a composerHeaders table, workspaceIdentifier on each chat, workspaceUris on bubbles,
+        # an empty-state placeholder, and no per-workspace composer list.
+        tmp = tempfile.mkdtemp(); ws = os.path.join(tmp, "workspaceStorage", "abc123"); os.makedirs(ws); os.makedirs(os.path.join(tmp, "globalStorage"))
+        with open(os.path.join(ws, "workspace.json"), "w") as fh:
+            json.dump({"folder": "file:///Users/x/turn-timer"}, fh)
+        con = sqlite3.connect(os.path.join(tmp, "globalStorage", "state.vscdb"))
+        con.execute("CREATE TABLE cursorDiskKV (key TEXT, value BLOB)")
+        con.execute("CREATE TABLE composerHeaders (composerId TEXT, data BLOB)")
+        con.execute("INSERT INTO composerHeaders VALUES ('c1', ?)", (json.dumps({"name": "Turn timer parser"}),))
+        rows = [("composerData:c1", {"createdAt": 1790389225516, "workspaceIdentifier": {"id": "abc123"}, "fullConversationHeadersOnly": [{"bubbleId": "b1", "type": 1}]}),
+                ("composerData:c2", {"createdAt": 1790389225516, "workspaceIdentifier": {"id": "gone"}, "fullConversationHeadersOnly": [{"bubbleId": "b1", "type": 1}]}),
+                ("composerData:empty-state-9", {}),
+                ("bubbleId:c1:b1", {"type": 1, "text": "Build the parser first\nthen the table", "workspaceUris": []}),
+                ("bubbleId:c2:b1", {"type": 1, "text": "what files are here?", "workspaceUris": ["file:///Users/x/other"]})]
+        con.executemany("INSERT INTO cursorDiskKV VALUES (?, ?)", [(k, json.dumps(v)) for k, v in rows]); con.commit(); con.close()
+        ad = cursor.CursorAdapter(user_dir=tmp)
+        self.assertEqual([(r.id, r.cwd, r.title) for r in ad.list_sessions()],
+                         [("c1", "/Users/x/turn-timer", "Turn timer parser"), ("c2", "/Users/x/other", "what files are here?")])
+        self.assertEqual([r.id for r in ad.list_sessions(cwd="/Users/x/turn-timer")], ["c1"])
+        dump = ad.dump()
+        self.assertIn("table composerHeaders: 1 rows", dump)
+        self.assertNotIn("Build the parser", dump)   # never message text
+
     def test_map_scores(self):
         from cartographer import render
         moves = [
