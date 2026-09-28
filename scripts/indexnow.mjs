@@ -11,7 +11,7 @@
 
 import { readFile } from 'node:fs/promises';
 
-const KEY = '23b0a3b250e5546c36f656b68e68e6f2';
+const KEY = '744c00959b8342a1bdf11ef6bda8d430';
 const SITEMAP = 'site/www/sitemap.xml';
 
 const argUrls = process.argv.slice(2);
