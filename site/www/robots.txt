@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# AI search and assistant crawlers, named so the intent is unambiguous and
+# survives a change in Cloudflare's defaults. These are what put the site in
+# ChatGPT, Perplexity, Claude and Google AI answers. To stay in AI search but
+# out of model training, remove GPTBot, ClaudeBot, Google-Extended,
+# Applebot-Extended and meta-externalagent from this group.
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: DuckAssistBot
+User-agent: meta-externalagent
+User-agent: Amazonbot
+Allow: /
+
+Sitemap: https://codecartographer.dev/sitemap.xml

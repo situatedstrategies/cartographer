@@ -1,0 +1,29 @@
+# Cartographer
+
+> Cartographer reads the session history your coding agent already keeps and turns it into the story of how your project got built: what you asked for, what the agent did, where things went sideways, and how you got back on track. Runs locally. Plain Python, no dependencies, MIT licensed. Made by Situated Strategies.
+
+## Compatibility
+- Works with Claude Code today. Codex and Cursor support is coming.
+- Requires Python 3.9 or later.
+
+## Commands
+- /wrap: end-of-session write-up, each point linked to the moment in the transcript it came from
+- replay: the whole project played back one step at a time, with coaching, prompts worth keeping, and where time went
+- /complete: when a version ships, the build compared against what you said "done" would mean
+
+## Install
+- Mac and Linux: curl -fsSL https://codecartographer.dev/install.sh | sh
+- Windows (PowerShell): irm https://codecartographer.dev/install.ps1 | iex
+
+## Key pages
+- Install guide: https://codecartographer.dev/install
+- Claude Code setup: https://codecartographer.dev/claude-code
+- Commands: https://codecartographer.dev/commands
+- How it works: https://codecartographer.dev/how-it-works
+- Questions: https://codecartographer.dev/questions
+- Demo: https://codecartographer.dev/demo.html
+- Source code: https://github.com/situatedstrategies/cartographer
+
+## Contact
+Support: support@codecartographer.dev
+Feedback and maps: mapit@codecartographer.dev
