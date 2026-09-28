@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to read a Claude Code session log: the JSONL files explained</title>
+<meta name="description" content="Where Claude Code keeps session history, what each line of the JSONL file holds, how to read one by hand, and what a transcript cannot tell you on its own.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/guides/reading-claude-code-session-logs">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/guides/reading-claude-code-session-logs">
+<meta property="og:title" content="How to read a Claude Code session log: the JSONL files explained">
+<meta property="og:description" content="Where Claude Code keeps session history, what each line of the JSONL file holds, how to read one by hand, and what a transcript cannot tell you on its own.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where does Claude Code keep session history?", "acceptedAnswer": {"@type": "Answer", "text": "Under your home folder, in ~/.claude/projects/, one folder per project, one JSONL file per session. The folder name is the project path with non-alphanumeric characters replaced by hyphens."}}, {"@type": "Question", "name": "Can I read the file without a tool?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It is plain text, one JSON object per line. Any editor opens it, and a line of jq or a few lines of Python turn it into something readable."}}, {"@type": "Question", "name": "Does Cartographer copy my transcripts?", "acceptedAnswer": {"@type": "Answer", "text": "No. It reads them where they are and writes maps, briefs and replays under ~/.cartographer. Raw transcripts are never copied there, and secrets are redacted before anything is written."}}, {"@type": "Question", "name": "Does any of this leave my machine?", "acceptedAnswer": {"@type": "Answer", "text": "Not through Cartographer. The dashboard binds to 127.0.0.1, and the only network call the tool makes is the installer downloading it."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Cartographer", "item": "https://codecartographer.dev/"}, {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://codecartographer.dev/guides/reading-claude-code-session-logs"}, {"@type": "ListItem", "position": 3, "name": "Reading a Claude Code session log", "item": "https://codecartographer.dev/guides/reading-claude-code-session-logs"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "How to read a Claude Code session log", "url": "https://codecartographer.dev/guides/reading-claude-code-session-logs", "author": {"@type": "Organization", "@id": "https://situatedstrategies.org/#organization", "name": "Situated Strategies LLC"}, "publisher": {"@type": "Organization", "@id": "https://situatedstrategies.org/#organization", "name": "Situated Strategies LLC"}, "datePublished": "2026-09-29"}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">Guide</div>
+  <h1>How to read a Claude Code session log</h1>
+  <p class="lead">Claude Code writes every session to disk as it happens. Here is where the file lives, what is in it, how to read it without a tool, and what the record leaves out.</p>
+</header>
+
+<section>
+  <h2>What is in the file</h2>
+  <p class="sub">Claude Code stores every session as a JSONL file, one JSON object per line, under <kbd>~/.claude/projects/&lt;encoded-project-path&gt;/&lt;session-id&gt;.jsonl</kbd>. The project folder is your working directory path with non-alphanumeric characters replaced by hyphens.<sup><a href="#fn1">1</a></sup> Each line is one event: a user turn, an assistant reply, a tool call, a tool result, or a system event. The file is append-only; new events are new lines.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">Each event carries top-level fields such as <kbd>type</kbd>, <kbd>uuid</kbd>, <kbd>parentUuid</kbd>, <kbd>timestamp</kbd>, <kbd>sessionId</kbd>, <kbd>cwd</kbd>, <kbd>gitBranch</kbd> and <kbd>version</kbd>. Inside <kbd>message.content</kbd> are content blocks: <kbd>text</kbd>, <kbd>thinking</kbd>, <kbd>tool_use</kbd> with an id, a name and its input, and <kbd>tool_result</kbd> referencing the <kbd>tool_use_id</kbd> it answers.<sup><a href="#fn2">2</a></sup> That is enough structure to rebuild the whole session in order: which prompt led to which tool call, what came back, and what the agent said next.</p>
+</section>
+<section>
+  <h2>Reading it by hand</h2>
+  <p class="sub">Find the folder for your project, sort by modification time, and open the newest file. Filter lines by <kbd>type</kbd> to see only user turns, or only tool results. The <kbd>parentUuid</kbd> chain is the conversation thread; the <kbd>gitBranch</kbd> field tells you where you were when each turn happened. A short script that prints <kbd>timestamp</kbd>, <kbd>type</kbd> and the first line of each text block gives you a readable transcript in a minute.</p>
+  <p class="sub">There are also community tools that render transcripts as pages, such as Simon Willison's <a href="https://github.com/simonw/claude-code-transcripts" rel="noopener">claude-code-transcripts</a>.<sup><a href="#fn3">3</a></sup> They answer the question "what was said", which is the right first question.</p>
+</section>
+<section>
+  <h2>What a transcript does not tell you</h2>
+  <p class="sub">A transcript is the record of what happened, in order. It does not say which prompt was the one that went wrong, which correction repaired it, where the time went, or whether the build ended up where you said it should. Those are readings of the record, and they are the part that takes the work.</p>
+  <p class="sub">That is the part Cartographer does. It reads the same file through an adapter that turns it into a plain stream of events, reads every prompt for what act it performs and what it anchors to, and hands the agent that was in the session a brief. The agent writes the map: chapters, then moves, each with what you did, what happened, what it meant, how it turned out and how you responded, each citing the timeline it rests on. <a href="/how-it-works">How it works</a> has the detail, and the <a href="/demo.html" target="_blank" rel="noopener">demo replay</a> shows a real build read this way.</p>
+</section>
+<section class="hl faq">
+  <h2>Questions</h2>
+  <details><summary>Where does Claude Code keep session history?</summary><p>Under your home folder, in ~/.claude/projects/, one folder per project, one JSONL file per session. The folder name is the project path with non-alphanumeric characters replaced by hyphens.</p></details>
+  <details><summary>Can I read the file without a tool?</summary><p>Yes. It is plain text, one JSON object per line. Any editor opens it, and a line of jq or a few lines of Python turn it into something readable.</p></details>
+  <details><summary>Does Cartographer copy my transcripts?</summary><p>No. It reads them where they are and writes maps, briefs and replays under ~/.cartographer. Raw transcripts are never copied there, and secrets are redacted before anything is written.</p></details>
+  <details><summary>Does any of this leave my machine?</summary><p>Not through Cartographer. The dashboard binds to 127.0.0.1, and the only network call the tool makes is the installer downloading it.</p></details>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Claude Code documentation. <a href="https://code.claude.com/docs/en/claude-directory" rel="noopener">Explore the .claude directory</a>.</li>
+    <li id="fn2">Claude Code documentation. <a href="https://code.claude.com/docs/en/sessions" rel="noopener">Manage sessions</a>.</li>
+    <li id="fn3">Simon Willison. <a href="https://github.com/simonw/claude-code-transcripts" rel="noopener">claude-code-transcripts</a>, on GitHub.</li>
+  </ol>
+</section>
+
+<div class="next"><a href="/questions">← Questions</a><a href="/compare">Cartographer vs git history →</a></div>
+<footer>
+  <span>Cartographer is made by Situated Strategies.</span>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

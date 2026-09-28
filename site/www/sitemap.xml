@@ -7,4 +7,20 @@
   <url><loc>https://codecartographer.dev/how-it-works</loc></url>
   <url><loc>https://codecartographer.dev/questions</loc></url>
   <url><loc>https://codecartographer.dev/demo.html</loc></url>
+  <url><loc>https://codecartographer.dev/commands/serve</loc></url>
+  <url><loc>https://codecartographer.dev/commands/open</loc></url>
+  <url><loc>https://codecartographer.dev/commands/sessions</loc></url>
+  <url><loc>https://codecartographer.dev/commands/wrap</loc></url>
+  <url><loc>https://codecartographer.dev/commands/goal</loc></url>
+  <url><loc>https://codecartographer.dev/commands/complete</loc></url>
+  <url><loc>https://codecartographer.dev/commands/save</loc></url>
+  <url><loc>https://codecartographer.dev/commands/projects</loc></url>
+  <url><loc>https://codecartographer.dev/commands/render</loc></url>
+  <url><loc>https://codecartographer.dev/commands/backfill</loc></url>
+  <url><loc>https://codecartographer.dev/commands/sweep</loc></url>
+  <url><loc>https://codecartographer.dev/commands/config</loc></url>
+  <url><loc>https://codecartographer.dev/commands/install</loc></url>
+  <url><loc>https://codecartographer.dev/commands/doctor</loc></url>
+  <url><loc>https://codecartographer.dev/guides/reading-claude-code-session-logs</loc></url>
+  <url><loc>https://codecartographer.dev/compare</loc></url>
 </urlset>

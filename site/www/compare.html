@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartographer vs git history vs a chat summary: what each records</title>
+<meta name="description" content="Git records what changed. A chat summary records what the agent remembers. A Cartographer map records how the build went, move by move, with evidence.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/compare">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/compare">
+<meta property="og:title" content="Cartographer vs git history vs a chat summary: what each records">
+<meta property="og:description" content="Git records what changed. A chat summary records what the agent remembers. A Cartographer map records how the build went, move by move, with evidence.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does Cartographer replace git?", "acceptedAnswer": {"@type": "Answer", "text": "No. Git records what changed and Cartographer records how you got there. They answer different questions about the same work."}}, {"@type": "Question", "name": "Why not just ask the agent to summarise the session?", "acceptedAnswer": {"@type": "Answer", "text": "You can, and it will. A summary is prose with no rules: it can praise, skip the dead ends, and cite nothing. A map has five fixed parts per move, cites the timeline it rests on, and rejects praise words on save. The difference shows up the third time you read one."}}, {"@type": "Question", "name": "Is the map written by a different model?", "acceptedAnswer": {"@type": "Answer", "text": "It is written by the agent that was in the session, following a brief. That is why it knows what you meant. The rules are enforced by Cartographer when the map is saved, not by the model's good intentions."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Cartographer", "item": "https://codecartographer.dev/"}, {"@type": "ListItem", "position": 2, "name": "Compare", "item": "https://codecartographer.dev/compare"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Cartographer vs git history vs a chat summary", "url": "https://codecartographer.dev/compare", "author": {"@type": "Organization", "@id": "https://situatedstrategies.org/#organization", "name": "Situated Strategies LLC"}, "publisher": {"@type": "Organization", "@id": "https://situatedstrategies.org/#organization", "name": "Situated Strategies LLC"}}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">Compare</div>
+  <h1>Cartographer, git history and a chat summary</h1>
+  <p class="lead">Three records of the same work, answering three different questions. What each one keeps, what each one drops, and why you want all three.</p>
+</header>
+
+<section>
+  <table class="hl">
+    <thead><tr><th>&nbsp;</th><th>Git history</th><th>A chat summary</th><th>A Cartographer map</th></tr></thead>
+    <tbody>
+      <tr><td>Records</td><td>What changed: commits, diffs, branches</td><td>What the agent remembers, in prose</td><td>Every move: what you did, what happened, what it meant, the outcome, your response</td></tr>
+      <tr><td>Evidence</td><td>The diff itself</td><td>None required</td><td>Each move lists the timeline items it rests on; saving rejects a move without them</td></tr>
+      <tr><td>Dead ends</td><td>Invisible unless committed</td><td>Usually left out</td><td>Kept, marked, and read for what they cost</td></tr>
+      <tr><td>Your prompts</td><td>Not recorded</td><td>Paraphrased</td><td>Read one by one: the act, the anchor, how it was said, and where a correction marks the previous move as wrong for you</td></tr>
+      <tr><td>Praise</td><td>Not applicable</td><td>Common</td><td>Rejected on save, in the map and in the appraisal</td></tr>
+      <tr><td>The verdict</td><td>Whether it merged</td><td>Whatever the summary says</td><td>Waits for <kbd>/complete</kbd>, judged against the goal you declared, because a session cannot judge itself</td></tr>
+      <tr><td>Where it lives</td><td>The repo</td><td>The chat</td><td><kbd>~/.cartographer</kbd> on your machine, as JSON maps and rendered replays</td></tr>
+    </tbody>
+  </table>
+</section>
+<section>
+  <h2>The short version</h2>
+  <p class="sub">Git is the record of the result. A chat summary is the agent's recollection of the process. A map is the process, read from the record, under rules. Use all three; they do not compete.</p>
+  <p class="sub">If you want to see what the third one looks like on a real build, the <a href="/demo.html" target="_blank" rel="noopener">demo replay</a> is one. <a href="/how-it-works">How it works</a> explains the five parts of a move and the yardstick the appraisal reads them against.</p>
+</section>
+<section class="hl faq">
+  <h2>Questions</h2>
+  <details><summary>Does Cartographer replace git?</summary><p>No. Git records what changed and Cartographer records how you got there. They answer different questions about the same work.</p></details>
+  <details><summary>Why not just ask the agent to summarise the session?</summary><p>You can, and it will. A summary is prose with no rules: it can praise, skip the dead ends, and cite nothing. A map has five fixed parts per move, cites the timeline it rests on, and rejects praise words on save. The difference shows up the third time you read one.</p></details>
+  <details><summary>Is the map written by a different model?</summary><p>It is written by the agent that was in the session, following a brief. That is why it knows what you meant. The rules are enforced by Cartographer when the map is saved, not by the model's good intentions.</p></details>
+</section>
+
+<div class="next"><a href="/guides/reading-claude-code-session-logs">← Reading a session log</a><a href="/install">Install →</a></div>
+<footer>
+  <span>Cartographer is made by Situated Strategies.</span>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>
