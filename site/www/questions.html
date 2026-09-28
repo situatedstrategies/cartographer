@@ -13,8 +13,103 @@
 <meta property="og:url" content="https://codecartographer.dev/questions">
 <meta property="og:title" content="Questions · Cartographer">
 <meta property="og:description" content="Privacy, Windows, .pkg, updating, old sessions, and what honest means mechanically.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Cartographer",
+      "item": "https://codecartographer.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Questions",
+      "item": "https://codecartographer.dev/questions"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does anything leave my machine?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Maps, config and replays live in ~/.cartographer. The dashboard binds to 127.0.0.1 and refuses requests from anywhere else. The only network call is the installer downloading Cartographer. Team sharing, when it comes, will be a choice you make, not a default."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a Mac installer (.pkg)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not yet. A signed and notarised package is on the list. The one-line installer does the same thing on Mac and Linux without needing Apple's signing, and it is what we test."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Windows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, natively: the PowerShell line on the Install page. It needs Python 3.9+ (winget install Python.Python.3.12) and Claude Code, which brings Git Bash with it. The Windows path is new and has had less real-world use than Mac and Linux; if anything breaks, support@codecartographer.dev with the output of the installer is enough to fix it. WSL works as well."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I map sessions from before I installed it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. /cartographer-setup backfill or cartographer backfill --cwd <repo> prepares a brief for every past session Claude Code still has on disk."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does \"honest\" mean here, mechanically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three enforced rules. Every move lists the timeline items it rests on. \"What it meant\" has to name the technical implication, not an adjective. Saving rejects praise words in the map and the appraisal. And the verdict waits for completion, because a session cannot judge itself."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I update?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Run the install line again. It replaces ~/.cartographer/app and the skills; your maps and config stay."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which agents?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Claude Code, today. Codex and Cursor are coming soon. We're checking them against real session history before calling them supported."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Something broke. Where do I write?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "support@codecartographer.dev with what you typed and what came back. Maps you'd like to show us, or thoughts on the maps you got: mapit@codecartographer.dev."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body><div class="wrap">
 <nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions" class="on">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
