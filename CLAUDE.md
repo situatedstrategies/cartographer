@@ -47,7 +47,8 @@ It goes to a branch and waits for the owner's merge like every other change.
 - **Topics.** About the reader's world, not the product. The editorial guide
   lists the pillars. Vary the register: analysis and musings both welcome;
   thin keyword filler is not.
-- **Voice.** Every post is bylined "By Team Cartographer", no individual names. Never
+- **Voice.** Every post is bylined exactly "By Team Cartographer", no individual
+  names, never "the Cartographer team" or any other form of the name. Never
   first person singular. Warm, plain, direct, contraction-friendly, free of
   jargon and hype.
 - **Citations are mandatory and must be REAL, accurate, and live.** Every
@@ -61,9 +62,15 @@ It goes to a branch and waits for the owner's merge like every other change.
   confirm the exact URL and the exact claim surfaced together in that run's
   own search results, and say in the release report which method was used
   for each source. If a claim cannot be verified this way, cut the claim.
-- **Footnote format.** Numbered superscript markers in the text pointing at a
-  Sources list at the end, matched one to one, full source name and working
-  link on each entry.
+- **Citation format.** Every cited claim is linked twice. The claim's key
+  phrase in the text links directly to the source
+  (`<a href="URL" rel="noopener">phrase</a>`), and a numbered superscript
+  marker after the sentence points at the Sources list at the end. Markers
+  and entries match one to one, and each entry carries the full source name
+  and the same working link.
+- **Dates.** Dates shown to readers are written in full with the day as an
+  ordinal and nothing abbreviated, for example "September 12th 2026".
+  Machine dates (JSON-LD, sitemap lastmod) stay YYYY-MM-DD.
 - **No em dashes and no en dashes, ever.** Grep the diff for U+2014 and
   U+2013 before release; the count must be zero.
 - Nothing about any agent or model is stated unless it comes from its

@@ -20,7 +20,7 @@ what a blog release may touch and when it may go to main.
 ## Author, voice, and register
 
 Every post is signed collectively: byline exactly "By Team Cartographer", no individual
-names. Vary the register across posts rather than settling into one:
+names. Never "the Cartographer team" or any other form of the name. Vary the register across posts rather than settling into one:
 
 - **Analysis.** A research finding, a documented pattern, or a piece of
   practical knowledge unpacked carefully in a general, informational voice.
@@ -83,13 +83,15 @@ covers.
   own search results, from more than one search if the first result is
   thin, before relying on it. A link nobody has actually opened in that run
   is not yet a verified citation.
-- **Footnote format.** Mark the cited statement in the text with a numbered
-  superscript marker linking to the footnote:
-  `<sup><a href="#fn1">1</a></sup>`. End the post with a Sources section: an
-  `<ol class="footnotes">` where each `<li id="fn1">` carries the full source
-  name and a working link. Reuse a number when the same source is cited
-  again. Markers and footnotes must match one to one; at least two distinct
-  sources per post.
+- **Citation format.** Every cited claim is linked twice. First, the claim's
+  key phrase in the text links directly to the source:
+  `<a href="URL" rel="noopener">the phrase that carries the claim</a>`.
+  Second, a numbered superscript marker follows the sentence and links to
+  the entry in the Sources section at the end of the post. Each entry
+  carries the full source name and the same working link. Reuse a number
+  when the same source is cited again. Markers and entries must match one
+  to one; at least two distinct sources per post. Pick a phrase that names
+  the finding or the source, never a bare "here" or "study".
 - Claims about the product itself must be substantiated by copy already in
   this repository. A post is about the reader's world, not the product; one
   short paragraph connecting to the product is the most a post carries.
@@ -104,7 +106,11 @@ recent post used.
 
 ## Post structure
 
-Copy `site/www/blog/_template.html` and replace every `{{PLACEHOLDER}}`; delete the HTML comments. Create `site/www/blog/index.html` from `_index-template.html` on the first release (replace `{{POSTS}}` with the first card); afterwards add the new card at the top of the list. On the first release only, add `<a href="/blog/">Blog</a>` after Questions in the nav of every page under `site/www/`.
+Dates shown to readers are written in full with the day as an ordinal and
+nothing abbreviated: "September 12th 2026". JSON-LD dates and the sitemap
+lastmod stay YYYY-MM-DD.
+
+Copy `site/www/blog/_template.html` and replace every `{{PLACEHOLDER}}` (`{{DATE}}` is the written-out date, `{{DATE_ISO}}` is YYYY-MM-DD); delete the HTML comments. Create `site/www/blog/index.html` from `_index-template.html` on the first release (replace `{{POSTS}}` with the first card); afterwards add the new card at the top of the list. On the first release only, add `<a href="/blog/">Blog</a>` after Questions in the nav of every page under `site/www/`.
 
 Target length: 700 to 1,000 words of body copy. Head: unique title (70
 characters or fewer), meta description (70 to 160 characters), canonical URL,
