@@ -123,9 +123,14 @@ Strategies LLC (`@id` https://situatedstrategies.org/#organization).
 - Add the new post's card to the TOP of the list on the blog index (newest
   first), matching the existing card markup.
 - Add the post's URL to the sitemap with today's date as lastmod.
+- Run `node scripts/build-feed.mjs` and `node scripts/build-llms-full.mjs` from
+  the repo root and commit the regenerated `site/www/blog/feed.xml`,
+  `site/www/blog/feed.json` and `site/www/llms-full.txt` with the post. They
+  are read from the post pages and the sitemap, so run them last; never edit
+  them by hand.
 - Update the topic queue in this file.
 - Touch nothing else. The blog-release scope in `CLAUDE.md` is a hard
-  boundary: one new file under `site/www/blog/`, `site/www/blog/index.html`, one URL line in `site/www/sitemap.xml`, the nav links on the first release only, and the topic queue in `marketing/cartographer-blog-editorial.md`.
+  boundary: one new file under `site/www/blog/`, `site/www/blog/index.html`, one URL line in `site/www/sitemap.xml`, the regenerated `site/www/blog/feed.xml`, `site/www/blog/feed.json` and `site/www/llms-full.txt`, the nav links on the first release only, and the topic queue in `marketing/cartographer-blog-editorial.md`.
 
 ## Revise, then check, then release (all three, in order, every run)
 

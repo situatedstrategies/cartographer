@@ -30,6 +30,7 @@
   <p class="lead">{{LEAD}}</p>
   <p class="meta">By Team Cartographer · {{DATE}} · {{MINUTES}} minute read</p>
 </header>
+<main>
 
 <section>
   <!-- BODY: <h2> sections, <p class="sub"> paragraphs, <ul class="list">, the cited phrase linked to its source <a href="URL" rel="noopener">phrase</a> plus a superscript marker <sup><a href="#fn1">1</a></sup> -->
@@ -45,6 +46,7 @@
 </section>
 
 <div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
 <footer>
   <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
   <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
@@ -55,7 +57,7 @@
 </footer>
 </div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 <script>
-  kofiWidgetOverlay.draw('olivia_', {
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
     'type': 'floating-chat',
     'floating-chat.donateButton.text': 'Donate',
     'floating-chat.donateButton.background-color': '#2f4a72',

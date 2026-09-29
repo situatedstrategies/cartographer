@@ -36,6 +36,10 @@ A blog release pushed to main may contain only:
 - One new post file under `site/www/blog/` (copy `site/www/blog/_template.html`; never publish the template itself)
 - `site/www/blog/index.html` (created from `site/www/blog/_index-template.html` on the first release; the new card goes at the top afterwards)
 - One new URL line in `site/www/sitemap.xml`
+- The regenerated `site/www/blog/feed.xml`, `site/www/blog/feed.json` and
+  `site/www/llms-full.txt`, produced by running `node scripts/build-feed.mjs` and
+  `node scripts/build-llms-full.mjs` from the repo root after the sitemap line
+  is in (never edited by hand)
 - On the first release only: the Blog link in the nav and footer of every page
 - The topic-queue edit in `marketing/cartographer-blog-editorial.md`
 

@@ -29,6 +29,7 @@
   <h1>cartographer projects</h1>
   <p class="lead">Every project with its sessions, versions, outcomes and appraisals.</p>
 </header>
+<main>
 
 <section>
   <h2>Usage</h2>
@@ -42,6 +43,7 @@
 </section>
 
 <div class="next"><a href="/commands/save">← cartographer save</a><a href="/commands/render">cartographer render →</a></div>
+</main>
 <footer>
   <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
   <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
@@ -52,7 +54,7 @@
 </footer>
 </div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 <script>
-  kofiWidgetOverlay.draw('olivia_', {
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
     'type': 'floating-chat',
     'floating-chat.donateButton.text': 'Donate',
     'floating-chat.donateButton.background-color': '#2f4a72',

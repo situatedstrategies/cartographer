@@ -1,0 +1,15 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "The Cartographer blog",
+  "home_page_url": "https://codecartographer.dev/blog/",
+  "feed_url": "https://codecartographer.dev/blog/feed.json",
+  "description": "Short, cited articles from Team Cartographer on working with coding agents, with sources.",
+  "language": "en-US",
+  "authors": [
+    {
+      "name": "Team Cartographer",
+      "url": "https://codecartographer.dev"
+    }
+  ],
+  "items": []
+}

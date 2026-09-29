@@ -30,6 +30,7 @@
   <h1>Cartographer, git history and a chat summary</h1>
   <p class="lead">Three records of the same work, answering three different questions. What each one keeps, what each one drops, and why you want all three.</p>
 </header>
+<main>
 
 <section>
   <table class="hl">
@@ -58,6 +59,7 @@
 </section>
 
 <div class="next"><a href="/guides/reading-claude-code-session-logs">← Reading a session log</a><a href="/install">Install →</a></div>
+</main>
 <footer>
   <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
   <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
@@ -68,7 +70,7 @@
 </footer>
 </div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 <script>
-  kofiWidgetOverlay.draw('olivia_', {
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
     'type': 'floating-chat',
     'floating-chat.donateButton.text': 'Donate',
     'floating-chat.donateButton.background-color': '#2f4a72',

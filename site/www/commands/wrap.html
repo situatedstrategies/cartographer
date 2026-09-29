@@ -29,6 +29,7 @@
   <h1>cartographer wrap</h1>
   <p class="lead">Write the brief for a session.</p>
 </header>
+<main>
 
 <section>
   <h2>Usage</h2>
@@ -48,6 +49,7 @@
 </section>
 
 <div class="next"><a href="/commands/sessions">← cartographer sessions</a><a href="/commands/goal">cartographer goal →</a></div>
+</main>
 <footer>
   <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
   <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
@@ -58,7 +60,7 @@
 </footer>
 </div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 <script>
-  kofiWidgetOverlay.draw('olivia_', {
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
     'type': 'floating-chat',
     'floating-chat.donateButton.text': 'Donate',
     'floating-chat.donateButton.background-color': '#2f4a72',

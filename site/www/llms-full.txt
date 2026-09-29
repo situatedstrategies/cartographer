@@ -1,0 +1,696 @@
+# Cartographer: full text
+
+> An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
+> Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
+> Generated 2026-09-29.
+
+
+---
+
+# Cartographer · a map of how you build with coding agents
+URL: https://codecartographer.dev/
+Description: Cartographer reads the session history your coding agent keeps and tells it back as a story: what you did, what happened, what it meant. Local and private.
+
+## One line to install
+
+Mac and Linux (Terminal):
+
+curl -fsSL https://codecartographer.dev/install.sh | sh{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Windows (PowerShell):
+
+irm https://codecartographer.dev/install.ps1 | iex{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Needs Python 3.9+ and Claude Code. Step by step, in plain language and in detail, on the Install page.
+
+## What you get
+
+| Command | | When | | What you get back |
+
+| /wrap | | End of a session | | A write-up of what you asked for, what the agent did, where things went sideways, and how you got back on track.Each point links to the moment in the transcript it came from.
+In Claude Code →
+
+|
+
+| replay | | Any time | | The whole project, played back one step at a time.Underneath: coaching, the prompts worth keeping, and where your time actually went.
+Open the demo ↗
+
+|
+
+| /complete | | When a version ships | | The whole build next to what you said "done" would mean.What got you there, and what it cost.
+How it works →
+
+|
+
+## About
+
+Cartographer is for people who code with AI: engineers who work with an agent every day, and yes, even vibe coders. It's meant to help you understand your own process, and what your projects look like in practice, session by session.
+
+There are only so many words you can remember, and only so many prompts. A few weeks into a build, it's hard to say which prompts did the work and which ones sent the agent in circles. Cartographer isn't a prompt library, and it isn't trying to replace one. It shows you how you've been using your prompts, and how well your natural language held up against the code the AI generated.
+
+---
+
+# Install · Cartographer
+URL: https://codecartographer.dev/install
+Description: Install Claude Code, then Cartographer, in one line each. Plain-language and technical steps, manual install, update, uninstall.
+
+## Step 1 · Claude Code
+
+Skip this if you already type claude in a terminal. Cartographer reads the history Claude Code keeps, so Claude Code has to be there first.
+
+Mac and Linux (Terminal):
+
+curl -fsSL https://claude.ai/install.sh | bash{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Windows (PowerShell):
+
+irm https://claude.ai/install.ps1 | iex{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Then open a new terminal, type claude --version to check it is there, go to a project folder, type claude and press Enter: a browser window opens to sign in (a Claude subscription or an API key). claude doctor checks the install; claude update updates it. Windows: install Git for Windows too (winget install Git.Git); it gives Claude Code its Bash tool and gives Cartographer Git Bash. Other ways in: brew install --cask claude-code, winget install Anthropic.ClaudeCode, or npm install -g @anthropic-ai/claude-code with Node 22+. The official steps live at code.claude.com/docs.
+
+## Step 2 · Cartographer
+
+Mac and Linux (Terminal):
+
+curl -fsSL https://codecartographer.dev/install.sh | sh{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Windows (PowerShell):
+
+irm https://codecartographer.dev/install.ps1 | iex{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Plain language
+
+### If you don't live in a terminal
+
+- Open a terminal. Mac: press ⌘ Space, type Terminal, Enter. Windows: press the Windows key, type PowerShell, Enter. A window with a blinking cursor appears.
+
+- Paste the line for your system and press Enter. It prints what it is doing. Thirty seconds, no questions. If it says Python is missing: on a Mac run xcode-select --install; on Windows run winget install Python.Python.3.12; then open a new terminal and paste the line again.
+
+- Open your dashboard. Type cartographer serve --open and press Enter. A page opens in your browser. Only your computer can see it.
+
+- Answer six questions. How comfortable you are with code, how experienced with prompting, what the map should sound like. This decides how Cartographer speaks to you. You can change it any time.
+
+- Work in Claude Code as usual. Cartographer does nothing during the session.
+
+- At the end of a session, type /wrap. Claude writes the map and tells you where the replay is. Come back to the dashboard, or type cartographer open, to watch it.
+
+Technical
+
+### What the script does, exactly
+
+- Checks for python3 3.9+. Nothing else is required. No pip, no venv, no npm.
+
+- Downloads cartographer.tar.gz from this site (built from main on every deploy), falling back to git clone.
+
+- Runs bin/cartographer install --agent claude-code. That copies the checkout to ~/.cartographer/app, symlinks ~/.local/bin/cartographer, and copies the skills to ~/.claude/skills/ (wrap, replay, complete, cartographer-setup).
+
+- Touches ~/.claude/settings.json only with --auto, adding a SessionEnd hook that maps each session when it ends. Default is manual.
+
+- Tells you if ~/.local/bin is not on your PATH, with the line to add.
+
+- Windows: install.ps1 does the same with py or python, unpacks cartographer.zip, writes cartographer.cmd (PowerShell, cmd) and a shim for Git Bash (which Claude Code uses) into ~\.local\bin, and adds that folder to your user PATH. Hooks are registered as "python.exe" "…/bin/cartographer" hook claude-code, so they run without a Unix shell.
+
+## Manual install
+
+git clone https://github.com/situatedstrategies/cartographer && cd cartographer
+./bin/cartographer install --agent claude-code # add --auto for hooks
+cartographer config init # or: cartographer serve --open
+cartographer doctor # what is installed, where, and what it found
+
+### Update
+
+Run the install line again. It replaces ~/.cartographer/app and the skills; your maps and config stay.
+
+### Uninstall
+
+rm -rf ~/.cartographer ~/.local/bin/cartographer ~/.claude/skills/{wrap,replay,complete,cartographer-setup}
+# Windows (PowerShell): Remove-Item -Recurse ~\.cartographer, ~\.local\bin\cartographer*, ~\.claude\skills\wrap, ~\.claude\skills\replay, ~\.claude\skills\complete, ~\.claude\skills\cartographer-setup
+# and, if you used --auto, remove the cartographer SessionEnd hook from ~/.claude/settings.json
+Everything lives under ~/.cartographer (or $CARTOGRAPHER_HOME): config, one JSON map per session, appraisals, rendered replays. Raw transcripts are never copied there. Secrets are redacted before anything is written.
+
+← HomeIn Claude Code →
+
+---
+
+# In Claude Code · Cartographer
+URL: https://codecartographer.dev/claude-code
+Description: The four Cartographer commands inside Claude Code: /wrap, /replay, /complete, /cartographer-setup, and what a session looks like.
+
+/wrap
+At the end of a session. Cartographer digests the transcript into a timeline with a reading of every prompt, writes a brief tuned to your profile and the languages you used, and Claude writes the map: chapters, then moves (what you did, what happened, what it meant, how you responded), each citing its evidence. Then it files the map under the git repo you were in and renders the replay.
+/wrap myproject names the project · /wrap --session <id> maps an older session · --force redoes one
+
+/replay
+The story of every wrapped session of a project, across branches, told one move at a time, with the playbook underneath: coaching, prompts worth reusing, how you build, where time went. /replay myproject, or just /replay to pick.
+
+/complete
+When a version is done. Claude asks what "done" meant, in your words, if you never declared it, then the result (shipped, partial, abandoned) and what actually happened. Then it writes the appraisal: what got you there, what cost you and how many minutes, what was carried into the result and what it will cost later, how you prompted and what it did. Every item cites session and move ids; praise words are rejected.
+
+/cartographer-setup
+Change your profile in conversation, switch manual and automatic wrapping, or backfill maps of old sessions. /cartographer-setup backfill lists past sessions and maps the ones you pick.
+
+## What a session looks like
+
+- Before you start (optional, recommended): cartographer goal "what done means for this version" in the repo. This is the yardstick every map is judged against.
+
+- Build as usual. Prompts, corrections, dead ends, fixes. Cartographer is not running.
+
+- /wrap at the end. Claude reads the brief, writes the map, saves it, and gives you the trailer: one line on what happened, three to five beats, one observation about how you build, coaching if you turned it on, and the replay path.
+
+- Repeat across sessions. Each one lands in the same project; the replay stitches them into one story.
+
+- /complete when the version ships. The honest reading of the whole build against what you wanted.
+
+Codex and Cursor: coming soon. We're checking them against real session history before calling them supported.
+
+← InstallCommands →
+
+---
+
+# Commands · Cartographer
+URL: https://codecartographer.dev/commands
+Description: Every Cartographer command and what it does, in the terminal and inside Claude Code: map a session, wrap it up, replay a project, judge a finished build.
+
+| Command | | What it does |
+
+| cartographer serve --open | | The dashboard in your browser, this machine only: profile, recent sessions with a Map this session button, projects, maps, outcomes and completion. |
+
+| cartographer open [project] | | Open a replay directly. Newest project if you name none. |
+
+| cartographer sessions --all | | Every session found for every installed agent. ✓ means already mapped. |
+
+| cartographer wrap [--session id] [--force] [--run] | | Write the brief for a session. --run also maps it with the agent's headless CLI, no human in the loop. |
+
+| cartographer goal "…" | | Declare what done means for the current version of the repo you are in. The source of truth for every map and the appraisal. |
+
+| cartographer complete --result shipped|partial|abandoned --actual "…" | | Close the version and write the appraisal brief. --run appraises headlessly. |
+
+| cartographer save file.json [--check] | | Validate, redact, file and render a map or an appraisal. --check only validates. This is what Claude runs at the end of /wrap. |
+
+| cartographer projects | | Every project with its sessions, versions, declared outcomes and appraisals. |
+
+| cartographer render --project name [--open] | | Rebuild a replay page. Also takes map and appraisal files directly. |
+
+| cartographer backfill --cwd repo [--run] | | Briefs (or, with --run, maps) for every past session of a repo. Retrospective maps. |
+
+| cartographer sweep [--dry] | | Map every session that has gone quiet and isn't mapped yet. For agents with no session-end event; run it on a schedule. |
+
+| cartographer config show | set key value | init | | Your profile and settings, in the terminal. init is the wizard. |
+
+| cartographer install --agent claude-code [--auto] | | What the installer runs. Rerun after updating. Codex and Cursor coming soon. |
+
+| cartographer doctor | | Version, home folder, mode, which agents were found and how many sessions, headless runners. |
+
+Windows: the same commands work in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect.
+
+← In Claude CodeHow it works →
+
+---
+
+# How it works · Cartographer
+URL: https://codecartographer.dev/how-it-works
+Description: How Cartographer reads session history, reads every prompt, briefs the agent and judges the build against a yardstick.
+
+Reads what already exists
+Claude Code keeps one file per session. An adapter turns it into a plain stream of events: prompts, replies, tools, errors, branch changes. No capture, no plugin in the loop, no cloud.
+
+Reads every prompt
+What act it performs (build, fix, repair, accept, ask), what it anchors to (files, symbols, errors, pasted code), how it is said (imperative, question, hedged, delegated). A turn that starts with "no, I meant…" marks the previous move as having gone wrong for you, even if the code ran.
+
+Hands the agent a brief
+Facts, your profile, what Cartographer knows about the languages you used, the reading of each prompt, the rules, the timeline. The agent that was in the session writes the map. Any agent can follow the same brief.
+
+Judges against a yardstick
+Session maps are provisional. The outcome you wanted is only known when a version is done, so /complete is where the verdict lives. Every move and every appraisal item must cite its evidence in the record; praise words are rejected on save.
+
+## The shape of a map
+
+A session map is a list of moves. Each move has the same five parts, in your words or in code terms depending on your profile.
+
+| Part | | Answers |
+
+| you | | What you did: the prompt, the correction, the decision, the pause. |
+
+| happened | | What the agent did with it and what the tools returned. |
+
+| consequence | | What that meant technically: the file that changed shape, the test that now passes, the assumption that got baked in. |
+
+| outcome | | worked · partly · broke · wrong way · opened a question. Judged from the record, not from tone. |
+
+| response | | How you responded next, and whether it repaired, accepted or moved on. |
+
+Moves are grouped into chapters. Marks call out decisions, questions, dead ends, fixes, artifacts, pivots and insights. The replay plays them in order; the appraisal reads them against the yardstick.
+
+← CommandsQuestions →
+
+---
+
+# Questions · Cartographer
+URL: https://codecartographer.dev/questions
+Description: Privacy, Windows, .pkg, updating, old sessions, and what honest means mechanically.
+
+Does anything leave my machine?No. Maps, config and replays live in ~/.cartographer. The dashboard binds to 127.0.0.1 and refuses requests from anywhere else. The only network call is the installer downloading Cartographer. Team sharing, when it comes, will be a choice you make, not a default.
+
+Is there a Mac installer (.pkg)?Not yet. A signed and notarised package is on the list. The one-line installer does the same thing on Mac and Linux without needing Apple's signing, and it is what we test.
+
+Windows?Yes, natively: the PowerShell line on the Install page. It needs Python 3.9+ (winget install Python.Python.3.12) and Claude Code, which brings Git Bash with it. The Windows path is new and has had less real-world use than Mac and Linux; if anything breaks, support@codecartographer.dev with the output of the installer is enough to fix it. WSL works as well.
+
+Can I map sessions from before I installed it?Yes. /cartographer-setup backfill or cartographer backfill --cwd <repo> prepares a brief for every past session Claude Code still has on disk.
+
+What does "honest" mean here, mechanically?Three enforced rules. Every move lists the timeline items it rests on. "What it meant" has to name the technical implication, not an adjective. Saving rejects praise words in the map and the appraisal. And the verdict waits for completion, because a session cannot judge itself.
+
+How do I update?Run the install line again. It replaces ~/.cartographer/app and the skills; your maps and config stay.
+
+Which agents?Claude Code, today. Codex and Cursor are coming soon. We're checking them against real session history before calling them supported.
+
+Something broke. Where do I write?support@codecartographer.dev with what you typed and what came back. Maps you'd like to show us, or thoughts on the maps you got: mapit@codecartographer.dev.
+
+← How it worksSee a map ↗
+
+---
+
+# cartographer serve: The dashboard in your browser, this machine only
+URL: https://codecartographer.dev/commands/serve
+Description: The cartographer serve command. Opens the dashboard: your profile, recent sessions with a Map this session button, projects, maps, outcomes and completion.
+
+## Usage
+
+cartographer serve --open{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Opens the dashboard: your profile, recent sessions with a Map this session button, projects, maps, outcomes and completion. It binds to 127.0.0.1 and refuses requests from anywhere else, so nothing is reachable from the network.
+
+## Options
+
+- --open opens your browser on the dashboard as soon as it is up.
+
+## When to use it
+
+When you want to see what has been mapped, pick a session to map by hand, or read a replay without remembering a project name.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← Commandscartographer open →
+
+---
+
+# cartographer open: Open a replay directly
+URL: https://codecartographer.dev/commands/open
+Description: The cartographer open command. Renders and opens the replay for a project without going through the dashboard.
+
+## Usage
+
+cartographer open [project]{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Renders and opens the replay for a project without going through the dashboard. Name no project and it opens the newest one.
+
+## Options
+
+- [project] is optional; the newest project is the default.
+
+## When to use it
+
+The quickest route from a terminal to the story of a build.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer servecartographer sessions →
+
+---
+
+# cartographer sessions: Every session found for every installed agent
+URL: https://codecartographer.dev/commands/sessions
+Description: The cartographer sessions command. Lists the sessions Cartographer can see.
+
+## Usage
+
+cartographer sessions --all{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Lists the sessions Cartographer can see. A tick marks the ones already mapped, so you can see at a glance what is still unmapped.
+
+## Options
+
+- --all lists every agent's sessions, not only the current repo's.
+
+## When to use it
+
+Before a backfill, or when you want to map one specific older session and need its id.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer opencartographer wrap →
+
+---
+
+# cartographer wrap: Write the brief for a session
+URL: https://codecartographer.dev/commands/wrap
+Description: The cartographer wrap command. Digests a session&#x27;s transcript into a timeline with a reading of every prompt, then writes the brief the agent uses to write.
+
+## Usage
+
+cartographer wrap [--session id] [--force] [--run]{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Digests a session's transcript into a timeline with a reading of every prompt, then writes the brief the agent uses to write the map. This is what the /wrap command in Claude Code runs before Claude does the writing.
+
+## Options
+
+- --session id wraps an older session instead of the latest one.
+
+- --force redoes a session that already has a brief.
+
+- --run also maps it with the agent's headless CLI, with no human in the loop.
+
+## When to use it
+
+At the end of a session, or from a script that maps sessions automatically.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer sessionscartographer goal →
+
+---
+
+# cartographer goal: Declare what done means for the current version
+URL: https://codecartographer.dev/commands/goal
+Description: The cartographer goal command. Records, in your words, what the current version of the repo is supposed to achieve.
+
+## Usage
+
+cartographer goal "what done means"{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Records, in your words, what the current version of the repo is supposed to achieve. It is the source of truth for every map and for the appraisal: every session map is judged against it, and complete reads the result back against it.
+
+## Options
+
+- Takes one quoted sentence. Run it in the repo the version belongs to.
+
+## When to use it
+
+Before you start a version, ideally. It is optional, and /complete will ask for it later if you never declared one.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer wrapcartographer complete →
+
+---
+
+# cartographer complete: Close the version and write the appraisal brief
+URL: https://codecartographer.dev/commands/complete
+Description: The cartographer complete command. Marks a version as done, with the result and what actually happened, and writes the brief for the appraisal: what got you.
+
+## Usage
+
+cartographer complete --result shipped|partial|abandoned --actual "…"{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Marks a version as done, with the result and what actually happened, and writes the brief for the appraisal: what got you there, what it cost, what was carried into the result, how you prompted. Every appraisal item cites session and move ids, and praise words are rejected on save.
+
+## Options
+
+- --result is one of shipped, partial or abandoned.
+
+- --actual is what actually happened, in your words.
+
+- --run writes the appraisal headlessly instead of handing the brief to the agent in conversation.
+
+## When to use it
+
+When a version ships, or when you abandon it. The verdict on the whole build lives here, because a session cannot judge itself.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer goalcartographer save →
+
+---
+
+# cartographer save: Validate
+URL: https://codecartographer.dev/commands/save
+Description: The cartographer save command. Takes a map or appraisal file the agent has written, validates it against the rules, redacts secrets, files it under the.
+
+## Usage
+
+cartographer save file.json [--check]{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Takes a map or appraisal file the agent has written, validates it against the rules, redacts secrets, files it under the project, and renders the replay. This is what Claude runs at the end of /wrap.
+
+## Options
+
+- --check only validates, and writes nothing.
+
+## When to use it
+
+You rarely run it yourself. It is the last step of every wrap and every completion.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer completecartographer projects →
+
+---
+
+# cartographer projects: Every project with its sessions
+URL: https://codecartographer.dev/commands/projects
+Description: The cartographer projects command. Lists everything Cartographer knows: each project, its sessions, its declared versions and goals, and the appraisals that.
+
+## Usage
+
+cartographer projects{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Lists everything Cartographer knows: each project, its sessions, its declared versions and goals, and the appraisals that closed them.
+
+## When to use it
+
+An inventory, when you want to see the shape of the work across repos.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer savecartographer render →
+
+---
+
+# cartographer render: Rebuild a replay page
+URL: https://codecartographer.dev/commands/render
+Description: The cartographer render command. Regenerates the replay for a project from its filed maps.
+
+## Usage
+
+cartographer render --project name [--open]{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Regenerates the replay for a project from its filed maps. It also accepts map and appraisal files directly, for rendering one on its own.
+
+## Options
+
+- --project name names the project to render.
+
+- --open opens the result in your browser.
+
+## When to use it
+
+After an update, or when a replay looks stale.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer projectscartographer backfill →
+
+---
+
+# cartographer backfill: Briefs
+URL: https://codecartographer.dev/commands/backfill
+Description: The cartographer backfill command. Prepares a brief for every session Claude Code still has on disk for a repo, so sessions from before you installed.
+
+## Usage
+
+cartographer backfill --cwd repo [--run]{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Prepares a brief for every session Claude Code still has on disk for a repo, so sessions from before you installed Cartographer can be mapped. This is what /cartographer-setup backfill runs.
+
+## Options
+
+- --cwd repo points at the repository whose sessions you want.
+
+- --run maps them headlessly instead of only writing briefs.
+
+## When to use it
+
+Once, after installing, to bring the history in. Retrospective maps read a little flatter than live ones, because nobody was there to be corrected.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer rendercartographer sweep →
+
+---
+
+# cartographer sweep: Map every session that has gone quiet and is not m
+URL: https://codecartographer.dev/commands/sweep
+Description: The cartographer sweep command. Finds sessions that have stopped and have no map, and maps them.
+
+## Usage
+
+cartographer sweep [--dry]{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Finds sessions that have stopped and have no map, and maps them. It exists for agents that have no session-end event, and it is meant to be run on a schedule.
+
+## Options
+
+- --dry lists what would be mapped without mapping anything.
+
+## When to use it
+
+From a scheduled job, when you want everything mapped without remembering to wrap.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer backfillcartographer config →
+
+---
+
+# cartographer config: Your profile and settings, in the terminal
+URL: https://codecartographer.dev/commands/config
+Description: The cartographer config command. Shows or changes your profile and settings.
+
+## Usage
+
+cartographer config show | set key value | init{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Shows or changes your profile and settings. The profile shapes every brief: whether moves are written in your words or in code terms, coaching on or off, which languages Cartographer knows you use.
+
+## Options
+
+- show prints the current settings.
+
+- set key value changes one.
+
+- init runs the setup wizard again.
+
+## When to use it
+
+When you want to change how maps are written without opening a conversation. /cartographer-setup does the same thing from inside Claude Code.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer sweepcartographer install →
+
+---
+
+# cartographer install: What the installer runs
+URL: https://codecartographer.dev/commands/install
+Description: The cartographer install command. Registers Cartographer&#x27;s commands with an agent.
+
+## Usage
+
+cartographer install --agent claude-code [--auto]{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Registers Cartographer's commands with an agent. The one-line installer runs this for you; rerun it after updating so the commands stay current.
+
+## Options
+
+- --agent claude-code is the only agent today. Codex and Cursor are coming soon.
+
+- --auto turns on automatic wrapping at the end of every session.
+
+## When to use it
+
+After the install line, and again after an update.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer configcartographer doctor →
+
+---
+
+# cartographer doctor: Version
+URL: https://codecartographer.dev/commands/doctor
+Description: The cartographer doctor command. Prints what Cartographer can see: its version, the home folder, whether wrapping is manual or automatic, which agents were.
+
+## Usage
+
+cartographer doctor{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+
+Prints what Cartographer can see: its version, the home folder, whether wrapping is manual or automatic, which agents were found and how many sessions each has, and which headless runners are available.
+
+## When to use it
+
+First thing to run when something does not work, and the output to paste when you write to support.
+
+Windows: the same command works in PowerShell, cmd and Git Bash. If cartographer is not found, open a new terminal so the PATH change takes effect. Every command is listed on the commands page.
+
+← cartographer installHow it works →
+
+---
+
+# How to read a Claude Code session log: the JSONL files explained
+URL: https://codecartographer.dev/guides/reading-claude-code-session-logs
+Description: Where Claude Code keeps session history, what each line of the JSONL file holds, how to read one by hand, and what a transcript cannot tell you on its own.
+
+## What is in the file
+
+Claude Code stores every session as a JSONL file, one JSON object per line, under ~/.claude/projects/<encoded-project-path>/<session-id>.jsonl. The project folder is your working directory path with non-alphanumeric characters replaced by hyphens.1 Each line is one event: a user turn, an assistant reply, a tool call, a tool result, or a system event. The file is append-only; new events are new lines.2
+
+Each event carries top-level fields such as type, uuid, parentUuid, timestamp, sessionId, cwd, gitBranch and version. Inside message.content are content blocks: text, thinking, tool_use with an id, a name and its input, and tool_result referencing the tool_use_id it answers.2 That is enough structure to rebuild the whole session in order: which prompt led to which tool call, what came back, and what the agent said next.
+
+## Reading it by hand
+
+Find the folder for your project, sort by modification time, and open the newest file. Filter lines by type to see only user turns, or only tool results. The parentUuid chain is the conversation thread; the gitBranch field tells you where you were when each turn happened. A short script that prints timestamp, type and the first line of each text block gives you a readable transcript in a minute.
+
+There are also community tools that render transcripts as pages, such as Simon Willison's claude-code-transcripts.3 They answer the question "what was said", which is the right first question.
+
+## What a transcript does not tell you
+
+A transcript is the record of what happened, in order. It does not say which prompt was the one that went wrong, which correction repaired it, where the time went, or whether the build ended up where you said it should. Those are readings of the record, and they are the part that takes the work.
+
+That is the part Cartographer does. It reads the same file through an adapter that turns it into a plain stream of events, reads every prompt for what act it performs and what it anchors to, and hands the agent that was in the session a brief. The agent writes the map: chapters, then moves, each with what you did, what happened, what it meant, how it turned out and how you responded, each citing the timeline it rests on. How it works has the detail, and the demo replay shows a real build read this way.
+
+## Questions
+
+Where does Claude Code keep session history?Under your home folder, in ~/.claude/projects/, one folder per project, one JSONL file per session. The folder name is the project path with non-alphanumeric characters replaced by hyphens.
+
+Can I read the file without a tool?Yes. It is plain text, one JSON object per line. Any editor opens it, and a line of jq or a few lines of Python turn it into something readable.
+
+Does Cartographer copy my transcripts?No. It reads them where they are and writes maps, briefs and replays under ~/.cartographer. Raw transcripts are never copied there, and secrets are redacted before anything is written.
+
+Does any of this leave my machine?Not through Cartographer. The dashboard binds to 127.0.0.1, and the only network call the tool makes is the installer downloading it.
+
+## Sources
+
+- Claude Code documentation. Explore the .claude directory.
+
+- Claude Code documentation. Manage sessions.
+
+- Simon Willison. claude-code-transcripts, on GitHub.
+
+← QuestionsCartographer vs git history →
+
+---
+
+# Cartographer vs git history vs a chat summary: what each records
+URL: https://codecartographer.dev/compare
+Description: Git records what changed. A chat summary records what the agent remembers. A Cartographer map records how the build went, move by move, with evidence.
+
+| | | Git history | | A chat summary | | A Cartographer map |
+
+| Records | | What changed: commits, diffs, branches | | What the agent remembers, in prose | | Every move: what you did, what happened, what it meant, the outcome, your response |
+
+| Evidence | | The diff itself | | None required | | Each move lists the timeline items it rests on; saving rejects a move without them |
+
+| Dead ends | | Invisible unless committed | | Usually left out | | Kept, marked, and read for what they cost |
+
+| Your prompts | | Not recorded | | Paraphrased | | Read one by one: the act, the anchor, how it was said, and where a correction marks the previous move as wrong for you |
+
+| Praise | | Not applicable | | Common | | Rejected on save, in the map and in the appraisal |
+
+| The verdict | | Whether it merged | | Whatever the summary says | | Waits for /complete, judged against the goal you declared, because a session cannot judge itself |
+
+| Where it lives | | The repo | | The chat | | ~/.cartographer on your machine, as JSON maps and rendered replays |
+
+## The short version
+
+Git is the record of the result. A chat summary is the agent's recollection of the process. A map is the process, read from the record, under rules. Use all three; they do not compete.
+
+If you want to see what the third one looks like on a real build, the demo replay is one. How it works explains the five parts of a move and the yardstick the appraisal reads them against.
+
+## Questions
+
+Does Cartographer replace git?No. Git records what changed and Cartographer records how you got there. They answer different questions about the same work.
+
+Why not just ask the agent to summarise the session?You can, and it will. A summary is prose with no rules: it can praise, skip the dead ends, and cite nothing. A map has five fixed parts per move, cites the timeline it rests on, and rejects praise words on save. The difference shows up the third time you read one.
+
+Is the map written by a different model?It is written by the agent that was in the session, following a brief. That is why it knows what you meant. The rules are enforced by Cartographer when the map is saved, not by the model's good intentions.
+
+← Reading a session logInstall →

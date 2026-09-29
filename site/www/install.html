@@ -48,6 +48,7 @@
   <p class="lead">Both are one line in a terminal. Cartographer downloads into a folder in your home directory and adds four commands to Claude Code. Nothing runs in the background unless you ask for it.</p>
   <p class="meta">Works with Claude Code today. Codex and Cursor coming soon.</p>
 </header>
+<main>
 
 <section>
   <h2>Step 1 · Claude Code</h2>
@@ -110,6 +111,7 @@ cartographer doctor                               # what is installed, where, an
 </section>
 
 <div class="next"><a href="/">← Home</a><a href="/claude-code">In Claude Code →</a></div>
+</main>
 <footer>
   <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
   <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
@@ -120,7 +122,7 @@ cartographer doctor                               # what is installed, where, an
 </footer>
 </div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 <script>
-  kofiWidgetOverlay.draw('olivia_', {
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
     'type': 'floating-chat',
     'floating-chat.donateButton.text': 'Donate',
     'floating-chat.donateButton.background-color': '#2f4a72',

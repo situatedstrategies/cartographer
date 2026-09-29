@@ -1,4 +1,14 @@
+# Content Signals (contentsignals.org). Read together with the allow rules
+# below: this site wants to be found in search and quoted in AI answers.
+# search: build a search index and show links and snippets.
+# ai-input: quote or summarise the page in a live AI answer (ChatGPT search,
+#   Perplexity, AI Overviews). This is the one that puts the site in AI search.
+# ai-train: use the page to train or fine-tune a model. Set to yes to match
+#   the training crawlers allowed below; change to no here and remove GPTBot,
+#   ClaudeBot, Google-Extended, Applebot-Extended and meta-externalagent to
+#   stay in AI search but out of training.
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 # AI search and assistant crawlers, named so the intent is unambiguous and
@@ -21,6 +31,7 @@ User-agent: Bingbot
 User-agent: DuckAssistBot
 User-agent: meta-externalagent
 User-agent: Amazonbot
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 Sitemap: https://codecartographer.dev/sitemap.xml

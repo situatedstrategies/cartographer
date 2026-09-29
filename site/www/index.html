@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
 <link rel="canonical" href="https://codecartographer.dev/">
+<link rel="alternate" type="application/rss+xml" title="The Cartographer blog" href="https://codecartographer.dev/blog/feed.xml">
+<link rel="alternate" type="application/feed+json" title="The Cartographer blog" href="https://codecartographer.dev/blog/feed.json">
 <meta name="msvalidate.01" content="529D0E835C1B743433E5A692115845DE">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://codecartographer.dev/">
@@ -50,6 +52,7 @@
   <div class="cta"><a class="btn primary" href="/install">Install</a><a class="btn" href="/demo.html" target="_blank" rel="noopener">Watch a real build replay ↗</a></div>
   <p class="meta">Works with Claude Code today; Codex and Cursor coming soon. Runs on your machine only. Plain Python, no dependencies, MIT.</p>
 </header>
+<main>
 
 <section>
   <h2>One line to install</h2>
@@ -78,6 +81,7 @@
   <p>There are only so many words you can remember, and only so many prompts. A few weeks into a build, it's hard to say which prompts did the work and which ones sent the agent in circles. Cartographer isn't a prompt library, and it isn't trying to replace one. It shows you how you've been using your prompts, and how well your natural language held up against the code the AI generated.</p>
 </section>
 
+</main>
 <footer>
   <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
   <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
@@ -88,7 +92,7 @@
 </footer>
 </div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 <script>
-  kofiWidgetOverlay.draw('olivia_', {
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
     'type': 'floating-chat',
     'floating-chat.donateButton.text': 'Donate',
     'floating-chat.donateButton.background-color': '#2f4a72',
