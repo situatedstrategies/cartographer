@@ -8,3 +8,8 @@ compatibility_date = "2026-09-01"
 
 [assets]
 directory = "www"
+
+# Workers Builds deploys pull request branches with `npx wrangler preview`, which refuses to run
+# without this block (the build log ends "Your Wrangler configuration is missing a `previews`
+# block"). It can stay empty: assets and compatibility settings are read from the top level.
+[previews]
