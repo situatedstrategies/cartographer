@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-09-29.
+> Generated 2026-10-01.
 
 
 ---
@@ -656,6 +656,16 @@ Does any of this leave my machine?Not through Cartographer. The dashboard binds 
 - Simon Willison. claude-code-transcripts, on GitHub.
 
 ← QuestionsCartographer vs git history →
+
+---
+
+# The Cartographer blog: working with coding agents, with sources
+URL: https://codecartographer.dev/blog/
+Description: Short, cited articles from Team Cartographer on working with coding agents, reading your own session history, and getting better at the craft.
+
+- The first post is on its way. The RSS feed and JSON feed are live now, so you can subscribe before it lands.
+
+← HomeHow it works →
 
 ---
 

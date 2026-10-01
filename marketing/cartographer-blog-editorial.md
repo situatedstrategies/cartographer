@@ -110,7 +110,7 @@ Dates shown to readers are written in full with the day as an ordinal and
 nothing abbreviated: "September 12th 2026". JSON-LD dates and the sitemap
 lastmod stay YYYY-MM-DD.
 
-Copy `site/www/blog/_template.html` and replace every `{{PLACEHOLDER}}` (`{{DATE}}` is the written-out date, `{{DATE_ISO}}` is YYYY-MM-DD); delete the HTML comments. Create `site/www/blog/index.html` from `_index-template.html` on the first release (replace `{{POSTS}}` with the first card); afterwards add the new card at the top of the list. On the first release only, add `<a href="/blog/">Blog</a>` after Questions in the nav of every page under `site/www/`.
+Copy `site/www/blog/_template.html` and replace every `{{PLACEHOLDER}}` (`{{DATE}}` is the written-out date, `{{DATE_ISO}}` is YYYY-MM-DD); delete the HTML comments. `site/www/blog/index.html` already exists: add the new card at the top of its list, and on the first release remove the `<li id="blog-empty">` placeholder. The Blog nav link is already on every page.
 
 Target length: 700 to 1,000 words of body copy. Head: unique title (70
 characters or fewer), meta description (70 to 160 characters), canonical URL,
@@ -130,7 +130,7 @@ Strategies LLC (`@id` https://situatedstrategies.org/#organization).
   them by hand.
 - Update the topic queue in this file.
 - Touch nothing else. The blog-release scope in `CLAUDE.md` is a hard
-  boundary: one new file under `site/www/blog/`, `site/www/blog/index.html`, one URL line in `site/www/sitemap.xml`, the regenerated `site/www/blog/feed.xml`, `site/www/blog/feed.json` and `site/www/llms-full.txt`, the nav links on the first release only, and the topic queue in `marketing/cartographer-blog-editorial.md`.
+  boundary: one new file under `site/www/blog/`, `site/www/blog/index.html`, one URL line in `site/www/sitemap.xml`, the regenerated `site/www/blog/feed.xml`, `site/www/blog/feed.json` and `site/www/llms-full.txt`, and the topic queue in `marketing/cartographer-blog-editorial.md`.
 
 ## Revise, then check, then release (all three, in order, every run)
 

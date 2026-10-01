@@ -34,13 +34,12 @@ manual for scheduled blog runs; where the two disagree, this file wins.
 A blog release pushed to main may contain only:
 
 - One new post file under `site/www/blog/` (copy `site/www/blog/_template.html`; never publish the template itself)
-- `site/www/blog/index.html` (created from `site/www/blog/_index-template.html` on the first release; the new card goes at the top afterwards)
+- `site/www/blog/index.html` (the new card goes at the top of the list; the first release also removes the `<li id="blog-empty">` placeholder)
 - One new URL line in `site/www/sitemap.xml`
 - The regenerated `site/www/blog/feed.xml`, `site/www/blog/feed.json` and
   `site/www/llms-full.txt`, produced by running `node scripts/build-feed.mjs` and
   `node scripts/build-llms-full.mjs` from the repo root after the sitemap line
   is in (never edited by hand)
-- On the first release only: the Blog link in the nav and footer of every page
 - The topic-queue edit in `marketing/cartographer-blog-editorial.md`
 
 If the diff touches anything else, even one line, it is not a blog release.
@@ -90,4 +89,4 @@ Only when all three pass may the release be pushed to main. If any check
 fails and cannot be fixed within the blog-release file scope, push a branch
 instead and report what happened.
 
-The first release creates `site/www/blog/index.html` from `site/www/blog/_index-template.html` and adds the Blog link to the nav and footer of every page; later releases only add a card. The two template files are listed in `site/www/.assetsignore` so they are never deployed.
+The blog index and the Blog nav link already exist on every page. Each release adds a card at the top of the index, and the first release also removes the `<li id="blog-empty">` placeholder. The two template files are listed in `site/www/.assetsignore` so they are never deployed.
