@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About · Cartographer</title>
+<meta name="description" content="Who makes Cartographer, why it exists, what it does and does not do, and how to reach the people behind it.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/about">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://codecartographer.dev/about">
+<meta property="og:title" content="About · Cartographer">
+<meta property="og:description" content="Who makes Cartographer, why it exists, what it does and does not do, and how to reach the people behind it.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Cartographer",
+  "url": "https://codecartographer.dev/about",
+  "about": { "@type": "SoftwareApplication", "name": "Cartographer", "url": "https://codecartographer.dev/" },
+  "publisher": { "@type": "Organization", "@id": "https://situatedstrategies.org/#organization", "name": "Situated Strategies LLC", "url": "https://situatedstrategies.org/", "email": "support@codecartographer.dev" }
+}
+</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">About</div>
+  <h1>A small tool from a small company, made to answer one question.</h1>
+  <p class="lead">Cartographer exists because the session history a coding agent keeps is the best record of how a project actually got built, and almost nobody reads it. This page says who makes the tool, why, and what we will and will not do with it.</p>
+</header>
+<main>
+
+<section class="about">
+  <h2>What Cartographer is</h2>
+  <p>Cartographer is an open source command line tool, released under the MIT licence, that reads the session history your coding agent already keeps and tells it back to you as a story: what you asked for, what the agent did, what that meant technically, and how you responded. It files each map under the git repository it belongs to, replays the whole build when a project is done, and judges the build against the goal you declared before you started.</p>
+  <p>It works with Claude Code today. Codex and Cursor support is coming once we have checked it against real session history. Cartographer is plain Python with no dependencies, it runs on your machine only, and the only network call it ever makes is the installer downloading the tool. Nothing about your sessions leaves your computer. That is a design decision, not a current limitation, and it is explained in detail on the <a href="/privacy">Privacy</a> page.</p>
+</section>
+
+<section class="about">
+  <h2>Why it exists</h2>
+  <p>Git records what changed. It does not record how you got there: the prompt that sent the agent in circles for forty minutes, the correction that finally landed, the moment you stopped reading and started trusting. A few weeks into a build those moments are gone, and all that is left is the diff.</p>
+  <p>The transcript has all of it. Every prompt, every reply, every tool call and error is sitting in a file on your disk. It is just unreadable at the length it comes in. Cartographer's job is to make that record legible without flattering anyone: every claim in a map has to cite the moment in the transcript it came from, "what it meant" has to name a technical consequence rather than an adjective, and the tool rejects praise words on save. The verdict on a version waits until the version is done, because a session cannot judge itself.</p>
+  <p>The method behind that comes from a particular way of studying work. The person behind Situated Strategies is a software implementation specialist by day and a doctoral researcher in ethnomethodology and conversation analysis, the study of how people actually get things done together, turn by turn, in the record of what they said and did. Cartographer applies that habit of reading to the turns between a person and an agent. The questions it asks of a transcript are the same ones that discipline asks of any recorded interaction: what did this turn do, what did the next turn make of it, and where did the work go off course and get repaired?</p>
+</section>
+
+<section class="about">
+  <h2>Who makes it</h2>
+  <p>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies LLC</a>, a small company in the United States. The company builds practical tools and products around one idea: that the best guide to how something should work is a close look at how people actually use it. Cartographer is its first developer tool.</p>
+  <p>The source is public at <a href="https://github.com/situatedstrategies/cartographer" rel="noopener">github.com/situatedstrategies/cartographer</a>. Issues, pull requests and forks are welcome. The tool is free, and it will stay free; if it has been useful to you, there is a <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Ko-fi page</a> for people who want to support the work.</p>
+</section>
+
+<section class="about">
+  <h2>What we will not do</h2>
+  <p>We will not send your session history anywhere. We will not add telemetry to the tool. We will not describe what any coding agent does internally beyond what its vendor documents, and when we cite research or documentation on this site, the citation links to the source and says no more than the source does. When team sharing arrives it will be something you turn on, not a default.</p>
+</section>
+
+<section class="about">
+  <h2>Reaching us</h2>
+  <p>Something broke, or a question about the tool: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>, ideally with the output of <kbd>cartographer doctor</kbd>. A map you would like to show us, or thoughts on the maps you got: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. Both addresses are read by a person.</p>
+  <p class="meta">This page was last updated October 8th 2026.</p>
+</section>
+
+<div class="next"><a href="/questions">← Questions</a><a href="/privacy">Privacy →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div></body></html>

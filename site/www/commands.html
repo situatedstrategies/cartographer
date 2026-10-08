@@ -4,7 +4,7 @@
      crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Commands · Cartographer</title>
-<meta name="description" content="Every Cartographer command and what it does, in the terminal and inside Claude Code: map a session, wrap it up, replay a project, judge a finished build.">
+<meta name="description" content="The complete Cartographer command reference: every command, its options, what it does and when to reach for it. Map a session, replay a project, declare a goal, judge a finished build.">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +14,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://codecartographer.dev/commands">
 <meta property="og:title" content="Commands · Cartographer">
-<meta property="og:description" content="Every Cartographer command and what it does, in the terminal and inside Claude Code: map a session, wrap it up, replay a project, judge a finished build.">
+<meta property="og:description" content="The complete Cartographer command reference: every command, its options, what it does and when to reach for it.">
 <meta property="og:image" content="https://codecartographer.dev/icon.png">
 <meta property="og:image:width" content="1254">
 <meta property="og:image:height" content="1254">
@@ -40,6 +40,7 @@
   ]
 }
 </script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Cartographer command reference", "url": "https://codecartographer.dev/commands", "author": {"@type": "Organization", "@id": "https://situatedstrategies.org/#organization", "name": "Situated Strategies LLC"}, "publisher": {"@type": "Organization", "@id": "https://situatedstrategies.org/#organization", "name": "Situated Strategies LLC"}, "about": {"@type": "SoftwareApplication", "name": "Cartographer", "url": "https://codecartographer.dev/"}}</script>
 </head>
 <body><div class="wrap">
 <nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands" class="on">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
@@ -47,37 +48,177 @@
 <header>
   <div class="eyebrow">Commands</div>
   <h1>The same engine from a shell.</h1>
-  <p class="lead">You rarely need these if you use the Claude Code commands and the dashboard, but they are all there.</p>
+  <p class="lead">Inside Claude Code you use <kbd>/wrap</kbd>, <kbd>/replay</kbd>, <kbd>/complete</kbd> and <kbd>/cartographer-setup</kbd>. Those commands call the ones on this page. You rarely need the shell versions if you use the agent commands and the dashboard, but every one of them is here, with its options and the moment it is for.</p>
 </header>
 <main>
 
 <section>
+  <h2>At a glance</h2>
+  <p class="sub">Fourteen commands in four groups: looking at what you have, mapping a session, judging a version, and keeping the install healthy. Each one links to its full entry below.</p>
   <table class="hl">
     <thead><tr><th>Command</th><th>What it does</th></tr></thead>
     <tbody>
-    <tr><td><a href="/commands/serve"><span class="tok">cartographer</span> <span class="tok">serve</span></a> <span class="tok">--open</span></td><td>The dashboard in your browser, this machine only: profile, recent sessions with a <b>Map this session</b> button, projects, maps, outcomes and completion.</td></tr>
-    <tr><td><a href="/commands/open"><span class="tok">cartographer</span> <span class="tok">open</span></a> <span class="tok">[project]</span></td><td>Open a replay directly. Newest project if you name none.</td></tr>
-    <tr><td><a href="/commands/sessions"><span class="tok">cartographer</span> <span class="tok">sessions</span></a> <span class="tok">--all</span></td><td>Every session found for every installed agent. ✓ means already mapped.</td></tr>
-    <tr><td><a href="/commands/wrap"><span class="tok">cartographer</span> <span class="tok">wrap</span></a> <span class="tok">[--session</span> <span class="tok">id]</span> <span class="tok">[--force]</span> <span class="tok">[--run]</span></td><td>Write the brief for a session. <kbd>--run</kbd> also maps it with the agent's headless CLI, no human in the loop.</td></tr>
-    <tr><td><a href="/commands/goal"><span class="tok">cartographer</span> <span class="tok">goal</span></a> <span class="tok">"…"</span></td><td>Declare what done means for the current version of the repo you are in. The source of truth for every map and the appraisal.</td></tr>
-    <tr><td><a href="/commands/complete"><span class="tok">cartographer</span> <span class="tok">complete</span></a> <span class="tok">--result</span> <span class="tok">shipped|partial|abandoned</span> <span class="tok">--actual</span> <span class="tok">"…"</span></td><td>Close the version and write the appraisal brief. <kbd>--run</kbd> appraises headlessly.</td></tr>
-    <tr><td><a href="/commands/save"><span class="tok">cartographer</span> <span class="tok">save</span></a> <span class="tok">file.json</span> <span class="tok">[--check]</span></td><td>Validate, redact, file and render a map or an appraisal. <kbd>--check</kbd> only validates. This is what Claude runs at the end of <kbd>/wrap</kbd>.</td></tr>
-    <tr><td><a href="/commands/projects"><span class="tok">cartographer</span> <span class="tok">projects</span></a></td><td>Every project with its sessions, versions, declared outcomes and appraisals.</td></tr>
-    <tr><td><a href="/commands/render"><span class="tok">cartographer</span> <span class="tok">render</span></a> <span class="tok">--project</span> <span class="tok">name</span> <span class="tok">[--open]</span></td><td>Rebuild a replay page. Also takes map and appraisal files directly.</td></tr>
-    <tr><td><a href="/commands/backfill"><span class="tok">cartographer</span> <span class="tok">backfill</span></a> <span class="tok">--cwd</span> <span class="tok">repo</span> <span class="tok">[--run]</span></td><td>Briefs (or, with <kbd>--run</kbd>, maps) for every past session of a repo. Retrospective maps.</td></tr>
-    <tr><td><a href="/commands/sweep"><span class="tok">cartographer</span> <span class="tok">sweep</span></a> <span class="tok">[--dry]</span></td><td>Map every session that has gone quiet and isn't mapped yet. For agents with no session-end event; run it on a schedule.</td></tr>
-    <tr><td><a href="/commands/config"><span class="tok">cartographer</span> <span class="tok">config</span></a> <span class="tok">show</span> <span class="tok">|</span> <span class="tok">set</span> <span class="tok">key</span> <span class="tok">value</span> <span class="tok">|</span> <span class="tok">init</span></td><td>Your profile and settings, in the terminal. <kbd>init</kbd> is the wizard.</td></tr>
-    <tr><td><a href="/commands/install"><span class="tok">cartographer</span> <span class="tok">install</span></a> <span class="tok">--agent</span> <span class="tok">claude-code</span> <span class="tok">[--auto]</span></td><td>What the installer runs. Rerun after updating. Codex and Cursor coming soon.</td></tr>
-    <tr><td><a href="/commands/doctor"><span class="tok">cartographer</span> <span class="tok">doctor</span></a></td><td>Version, home folder, mode, which agents were found and how many sessions, headless runners.</td></tr>
+    <tr><td><a href="#serve"><span class="tok">cartographer</span> <span class="tok">serve</span></a> <span class="tok">--open</span></td><td>The dashboard in your browser, this machine only: profile, recent sessions with a <b>Map this session</b> button, projects, maps, outcomes and completion.</td></tr>
+    <tr><td><a href="#open"><span class="tok">cartographer</span> <span class="tok">open</span></a> <span class="tok">[project]</span></td><td>Open a replay directly. Newest project if you name none.</td></tr>
+    <tr><td><a href="#sessions"><span class="tok">cartographer</span> <span class="tok">sessions</span></a> <span class="tok">--all</span></td><td>Every session found for every installed agent. ✓ means already mapped.</td></tr>
+    <tr><td><a href="#projects"><span class="tok">cartographer</span> <span class="tok">projects</span></a></td><td>Every project with its sessions, versions, declared outcomes and appraisals.</td></tr>
+    <tr><td><a href="#wrap"><span class="tok">cartographer</span> <span class="tok">wrap</span></a> <span class="tok">[--session</span> <span class="tok">id]</span> <span class="tok">[--force]</span> <span class="tok">[--run]</span></td><td>Write the brief for a session. <kbd>--run</kbd> also maps it with the agent's headless CLI, no human in the loop.</td></tr>
+    <tr><td><a href="#save"><span class="tok">cartographer</span> <span class="tok">save</span></a> <span class="tok">file.json</span> <span class="tok">[--check]</span></td><td>Validate, redact, file and render a map or an appraisal. <kbd>--check</kbd> only validates. This is what Claude runs at the end of <kbd>/wrap</kbd>.</td></tr>
+    <tr><td><a href="#backfill"><span class="tok">cartographer</span> <span class="tok">backfill</span></a> <span class="tok">--cwd</span> <span class="tok">repo</span> <span class="tok">[--run]</span></td><td>Briefs (or, with <kbd>--run</kbd>, maps) for every past session of a repo. Retrospective maps.</td></tr>
+    <tr><td><a href="#sweep"><span class="tok">cartographer</span> <span class="tok">sweep</span></a> <span class="tok">[--dry]</span></td><td>Map every session that has gone quiet and isn't mapped yet. For agents with no session-end event; run it on a schedule.</td></tr>
+    <tr><td><a href="#render"><span class="tok">cartographer</span> <span class="tok">render</span></a> <span class="tok">--project</span> <span class="tok">name</span> <span class="tok">[--open]</span></td><td>Rebuild a replay page. Also takes map and appraisal files directly.</td></tr>
+    <tr><td><a href="#goal"><span class="tok">cartographer</span> <span class="tok">goal</span></a> <span class="tok">"…"</span></td><td>Declare what done means for the current version of the repo you are in. The source of truth for every map and the appraisal.</td></tr>
+    <tr><td><a href="#complete"><span class="tok">cartographer</span> <span class="tok">complete</span></a> <span class="tok">--result</span> <span class="tok">shipped|partial|abandoned</span> <span class="tok">--actual</span> <span class="tok">"…"</span></td><td>Close the version and write the appraisal brief. <kbd>--run</kbd> appraises headlessly.</td></tr>
+    <tr><td><a href="#config"><span class="tok">cartographer</span> <span class="tok">config</span></a> <span class="tok">show</span> <span class="tok">|</span> <span class="tok">set</span> <span class="tok">key</span> <span class="tok">value</span> <span class="tok">|</span> <span class="tok">init</span></td><td>Your profile and settings, in the terminal. <kbd>init</kbd> is the wizard.</td></tr>
+    <tr><td><a href="#install"><span class="tok">cartographer</span> <span class="tok">install</span></a> <span class="tok">--agent</span> <span class="tok">claude-code</span> <span class="tok">[--auto]</span></td><td>What the installer runs. Rerun after updating. Codex and Cursor coming soon.</td></tr>
+    <tr><td><a href="#doctor"><span class="tok">cartographer</span> <span class="tok">doctor</span></a></td><td>Version, home folder, mode, which agents were found and how many sessions, headless runners.</td></tr>
     </tbody>
   </table>
   <p class="meta">Windows: the same commands work in PowerShell, cmd and Git Bash. If <kbd>cartographer</kbd> is not found, open a new terminal so the PATH change takes effect.</p>
+</section>
+
+<section>
+  <h2>Looking at what you have</h2>
+  <p class="sub">Four commands that change nothing. They show you the projects, sessions and maps Cartographer already knows about, in a browser or in the terminal.</p>
+
+  <h3 id="serve">cartographer serve</h3>
+  <div class="cmd"><span>cartographer serve --open</span><button onclick="navigator.clipboard.writeText('cartographer serve --open').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Opens the dashboard: your profile, recent sessions with a Map this session button, projects, maps, outcomes and completion. It binds to 127.0.0.1 and refuses requests from anywhere else, so nothing is reachable from the network. Every button that changes something carries a per-run token, so a page open in another tab cannot trigger it.</p>
+  <ul class="list">
+    <li><kbd>--open</kbd> opens your browser on the dashboard as soon as it is up.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> When you want to see what has been mapped, pick a session to map by hand, or read a replay without remembering a project name. If you would rather click than type, this is the only command you need to learn.</p>
+
+  <h3 id="open">cartographer open</h3>
+  <div class="cmd"><span>cartographer open [project]</span><button onclick="navigator.clipboard.writeText('cartographer open [project]').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Renders and opens the replay for a project without going through the dashboard. Name no project and it opens the newest one.</p>
+  <ul class="list">
+    <li><kbd>[project]</kbd> is optional; the newest project is the default.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> The quickest route from a terminal to the story of a build. Pair it with <a href="#projects">projects</a> when you have forgotten what a project is called.</p>
+
+  <h3 id="sessions">cartographer sessions</h3>
+  <div class="cmd"><span>cartographer sessions --all</span><button onclick="navigator.clipboard.writeText('cartographer sessions --all').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Lists the sessions Cartographer can see. A tick marks the ones already mapped, so you can see at a glance what is still unmapped. Each line carries the session id you would pass to <a href="#wrap">wrap</a>.</p>
+  <ul class="list">
+    <li><kbd>--all</kbd> lists every agent's sessions, not only the current repo's.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> Before a backfill, or when you want to map one specific older session and need its id.</p>
+
+  <h3 id="projects">cartographer projects</h3>
+  <div class="cmd"><span>cartographer projects</span><button onclick="navigator.clipboard.writeText('cartographer projects').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Lists everything Cartographer knows: each project, its sessions, its declared versions and goals, and the appraisals that closed them. It takes no options.</p>
+  <p class="sub"><b>When to use it.</b> An inventory, when you want to see the shape of the work across repos, or to check which versions still have no appraisal.</p>
+</section>
+
+<section>
+  <h2>Mapping a session</h2>
+  <p class="sub">A map is written in two steps. Cartographer digests the transcript into a brief, and the agent that was in the session follows the brief to write the map. These five commands cover the brief, the filing, the catch-up for old sessions, and the rebuild of a replay.</p>
+
+  <h3 id="wrap">cartographer wrap</h3>
+  <div class="cmd"><span>cartographer wrap [--session id] [--force] [--run]</span><button onclick="navigator.clipboard.writeText('cartographer wrap [--session id] [--force] [--run]').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Digests a session's transcript into a timeline with a reading of every prompt, then writes the brief the agent uses to write the map. This is what the <kbd>/wrap</kbd> command in Claude Code runs before Claude does the writing. With no options it takes the latest session of the repo you are in.</p>
+  <ul class="list">
+    <li><kbd>--session id</kbd> wraps an older session instead of the latest one. Get the id from <a href="#sessions">sessions</a>.</li>
+    <li><kbd>--force</kbd> redoes a session that already has a brief.</li>
+    <li><kbd>--run</kbd> also maps it with the agent's headless CLI, with no human in the loop.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> At the end of a session, or from a script that maps sessions automatically. If you installed with <kbd>--auto</kbd>, Claude Code runs it for you when a session ends.</p>
+
+  <h3 id="save">cartographer save</h3>
+  <div class="cmd"><span>cartographer save file.json [--check]</span><button onclick="navigator.clipboard.writeText('cartographer save file.json [--check]').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Takes a map or appraisal file the agent has written, validates it against the rules, redacts secrets, files it under the project, and renders the replay. This is what Claude runs at the end of <kbd>/wrap</kbd>. The rules are the ones described on the <a href="/how-it-works">How it works</a> page: every move must cite the timeline items it rests on, "what it meant" has to name a technical implication, and praise words are rejected.</p>
+  <ul class="list">
+    <li><kbd>--check</kbd> only validates, and writes nothing. Useful when you are editing a map by hand and want to know whether it would be accepted.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> You rarely run it yourself. It is the last step of every wrap and every completion.</p>
+
+  <h3 id="backfill">cartographer backfill</h3>
+  <div class="cmd"><span>cartographer backfill --cwd repo [--run]</span><button onclick="navigator.clipboard.writeText('cartographer backfill --cwd repo [--run]').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Prepares a brief for every session Claude Code still has on disk for a repo, so sessions from before you installed Cartographer can be mapped. This is what <kbd>/cartographer-setup backfill</kbd> runs.</p>
+  <ul class="list">
+    <li><kbd>--cwd repo</kbd> points at the repository whose sessions you want.</li>
+    <li><kbd>--run</kbd> maps them headlessly instead of only writing briefs.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> Once, after installing, to bring the history in. Retrospective maps read a little flatter than live ones, because nobody was there to be corrected.</p>
+
+  <h3 id="sweep">cartographer sweep</h3>
+  <div class="cmd"><span>cartographer sweep [--dry]</span><button onclick="navigator.clipboard.writeText('cartographer sweep [--dry]').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Finds sessions that have stopped and have no map, and maps them. It exists for agents that have no session-end event, and it is meant to be run on a schedule.</p>
+  <ul class="list">
+    <li><kbd>--dry</kbd> lists what would be mapped without mapping anything.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> From a scheduled job, when you want everything mapped without remembering to wrap. Run it with <kbd>--dry</kbd> first to see what it would pick up.</p>
+
+  <h3 id="render">cartographer render</h3>
+  <div class="cmd"><span>cartographer render --project name [--open]</span><button onclick="navigator.clipboard.writeText('cartographer render --project name [--open]').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Regenerates the replay for a project from its filed maps. It also accepts map and appraisal files directly, for rendering one on its own.</p>
+  <ul class="list">
+    <li><kbd>--project name</kbd> names the project to render.</li>
+    <li><kbd>--open</kbd> opens the result in your browser.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> After an update, or when a replay looks stale. <a href="#open">open</a> renders before it opens, so you only need this one when you want the file without the browser.</p>
+</section>
+
+<section>
+  <h2>Judging a version</h2>
+  <p class="sub">Session maps are provisional. The outcome you wanted is only known when a version is done, so the verdict lives in these two commands: one to say what done means, one to say what actually happened.</p>
+
+  <h3 id="goal">cartographer goal</h3>
+  <div class="cmd"><span>cartographer goal &quot;what done means&quot;</span><button onclick="navigator.clipboard.writeText('cartographer goal &quot;what done means&quot;').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Records, in your words, what the current version of the repo is supposed to achieve. It is the source of truth for every map and for the appraisal: every session map is judged against it, and <a href="#complete">complete</a> reads the result back against it.</p>
+  <ul class="list">
+    <li>Takes one quoted sentence. Run it in the repo the version belongs to.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> Before you start a version, ideally. It is optional, and <kbd>/complete</kbd> will ask for it later if you never declared one. A goal written before the work is a better yardstick than one written after, because it has not yet been bent to fit the result.</p>
+
+  <h3 id="complete">cartographer complete</h3>
+  <div class="cmd"><span>cartographer complete --result shipped|partial|abandoned --actual &quot;…&quot;</span><button onclick="navigator.clipboard.writeText('cartographer complete --result shipped|partial|abandoned --actual &quot;…&quot;').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Marks a version as done, with the result and what actually happened, and writes the brief for the appraisal: what got you there, what it cost, what was carried into the result, how you prompted. Every appraisal item cites session and move ids, and praise words are rejected on save.</p>
+  <ul class="list">
+    <li><kbd>--result</kbd> is one of shipped, partial or abandoned.</li>
+    <li><kbd>--actual</kbd> is what actually happened, in your words.</li>
+    <li><kbd>--run</kbd> writes the appraisal headlessly instead of handing the brief to the agent in conversation.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> When a version ships, or when you abandon it. The verdict on the whole build lives here, because a session cannot judge itself. An abandoned version is worth completing too; the appraisal of a dead end is often the most useful one you get.</p>
+</section>
+
+<section>
+  <h2>Setup and health</h2>
+  <p class="sub">Three commands for the install itself: the profile that shapes how maps are written, the registration with your agent, and the check to run when something is off.</p>
+
+  <h3 id="config">cartographer config</h3>
+  <div class="cmd"><span>cartographer config show | set key value | init</span><button onclick="navigator.clipboard.writeText('cartographer config show | set key value | init').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Shows or changes your profile and settings. The profile shapes every brief: whether moves are written in your words or in code terms, coaching on or off, which languages Cartographer knows you use. Settings live in <kbd>~/.cartographer</kbd> and never leave your machine.</p>
+  <ul class="list">
+    <li><kbd>show</kbd> prints the current settings.</li>
+    <li><kbd>set key value</kbd> changes one.</li>
+    <li><kbd>init</kbd> runs the setup wizard again.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> When you want to change how maps are written without opening a conversation. <kbd>/cartographer-setup</kbd> does the same thing from inside Claude Code, and the dashboard has a form for it.</p>
+
+  <h3 id="install">cartographer install</h3>
+  <div class="cmd"><span>cartographer install --agent claude-code [--auto]</span><button onclick="navigator.clipboard.writeText('cartographer install --agent claude-code [--auto]').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Registers Cartographer's commands with an agent. The one-line installer on the <a href="/install">Install</a> page runs this for you; rerun it after updating so the commands stay current.</p>
+  <ul class="list">
+    <li><kbd>--agent claude-code</kbd> is the only agent today. Codex and Cursor are coming soon.</li>
+    <li><kbd>--auto</kbd> turns on automatic wrapping at the end of every session.</li>
+  </ul>
+  <p class="sub"><b>When to use it.</b> After the install line, and again after an update. Switching between manual and automatic wrapping later is a <a href="#config">config</a> change, not a reinstall.</p>
+
+  <h3 id="doctor">cartographer doctor</h3>
+  <div class="cmd"><span>cartographer doctor</span><button onclick="navigator.clipboard.writeText('cartographer doctor').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <p class="sub">Prints what Cartographer can see: its version, the home folder, whether wrapping is manual or automatic, which agents were found and how many sessions each has, and which headless runners are available. It takes no options and changes nothing.</p>
+  <p class="sub"><b>When to use it.</b> First thing to run when something does not work, and the output to paste when you write to <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>.</p>
 </section>
 
 <div class="next"><a href="/claude-code">← In Claude Code</a><a href="/how-it-works">How it works →</a></div>
 </main>
 <footer>
   <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
   <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
   <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
   <a href="https://github.com/situatedstrategies/cartographer">Source</a>

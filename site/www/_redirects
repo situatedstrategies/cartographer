@@ -1,0 +1,16 @@
+# The fourteen per-command pages were folded into /commands on October 8th 2026.
+# Each old URL lands on its section of the reference.
+/commands/serve     /commands#serve     301
+/commands/open      /commands#open      301
+/commands/sessions  /commands#sessions  301
+/commands/wrap      /commands#wrap      301
+/commands/goal      /commands#goal      301
+/commands/complete  /commands#complete  301
+/commands/save      /commands#save      301
+/commands/projects  /commands#projects  301
+/commands/render    /commands#render    301
+/commands/backfill  /commands#backfill  301
+/commands/sweep     /commands#sweep     301
+/commands/config    /commands#config    301
+/commands/install   /commands#install   301
+/commands/doctor    /commands#doctor    301
