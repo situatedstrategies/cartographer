@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · Cartographer</title>
+<meta name="description" content="What the Cartographer tool and the codecartographer.dev site do with your data: the tool sends nothing, the site sets no cookies of its own, and the third parties it loads are listed here by name.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/privacy">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://codecartographer.dev/privacy">
+<meta property="og:title" content="Privacy · Cartographer">
+<meta property="og:description" content="What the Cartographer tool and the codecartographer.dev site do with your data, and which third parties the site loads.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow">Privacy</div>
+  <h1>The tool sends nothing. The site is a little more complicated.</h1>
+  <p class="lead">This policy covers two things: the Cartographer command line tool you install, and the website at codecartographer.dev. They behave differently, so they get separate sections. Plain language throughout, and the third parties are named.</p>
+</header>
+<main>
+
+<section class="about">
+  <h2>The Cartographer tool</h2>
+  <p>Cartographer runs entirely on your machine. Maps, configuration and replays are stored in a folder called <kbd>~/.cartographer</kbd> in your home directory. The local dashboard binds to 127.0.0.1 and refuses requests from any other address, so it is not reachable from your network. The tool contains no analytics, no crash reporting and no telemetry of any kind.</p>
+  <p>The only network call the tool ever makes is the installer downloading Cartographer itself from this site. After that, nothing it reads and nothing it writes leaves your computer. Your session transcripts, the maps built from them, your profile and your declared goals stay with you. We cannot see them, and we have no way to ask for them.</p>
+  <p>Before a map is filed, the <kbd>save</kbd> command redacts secrets it recognises, such as keys and tokens that appear in a transcript. This is a courtesy for the day you choose to share a map with someone, not a substitute for your own review: the redaction is pattern based and can miss things.</p>
+</section>
+
+<section class="about">
+  <h2>The website</h2>
+  <p>codecartographer.dev is a static site served by Cloudflare. The pages themselves set no cookies and carry no analytics script of their own. We do not run a newsletter, there are no accounts, and there is no form that stores what you type.</p>
+  <p>Like any web host, Cloudflare processes the technical details of each request, such as your IP address and browser type, to deliver the page and to protect the site from abuse. That processing is governed by <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener">Cloudflare's privacy policy</a>.</p>
+  <h3>Third parties the pages load</h3>
+  <p>When a page loads it asks the following services for a file, which means each of them receives the technical details of that request, including your IP address. Browser extensions that block third party requests will stop all of them, and the site still works without any of them.</p>
+  <ul class="list">
+    <li><b>Google AdSense.</b> The pages carry Google's advertising script. Google, as a third party vendor, uses cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to this site and other sites on the Internet. You can opt out of personalised advertising at <a href="https://www.google.com/settings/ads" rel="noopener">Google's ads settings</a>. How Google uses data when you use a site that carries its services is explained at <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">policies.google.com/technologies/partner-sites</a>.</li>
+    <li><b>Google Fonts.</b> The typefaces are loaded from fonts.googleapis.com and fonts.gstatic.com. Google's handling of those requests is covered by the same page linked above.</li>
+    <li><b>Ko-fi.</b> The floating support button is a script loaded from storage.ko-fi.com. Nothing happens unless you click it; if you do, you are dealing with Ko-fi under <a href="https://more.ko-fi.com/terms" rel="noopener">Ko-fi's own terms</a> and privacy policy.</li>
+    <li><b>PeerPush.</b> The badge in the footer is an image loaded from peerpush.com.</li>
+  </ul>
+  <p>The demo replay on this site is Cartographer's own map of the sessions that built Cartographer, with secrets redacted. It is a file in the public repository, not a live view of anything.</p>
+</section>
+
+<section class="about">
+  <h2>Email</h2>
+  <p>Mail sent to support@codecartographer.dev or mapit@codecartographer.dev is received by Cloudflare Email Routing, tagged by the mailbox it was addressed to, and forwarded to an inbox read by a person at Situated Strategies. We keep your message for as long as it takes to deal with it and for our own records of what was reported. We do not add your address to any list and we do not share it. If you send us a map, we treat it as private unless you tell us otherwise in the same message.</p>
+</section>
+
+<section class="about">
+  <h2>Your choices and your rights</h2>
+  <p>You can read this site with third party requests blocked and lose nothing. You can delete everything the tool has ever stored by removing the <kbd>~/.cartographer</kbd> folder. If you have written to us and want your message deleted, say so at <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a> and we will delete it. Residents of jurisdictions with data protection laws, including the European Union, the United Kingdom and California, have rights of access, correction and deletion over any personal data we hold, which in practice is limited to the email you chose to send us.</p>
+  <p>This site is not directed at children under the age of 13, and we do not knowingly collect personal information from them.</p>
+</section>
+
+<section class="about">
+  <h2>Changes</h2>
+  <p>If this policy changes, the new version is published here with a new date. Material changes, such as adding an analytics service, will be called out on this page for at least thirty days.</p>
+  <p class="meta">This policy is published by Situated Strategies LLC and was last updated October 8th 2026.</p>
+</section>
+
+<div class="next"><a href="/about">← About</a><a href="/terms">Terms →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div></body></html>

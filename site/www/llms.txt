@@ -25,22 +25,25 @@
 - Source code: https://github.com/situatedstrategies/cartographer
 - Reading a Claude Code session log: https://codecartographer.dev/guides/reading-claude-code-session-logs
 - Cartographer vs git history vs a chat summary: https://codecartographer.dev/compare
+- About Situated Strategies and why the tool exists: https://codecartographer.dev/about
+- Privacy: https://codecartographer.dev/privacy
+- Terms: https://codecartographer.dev/terms
 
-## Every CLI command has its own page
-- cartographer serve: https://codecartographer.dev/commands/serve
-- cartographer open: https://codecartographer.dev/commands/open
-- cartographer sessions: https://codecartographer.dev/commands/sessions
-- cartographer wrap: https://codecartographer.dev/commands/wrap
-- cartographer goal: https://codecartographer.dev/commands/goal
-- cartographer complete: https://codecartographer.dev/commands/complete
-- cartographer save: https://codecartographer.dev/commands/save
-- cartographer projects: https://codecartographer.dev/commands/projects
-- cartographer render: https://codecartographer.dev/commands/render
-- cartographer backfill: https://codecartographer.dev/commands/backfill
-- cartographer sweep: https://codecartographer.dev/commands/sweep
-- cartographer config: https://codecartographer.dev/commands/config
-- cartographer install: https://codecartographer.dev/commands/install
-- cartographer doctor: https://codecartographer.dev/commands/doctor
+## Every CLI command, with its options, on the commands page
+- cartographer serve: https://codecartographer.dev/commands#serve
+- cartographer open: https://codecartographer.dev/commands#open
+- cartographer sessions: https://codecartographer.dev/commands#sessions
+- cartographer wrap: https://codecartographer.dev/commands#wrap
+- cartographer goal: https://codecartographer.dev/commands#goal
+- cartographer complete: https://codecartographer.dev/commands#complete
+- cartographer save: https://codecartographer.dev/commands#save
+- cartographer projects: https://codecartographer.dev/commands#projects
+- cartographer render: https://codecartographer.dev/commands#render
+- cartographer backfill: https://codecartographer.dev/commands#backfill
+- cartographer sweep: https://codecartographer.dev/commands#sweep
+- cartographer config: https://codecartographer.dev/commands#config
+- cartographer install: https://codecartographer.dev/commands#install
+- cartographer doctor: https://codecartographer.dev/commands#doctor
 
 ## Contact
 Support: support@codecartographer.dev
