@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What the research says about reviewing code you didn't write</title>
+<meta name="description" content="Two studies of code review put understanding the change first. Here's what they found, and what it means when you didn't write the code.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/reviewing-code-you-did-not-write">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/reviewing-code-you-did-not-write">
+<meta property="og:title" content="What the research says about reviewing code you didn't write">
+<meta property="og:description" content="Two studies of code review put understanding the change first. Here's what they found, and what it means when you didn't write the code.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"What the research says about reviewing code you didn't write","description":"Two studies of code review put understanding the change first. Here's what they found, and what it means when you didn't write the code.","url":"https://codecartographer.dev/blog/reviewing-code-you-did-not-write","mainEntityOfPage":"https://codecartographer.dev/blog/reviewing-code-you-did-not-write","datePublished":"2026-10-09","dateModified":"2026-10-09","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"What the research says about reviewing code you didn't write","item":"https://codecartographer.dev/blog/reviewing-code-you-did-not-write"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>What the research says about reviewing code you didn't write</h1>
+  <p class="lead">Reviewing someone else's change is mostly an act of understanding it. Two studies, more than a decade apart, both put understanding first.</p>
+  <p class="meta">By Team Cartographer · October 9th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Most of us picture code review as hunting. You scan a diff, you spot the off-by-one, you flag it. The research paints a different picture, and it's worth knowing before you sit down to read the next change you didn't write.</p>
+
+  <h2>Review isn't mostly about bugs</h2>
+  <p class="sub">In 2013, Alberto Bacchelli and Christian Bird studied code review at Microsoft. They observed, interviewed and surveyed developers and managers, and they classified hundreds of review comments across diverse teams. Their finding was that <a href="https://2013.icse-conferences.org/content/expectations-outcomes-and-challenges-modern-code-review.html" rel="noopener">finding defects remains the main motivation for review, but reviews are less about defects than expected</a>.<sup><a href="#fn1">1</a></sup> People got other things out of it too: knowledge transfer, team awareness, and alternative solutions to the problem at hand.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">The part that matters most for us is what they named as the center of the activity. In their words, <a href="https://2013.icse-conferences.org/content/expectations-outcomes-and-challenges-modern-code-review.html" rel="noopener">code and change understanding is the key aspect of code reviewing</a>, and developers used mechanisms to get it that current tools don't meet.<sup><a href="#fn1">1</a></sup></p>
+
+  <h2>What reviewers actually do</h2>
+  <p class="sub">A more recent study looks at the how. Pavlína Wurzel Gonçalves and colleagues, writing for the 2025 International Conference on Program Comprehension, <a href="https://arxiv.org/abs/2503.21455" rel="noopener">observed and interviewed ten experienced reviewers as they worked through 25 reviews</a>, and read what they saw through code comprehension theory.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">They report that reviewers work <a href="https://arxiv.org/abs/2503.21455" rel="noopener">opportunistically</a>. The strategies they describe usually start with a phase of building context. Only then does the reviewer move into inspecting the code, which involves reading it, testing it, and managing discussion.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">Notice the order. Context comes first, and reading the lines comes second.</p>
+
+  <h2>What this means when you didn't write it</h2>
+  <p class="sub">Neither study was about coding agents, and we won't pretend otherwise. They looked at people reviewing changes made by other people. What follows is our own reading, not a finding.</p>
+  <p class="sub">If understanding is the hard part of review, then the least understood changes are the riskiest ones to wave through. A change you didn't write, made for reasons you weren't in the room for, starts you at zero. That's true of a colleague's pull request. We'd argue it's just as true of code that arrived while you were typing prompts and watching a terminal scroll.</p>
+  <p class="sub">So the studies suggest a few habits that cost very little:</p>
+  <ul class="list">
+    <li>Build context before you read the diff. What was this change meant to do, and why now?</li>
+    <li>Treat "I can't explain this yet" as a real review result, not a delay.</li>
+    <li>Test it, don't just read it. Testing is part of how experienced reviewers inspect code in the second study.</li>
+    <li>Keep notes on the reasons behind the change, so you aren't rebuilding them from memory later.</li>
+  </ul>
+  <p class="sub">That last one is where a session record helps. Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built: what you asked, what happened, and how you responded. It reads what's already on your machine, with no cloud. When you come back to a change weeks later, the context you'd have to rebuild is already written down.</p>
+
+  <h2>Why this is a kindness to your future self</h2>
+  <p class="sub">There's a quieter point here. Understanding is work, and work gets skipped when we're tired or when a change looks tidy. A clean diff feels like a finished thought. It isn't evidence that anyone understood it, least of all you.</p>
+  <p class="sub">We've all approved something because the tests passed and the summary sounded sure of itself. Sometimes that's fine. But passing tests tell you the code does what the tests ask, not that you know what you've agreed to carry. When something breaks months later, the person who has to untangle it is you, and you'll be reading it cold.</p>
+  <p class="sub">None of this needs a new tool or a long checklist. It needs a pause long enough to say, in your own words, what the change does and why it exists. If you can't, you've learned something useful, and it cost you a minute instead of a week.</p>
+
+  <h2>A small shift in the question</h2>
+  <p class="sub">"Is this correct?" is a fine question. But the research suggests it comes second. First comes "do I understand what this change is trying to do?" If the answer is no, the review hasn't really started, and that's worth knowing before you hit merge.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Alberto Bacchelli and Christian Bird. <a href="https://2013.icse-conferences.org/content/expectations-outcomes-and-challenges-modern-code-review.html" rel="noopener">Expectations, Outcomes, and Challenges of Modern Code Review</a>. 35th International Conference on Software Engineering (ICSE), 2013.</li>
+    <li id="fn2">Pavlína Wurzel Gonçalves, Pooja Rani, Margaret-Anne Storey, Diomidis Spinellis and Alberto Bacchelli. <a href="https://arxiv.org/abs/2503.21455" rel="noopener">Code Review Comprehension: Reviewing Strategies Seen Through Code Comprehension Theories</a>. International Conference on Program Comprehension (ICPC), 2025. arXiv:2503.21455.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="/blog/">Blog</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

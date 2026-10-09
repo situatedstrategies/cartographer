@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-08.
+> Generated 2026-10-09.
 
 
 ---
@@ -589,7 +589,7 @@ When a page loads it asks the following services for a file, which means each of
 
 - Google Fonts. The typefaces are loaded from fonts.googleapis.com and fonts.gstatic.com. Google's handling of those requests is covered by the same page linked above.
 
-- Ko-fi. The floating support button is a script loaded from storage.ko-fi.com. Nothing happens unless you click it; if you do, you are dealing with Ko-fi under Ko-fi's privacy policy.
+- Ko-fi. The floating support button is a script loaded from storage.ko-fi.com. Nothing happens unless you click it; if you do, you are dealing with Ko-fi under Ko-fi's own terms and privacy policy.
 
 - PeerPush. The badge in the footer is an image loaded from peerpush.com.
 
@@ -648,3 +648,65 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# What the research says about reviewing code you didn't write
+URL: https://codecartographer.dev/blog/reviewing-code-you-did-not-write
+Description: Two studies of code review put understanding the change first. Here's what they found, and what it means when you didn't write the code.
+
+Most of us picture code review as hunting. You scan a diff, you spot the off-by-one, you flag it. The research paints a different picture, and it's worth knowing before you sit down to read the next change you didn't write.
+
+## Review isn't mostly about bugs
+
+In 2013, Alberto Bacchelli and Christian Bird studied code review at Microsoft. They observed, interviewed and surveyed developers and managers, and they classified hundreds of review comments across diverse teams. Their finding was that finding defects remains the main motivation for review, but reviews are less about defects than expected.1 People got other things out of it too: knowledge transfer, team awareness, and alternative solutions to the problem at hand.1
+
+The part that matters most for us is what they named as the center of the activity. In their words, code and change understanding is the key aspect of code reviewing, and developers used mechanisms to get it that current tools don't meet.1
+
+## What reviewers actually do
+
+A more recent study looks at the how. Pavlína Wurzel Gonçalves and colleagues, writing for the 2025 International Conference on Program Comprehension, observed and interviewed ten experienced reviewers as they worked through 25 reviews, and read what they saw through code comprehension theory.2
+
+They report that reviewers work opportunistically. The strategies they describe usually start with a phase of building context. Only then does the reviewer move into inspecting the code, which involves reading it, testing it, and managing discussion.2
+
+Notice the order. Context comes first, and reading the lines comes second.
+
+## What this means when you didn't write it
+
+Neither study was about coding agents, and we won't pretend otherwise. They looked at people reviewing changes made by other people. What follows is our own reading, not a finding.
+
+If understanding is the hard part of review, then the least understood changes are the riskiest ones to wave through. A change you didn't write, made for reasons you weren't in the room for, starts you at zero. That's true of a colleague's pull request. We'd argue it's just as true of code that arrived while you were typing prompts and watching a terminal scroll.
+
+So the studies suggest a few habits that cost very little:
+
+- Build context before you read the diff. What was this change meant to do, and why now?
+
+- Treat "I can't explain this yet" as a real review result, not a delay.
+
+- Test it, don't just read it. Testing is part of how experienced reviewers inspect code in the second study.
+
+- Keep notes on the reasons behind the change, so you aren't rebuilding them from memory later.
+
+That last one is where a session record helps. Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built: what you asked, what happened, and how you responded. It reads what's already on your machine, with no cloud. When you come back to a change weeks later, the context you'd have to rebuild is already written down.
+
+## Why this is a kindness to your future self
+
+There's a quieter point here. Understanding is work, and work gets skipped when we're tired or when a change looks tidy. A clean diff feels like a finished thought. It isn't evidence that anyone understood it, least of all you.
+
+We've all approved something because the tests passed and the summary sounded sure of itself. Sometimes that's fine. But passing tests tell you the code does what the tests ask, not that you know what you've agreed to carry. When something breaks months later, the person who has to untangle it is you, and you'll be reading it cold.
+
+None of this needs a new tool or a long checklist. It needs a pause long enough to say, in your own words, what the change does and why it exists. If you can't, you've learned something useful, and it cost you a minute instead of a week.
+
+## A small shift in the question
+
+"Is this correct?" is a fine question. But the research suggests it comes second. First comes "do I understand what this change is trying to do?" If the answer is no, the review hasn't really started, and that's worth knowing before you hit merge.
+
+## Sources
+
+- Alberto Bacchelli and Christian Bird. Expectations, Outcomes, and Challenges of Modern Code Review. 35th International Conference on Software Engineering (ICSE), 2013.
+
+- Pavlína Wurzel Gonçalves, Pooja Rani, Margaret-Anne Storey, Diomidis Spinellis and Alberto Bacchelli. Code Review Comprehension: Reviewing Strategies Seen Through Code Comprehension Theories. International Conference on Program Comprehension (ICPC), 2025. arXiv:2503.21455.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →

@@ -6,7 +6,13 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 08 Oct 2026 21:38:49 GMT</lastBuildDate>
-
+    <lastBuildDate>Fri, 09 Oct 2026 14:09:29 GMT</lastBuildDate>
+    <item>
+      <title>What the research says about reviewing code you didn't write</title>
+      <link>https://codecartographer.dev/blog/reviewing-code-you-did-not-write</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/reviewing-code-you-did-not-write</guid>
+      <pubDate>Fri, 09 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Two studies of code review put understanding the change first. Here's what they found, and what it means when you didn't write the code.</description>
+    </item>
   </channel>
 </rss>

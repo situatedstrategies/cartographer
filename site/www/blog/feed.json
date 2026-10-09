@@ -11,5 +11,19 @@
       "url": "https://codecartographer.dev"
     }
   ],
-  "items": []
+  "items": [
+    {
+      "id": "https://codecartographer.dev/blog/reviewing-code-you-did-not-write",
+      "url": "https://codecartographer.dev/blog/reviewing-code-you-did-not-write",
+      "title": "What the research says about reviewing code you didn't write",
+      "summary": "Two studies of code review put understanding the change first. Here's what they found, and what it means when you didn't write the code.",
+      "date_published": "2026-10-09T12:00:00Z",
+      "date_modified": "2026-10-09T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    }
+  ]
 }

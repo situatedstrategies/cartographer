@@ -54,7 +54,6 @@ When the queue runs low, add new topics that fit the pillars and target real
 search phrases people use. Never repeat a topic an existing post already
 covers.
 
-- What the research says about reviewing code you did not write
 - Why a correction is the most informative prompt in a session
 - Declaring done before you start: goals as a yardstick
 - Reading your own dead ends: what abandoned branches teach
