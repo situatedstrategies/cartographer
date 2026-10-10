@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading your own dead ends</title>
+<meta name="description" content="Abandoned branches and discarded attempts aren't waste. What research on abandoned work and recorded rationale says, and how to read your own.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/reading-your-own-dead-ends">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/reading-your-own-dead-ends">
+<meta property="og:title" content="Reading your own dead ends">
+<meta property="og:description" content="Abandoned branches and discarded attempts aren't waste. What research on abandoned work and recorded rationale says, and how to read your own.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Reading your own dead ends","description":"Abandoned branches and discarded attempts aren't waste. What research on abandoned work and recorded rationale says, and how to read your own.","url":"https://codecartographer.dev/blog/reading-your-own-dead-ends","mainEntityOfPage":"https://codecartographer.dev/blog/reading-your-own-dead-ends","datePublished":"2026-10-06","dateModified":"2026-10-06","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Reading your own dead ends","item":"https://codecartographer.dev/blog/reading-your-own-dead-ends"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Reading your own dead ends</h1>
+  <p class="lead">Every project leaves a trail of things that didn't work. We usually throw that trail away, and we think that's a mistake worth looking at.</p>
+  <p class="meta">By Team Cartographer · October 6th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Open any repository you've worked in for a while and look at the branches. Some merged. Some are still sitting there, three weeks stale, named something hopeful. We all have a few of those, and we rarely open them again.</p>
+  <p class="sub">We'd like to make a case for opening them. Not out of nostalgia, and not to feel bad about unfinished work. A dead end holds something the finished code doesn't: a record of what you tried, and why it didn't hold.</p>
+
+  <h2>Abandoned work is common, and mostly silent</h2>
+  <p class="sub">It helps to know how ordinary this is. Researchers studying open source have counted it. Khatoonabadi and colleagues built a dataset of <a href="https://arxiv.org/pdf/2110.15447" rel="noopener">265,325 pull requests, including 4,450 abandoned ones, from ten popular and mature GitHub projects</a>.<sup><a href="#fn1">1</a></sup> That's a small share of the total, but it's far from zero, and these were well-run projects.</p>
+  <p class="sub">They also read through a random sample of 354 abandoned pull requests to ask why. Their abstract reports that <a href="https://arxiv.org/pdf/2110.15447" rel="noopener">the most common reasons for abandonment involve obstacles faced by contributors, followed by hurdles imposed by maintainers during the review process</a>.<sup><a href="#fn1">1</a></sup> On the question of what makes abandonment more likely, they link <a href="https://arxiv.org/pdf/2110.15447" rel="noopener">complex pull requests, novice contributors and lengthy reviews to a higher chance of abandonment</a>.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Notice what's missing from that list. Nobody abandons work because they were careless. They abandon it because it got hard, or slow, or tangled. That's exactly the kind of information a team would want back later, and it's exactly the kind that disappears when a branch gets deleted.</p>
+
+  <h2>The reasons are the valuable part</h2>
+  <p class="sub">Software engineering has a name for the thing we lose. It's called rationale: the reasons behind a design, not just the design. Janet Burge, John Carroll, Raymond McCall and Ivan Mistrik wrote a whole book on it. Their starting point is that <a href="https://link.springer.com/10.1007/978-3-540-77583-6" rel="noopener">design decisions and the decision-making process behind them can best be documented as the rationale for the system</a>, and they follow that idea through the software lifecycle, from the first decisions in a project to maintenance and reuse.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">Here's our own reading of that, and it's an inference rather than something the book says in these words. A discarded attempt is a piece of rationale in its purest form. It's a decision (we tried this) with an outcome (it didn't work) that nobody had to argue for afterward. Finished code shows you the path that survived. Dead ends show you the walls.</p>
+
+  <h2>What a dead end can tell you</h2>
+  <p class="sub">When we go back through our own abandoned attempts, a few questions tend to be useful:</p>
+  <ul class="list">
+    <li>What were we trying to do when we started down this path? The goal is often clearer in the first hour than the last.</li>
+    <li>Where did it stop working? A specific error teaches more than a vague sense that it was "getting messy."</li>
+    <li>Did we leave because the idea was wrong, or because the moment was? Those are different lessons.</li>
+    <li>Would we make the same call again, knowing what we know now?</li>
+  </ul>
+  <p class="sub">The third question matters most to us. Some ideas fail because they're bad. Others fail because we ran out of time, or got pulled into something urgent. If you can't tell which was which, you may end up avoiding a good idea for years, or retrying a bad one with fresh optimism.</p>
+
+  <h2>Why we don't do it</h2>
+  <p class="sub">There's a human reason we skip this. Abandoned work feels like a small failure, and we'd rather move on. Memory helps us along by smoothing the story: we remember the version that shipped and forget the three that didn't.</p>
+  <p class="sub">There's a practical reason too. The evidence is scattered. A branch name tells you almost nothing. The commit history shows what you kept, not what you tried and reverted. The reasoning lived in your head, or in a chat, or in a terminal you've since closed.</p>
+  <p class="sub">If you build with a coding agent, some of that reasoning is written down already, because the session itself is a record of the attempt. Cartographer reads the session history your agent already keeps and turns it into a map of how a project was built, with turning points marked. It records which branch each session was on, and it all stays on your machine. That's a place to start when you want to see where a build changed course.</p>
+
+  <h2>A small habit</h2>
+  <p class="sub">You don't need a process. Next time you abandon a branch, write two sentences before you walk away: what you were trying, and why you stopped. Put them in the branch description, a commit message, or a notes file. Future you will be reading cold, and two honest sentences are worth more than a clean history.</p>
+  <p class="sub">Dead ends aren't the opposite of progress. They're how the map gets its edges.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">SayedHassan Khatoonabadi, Diego Elias Costa, Rabe Abdalkareem and Emad Shihab. <a href="https://arxiv.org/pdf/2110.15447" rel="noopener">On Wasted Contributions: Understanding the Dynamics of Contributor-Abandoned Pull Requests</a>. arXiv:2110.15447.</li>
+    <li id="fn2">Janet E. Burge, John M. Carroll, Raymond McCall and Ivan Mistrik. <a href="https://link.springer.com/10.1007/978-3-540-77583-6" rel="noopener">Rationale-Based Software Engineering</a>. Springer, 2008.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="/blog/">Blog</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

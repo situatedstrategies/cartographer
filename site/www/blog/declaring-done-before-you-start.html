@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Declaring done before you start: goals as a yardstick</title>
+<meta name="description" content="Goal-setting research and the agile 'definition of done' agree: say what finished looks like first. Here's why that helps when an agent writes the code.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/declaring-done-before-you-start">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/declaring-done-before-you-start">
+<meta property="og:title" content="Declaring done before you start: goals as a yardstick">
+<meta property="og:description" content="Goal-setting research and the agile 'definition of done' agree: say what finished looks like first. Here's why that helps when an agent writes the code.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Declaring done before you start: goals as a yardstick","description":"Goal-setting research and the agile 'definition of done' agree: say what finished looks like first. Here's why that helps when an agent writes the code.","url":"https://codecartographer.dev/blog/declaring-done-before-you-start","mainEntityOfPage":"https://codecartographer.dev/blog/declaring-done-before-you-start","datePublished":"2026-10-07","dateModified":"2026-10-07","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Declaring done before you start: goals as a yardstick","item":"https://codecartographer.dev/blog/declaring-done-before-you-start"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Declaring done before you start: goals as a yardstick</h1>
+  <p class="lead">Most of us start with the task and discover the finish line later. Research on goals, and a habit from agile teams, both suggest doing it the other way round.</p>
+  <p class="meta">By Team Cartographer · October 7th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">You ask for a feature. The agent works, the tests go green, the summary says it's finished. Is it? That depends on a question you may never have answered: finished compared to what?</p>
+  <p class="sub">If the answer only forms after the work is on your screen, you end up judging the result by how it feels. A tidy diff feels done. A confident summary feels done. Neither is a yardstick. This post is about setting the yardstick first.</p>
+
+  <h2>What goal research found</h2>
+  <p class="sub">Edwin Locke and Gary Latham spent decades studying how goals shape work. In a 2002 review of 35 years of their research, they report that <a href="https://goal-lab.psych.umn.edu/orgpsych/2020/readings/5.%20Motivation/Locke%20&amp;%20Latham%20(2002).pdf" rel="noopener">specific, difficult goals consistently led to higher performance than urging people to do their best</a>.<sup><a href="#fn1">1</a></sup> "Do your best" sounds encouraging. It's also a goal nobody can fail, because it never says what success is.</p>
+  <p class="sub">The same review is careful about conditions. The advantage holds when people get <a href="https://goal-lab.psych.umn.edu/orgpsych/2020/readings/5.%20Motivation/Locke%20&amp;%20Latham%20(2002).pdf" rel="noopener">feedback about their progress</a>, are committed to the goal, and have the ability and knowledge to do the task.<sup><a href="#fn1">1</a></sup> A goal does two jobs here. It directs effort, and it gives you something to measure against as you go.</p>
+  <p class="sub">That research is about people doing work, mostly people doing their own. It isn't about coding agents, and we won't claim it is. What follows is our reading of it, not a finding.</p>
+
+  <h2>What agile teams call it</h2>
+  <p class="sub">Software teams reached for the same idea under a different name. In Scrum, the Definition of Done is a written statement of what it takes for work to count as complete. Scrum.org's write-up says that work that fails the Definition of Done <a href="https://www.scrum.org/resources/blog/definition-done-theses" rel="noopener">isn't released or shown at the Sprint Review and goes back to the Product Backlog</a>.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">Notice what it does for a team. Nobody has to argue, afterwards, about whether something is finished. The argument happened earlier, when it was cheap.</p>
+
+  <h2>Why it matters more with an agent</h2>
+  <p class="sub">When you write the code yourself, you carry the goal in your head and adjust it as you go. When something else writes it, your head isn't in the loop in the same way. You see a result and have to decide what to make of it.</p>
+  <p class="sub">Without a stated finish line, three things tend to happen:</p>
+  <ul class="list">
+    <li>The goal drifts. Each new prompt nudges it, and nobody notices the sum.</li>
+    <li>"Done" becomes whatever the agent reports. Its summary becomes the yardstick, which makes it both the author and the judge.</li>
+    <li>Extras slip in. Without edges, anything that works looks like progress.</li>
+  </ul>
+  <p class="sub">None of that is anyone's fault. It's what happens when there's nothing to compare against.</p>
+
+  <h2>What a good yardstick looks like</h2>
+  <p class="sub">It doesn't need to be long. A few lines before you start will do:</p>
+  <ul class="list">
+    <li>The outcome, in terms someone could observe. "Users can reset their password by email," not "improve login."</li>
+    <li>What would show it works. A test, a command you can run, a page you can open.</li>
+    <li>What's out of scope. Naming the edges stops the slow creep.</li>
+    <li>What you'd accept as good enough. Specific doesn't have to mean perfect.</li>
+  </ul>
+  <p class="sub">Then comes the part people skip: compare the result against what you wrote, not against what you now remember wanting. Memory is generous to whatever got built.</p>
+  <p class="sub">You're also allowed to revise the yardstick. Plans change, and sometimes the build teaches you what you actually wanted. Just change it on purpose, in writing, rather than letting it slide.</p>
+
+  <h2>Where a session record helps</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Because the outcome you wanted is only known when a version is done, it treats session maps as provisional. You can declare what done means with <code>cartographer goal</code>, each wrap is judged against it, and <code>/complete</code> writes the closing reading. It all runs on your machine, with no cloud.</p>
+
+  <h2>A small habit to try</h2>
+  <p class="sub">Before your next prompt, write one sentence that starts with "This is done when." If you can't finish it, that's useful news, and it arrived before any code did. If you can, you've given yourself something the summary can't talk you out of.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Edwin A. Locke and Gary P. Latham. <a href="https://goal-lab.psych.umn.edu/orgpsych/2020/readings/5.%20Motivation/Locke%20&amp;%20Latham%20(2002).pdf" rel="noopener">Building a Practically Useful Theory of Goal Setting and Task Motivation: A 35-Year Odyssey</a>. American Psychologist, 57(9), 705-717, 2002.</li>
+    <li id="fn2">Scrum.org. <a href="https://www.scrum.org/resources/blog/definition-done-theses" rel="noopener">TL; DR: Definition of Done Theses</a>. Scrum.org blog.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="/blog/">Blog</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

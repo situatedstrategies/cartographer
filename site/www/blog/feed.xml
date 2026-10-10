@@ -6,13 +6,69 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Oct 2026 14:09:29 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 10 Oct 2026 22:13:16 GMT</lastBuildDate>
     <item>
       <title>What the research says about reviewing code you didn't write</title>
       <link>https://codecartographer.dev/blog/reviewing-code-you-did-not-write</link>
       <guid isPermaLink="true">https://codecartographer.dev/blog/reviewing-code-you-did-not-write</guid>
       <pubDate>Fri, 09 Oct 2026 12:00:00 GMT</pubDate>
       <description>Two studies of code review put understanding the change first. Here's what they found, and what it means when you didn't write the code.</description>
+    </item>
+    <item>
+      <title>Why a correction is the most informative prompt in a session</title>
+      <link>https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt</guid>
+      <pubDate>Thu, 08 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A correction shows the gap between what you asked and what you meant. Here's what repair research and one vendor's docs say about reading it.</description>
+    </item>
+    <item>
+      <title>Declaring done before you start: goals as a yardstick</title>
+      <link>https://codecartographer.dev/blog/declaring-done-before-you-start</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/declaring-done-before-you-start</guid>
+      <pubDate>Wed, 07 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Goal-setting research and the agile 'definition of done' agree: say what finished looks like first. Here's why that helps when an agent writes the code.</description>
+    </item>
+    <item>
+      <title>Reading your own dead ends</title>
+      <link>https://codecartographer.dev/blog/reading-your-own-dead-ends</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/reading-your-own-dead-ends</guid>
+      <pubDate>Tue, 06 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Abandoned branches and discarded attempts aren't waste. What research on abandoned work and recorded rationale says, and how to read your own.</description>
+    </item>
+    <item>
+      <title>Praise is not evidence: appraising an agent's work honestly</title>
+      <link>https://codecartographer.dev/blog/praise-is-not-evidence</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/praise-is-not-evidence</guid>
+      <pubDate>Mon, 05 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A confident summary or an 'all done' feels like proof. Two studies suggest why that's risky, and a few plain habits for appraising work honestly.</description>
+    </item>
+    <item>
+      <title>Write the spec before you delegate, to an agent or a colleague</title>
+      <link>https://codecartographer.dev/blog/write-the-spec-before-you-delegate</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/write-the-spec-before-you-delegate</guid>
+      <pubDate>Sun, 04 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Requirements research keeps finding incomplete requirements among the most critical problems. Here's what that means before you hand work off.</description>
+    </item>
+    <item>
+      <title>What a session transcript holds, and what it leaves out</title>
+      <link>https://codecartographer.dev/blog/what-a-session-transcript-leaves-out</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/what-a-session-transcript-leaves-out</guid>
+      <pubDate>Sat, 03 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A transcript records what was said and done, not why. Here's what research on design rationale says about the gap, and how to work with it.</description>
+    </item>
+    <item>
+      <title>Automation bias: what research says about trusting suggestions</title>
+      <link>https://codecartographer.dev/blog/automation-bias-and-ai-suggestions</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/automation-bias-and-ai-suggestions</guid>
+      <pubDate>Fri, 02 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Decades of human-factors research show people over-trust automated advice. Here's what it found, and what it means when you accept code suggestions.</description>
+    </item>
+    <item>
+      <title>What the docs say about giving a coding agent context</title>
+      <link>https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context</guid>
+      <pubDate>Thu, 01 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Anthropic's docs and one study agree on a plain idea: context for a coding agent works best when it's short, specific and checked. Here's the close reading.</description>
     </item>
   </channel>
 </rss>

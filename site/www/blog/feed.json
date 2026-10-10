@@ -24,6 +24,110 @@
           "name": "Team Cartographer"
         }
       ]
+    },
+    {
+      "id": "https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt",
+      "url": "https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt",
+      "title": "Why a correction is the most informative prompt in a session",
+      "summary": "A correction shows the gap between what you asked and what you meant. Here's what repair research and one vendor's docs say about reading it.",
+      "date_published": "2026-10-08T12:00:00Z",
+      "date_modified": "2026-10-08T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
+      "id": "https://codecartographer.dev/blog/declaring-done-before-you-start",
+      "url": "https://codecartographer.dev/blog/declaring-done-before-you-start",
+      "title": "Declaring done before you start: goals as a yardstick",
+      "summary": "Goal-setting research and the agile 'definition of done' agree: say what finished looks like first. Here's why that helps when an agent writes the code.",
+      "date_published": "2026-10-07T12:00:00Z",
+      "date_modified": "2026-10-07T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
+      "id": "https://codecartographer.dev/blog/reading-your-own-dead-ends",
+      "url": "https://codecartographer.dev/blog/reading-your-own-dead-ends",
+      "title": "Reading your own dead ends",
+      "summary": "Abandoned branches and discarded attempts aren't waste. What research on abandoned work and recorded rationale says, and how to read your own.",
+      "date_published": "2026-10-06T12:00:00Z",
+      "date_modified": "2026-10-06T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
+      "id": "https://codecartographer.dev/blog/praise-is-not-evidence",
+      "url": "https://codecartographer.dev/blog/praise-is-not-evidence",
+      "title": "Praise is not evidence: appraising an agent's work honestly",
+      "summary": "A confident summary or an 'all done' feels like proof. Two studies suggest why that's risky, and a few plain habits for appraising work honestly.",
+      "date_published": "2026-10-05T12:00:00Z",
+      "date_modified": "2026-10-05T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
+      "id": "https://codecartographer.dev/blog/write-the-spec-before-you-delegate",
+      "url": "https://codecartographer.dev/blog/write-the-spec-before-you-delegate",
+      "title": "Write the spec before you delegate, to an agent or a colleague",
+      "summary": "Requirements research keeps finding incomplete requirements among the most critical problems. Here's what that means before you hand work off.",
+      "date_published": "2026-10-04T12:00:00Z",
+      "date_modified": "2026-10-04T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
+      "id": "https://codecartographer.dev/blog/what-a-session-transcript-leaves-out",
+      "url": "https://codecartographer.dev/blog/what-a-session-transcript-leaves-out",
+      "title": "What a session transcript holds, and what it leaves out",
+      "summary": "A transcript records what was said and done, not why. Here's what research on design rationale says about the gap, and how to work with it.",
+      "date_published": "2026-10-03T12:00:00Z",
+      "date_modified": "2026-10-03T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
+      "id": "https://codecartographer.dev/blog/automation-bias-and-ai-suggestions",
+      "url": "https://codecartographer.dev/blog/automation-bias-and-ai-suggestions",
+      "title": "Automation bias: what research says about trusting suggestions",
+      "summary": "Decades of human-factors research show people over-trust automated advice. Here's what it found, and what it means when you accept code suggestions.",
+      "date_published": "2026-10-02T12:00:00Z",
+      "date_modified": "2026-10-02T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
+      "id": "https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context",
+      "url": "https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context",
+      "title": "What the docs say about giving a coding agent context",
+      "summary": "Anthropic's docs and one study agree on a plain idea: context for a coding agent works best when it's short, specific and checked. Here's the close reading.",
+      "date_published": "2026-10-01T12:00:00Z",
+      "date_modified": "2026-10-01T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
     }
   ]
 }

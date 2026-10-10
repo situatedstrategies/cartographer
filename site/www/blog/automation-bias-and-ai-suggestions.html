@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automation bias: what research says about trusting suggestions</title>
+<meta name="description" content="Decades of human-factors research show people over-trust automated advice. Here's what it found, and what it means when you accept code suggestions.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/automation-bias-and-ai-suggestions">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/automation-bias-and-ai-suggestions">
+<meta property="og:title" content="Automation bias: what research says about trusting suggestions">
+<meta property="og:description" content="Decades of human-factors research show people over-trust automated advice. Here's what it found, and what it means when you accept code suggestions.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Automation bias: what research says about trusting suggestions","description":"Decades of human-factors research show people over-trust automated advice. Here's what it found, and what it means when you accept code suggestions.","url":"https://codecartographer.dev/blog/automation-bias-and-ai-suggestions","mainEntityOfPage":"https://codecartographer.dev/blog/automation-bias-and-ai-suggestions","datePublished":"2026-10-02","dateModified":"2026-10-02","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Automation bias: what research says about trusting suggestions","item":"https://codecartographer.dev/blog/automation-bias-and-ai-suggestions"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Automation bias: what research says about trusting suggestions</h1>
+  <p class="lead">People have been over-trusting automated advice since long before code suggestions existed. The research is old, careful, and useful to anyone who accepts a suggestion with a single keystroke.</p>
+  <p class="meta">By Team Cartographer · October 2nd 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Accepting a suggestion is cheap. A key press, and the code is in. That ease is the point of the feature, and it's also the thing human-factors researchers have been warning about for decades, in cockpits, control rooms and clinics. They have a name for it: automation bias.</p>
+
+  <h2>The classic experiment</h2>
+  <p class="sub">In 1999, Linda Skitka, Kathleen Mosier and Mark Burdick published a study built on a simulated flight task. Some participants flew with a computer that monitored system states and made recommendations. Others flew without one. The researchers found that <a href="https://www.sciencedirect.com/science/article/abs/pii/S1071581999902525" rel="noopener">participants without automation outperformed those with a very reliable but not perfectly reliable aid on a monitoring task</a>.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">The aid users also made two kinds of mistakes. They made omission errors, missing events when the aid didn't prompt them about it. And they made commission errors, <a href="https://www.sciencedirect.com/science/article/abs/pii/S1071581999902525" rel="noopener">doing what the automated aid recommended even when that contradicted other fully valid and available indicators</a>.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Read that twice. The aid wasn't bad. It was reliable. The trouble came from the small share of times it was wrong, because people had stopped watching for it.</p>
+
+  <h2>A broader picture</h2>
+  <p class="sub">A decade later, Raja Parasuraman and Dietrich Manzey reviewed the empirical work in <em>Human Factors</em>. Their conclusion was that complacency and automation bias, which had often been studied apart, are <a href="https://journals.sagepub.com/doi/10.1177/0018720810376055" rel="noopener">different manifestations of overlapping automation-induced phenomena, with attention playing a central role</a>.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">Two details from their abstract stand out. Automation bias shows up as omission and commission errors when decision aids are imperfect. And it <a href="https://journals.sagepub.com/doi/10.1177/0018720810376055" rel="noopener">isn't prevented by training or instructions</a>.<sup><a href="#fn2">2</a></sup> Knowing about the bias helps less than we'd like. Being told to stay alert doesn't reliably make anyone stay alert.</p>
+
+  <h2>What we can and can't say about code</h2>
+  <p class="sub">These studies weren't about code suggestions, and we won't pretend they were. They looked at pilots-in-simulation and at automated aids in general. We also aren't making any claim about how any particular tool or model behaves. What follows is our own reading of the research, not a finding.</p>
+  <p class="sub">The shape of the problem does carry over. A suggestion is a piece of automated advice. You are the person deciding whether to act on it. The research says that when advice is usually right, attention drifts, and the rare wrong answer gets through. Two failure modes are worth watching for in your own work.</p>
+  <ul class="list">
+    <li>Commission: you accept a suggestion that conflicts with something you already knew, such as a naming convention, a constraint from earlier in the project, or a failing test.</li>
+    <li>Omission: you never notice what the suggestion left out, because nothing on the screen flags it. The missing error handling or the unconsidered edge case doesn't announce itself.</li>
+  </ul>
+  <p class="sub">Omission is the harder one. A wrong line sits in front of you and can be read. An absent one can't.</p>
+
+  <h2>Habits that fit the research</h2>
+  <p class="sub">Since instructions alone don't fix this, it helps to change the setup rather than rely on willpower. These are suggestions drawn from our reading, not proven remedies.</p>
+  <ul class="list">
+    <li>Decide what you expect before you look. Write the one-line intent first, then compare the suggestion against it.</li>
+    <li>Keep an independent check running. A test you wrote before the suggestion is a "fully valid indicator" that doesn't depend on the suggestion's own account of itself.</li>
+    <li>Ask what's missing, not only what's wrong. Name one case the code should handle and look for it.</li>
+    <li>Slow down on the easy ones. High reliability is exactly the condition under which attention drifts.</li>
+  </ul>
+
+  <h2>Where a record helps</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built: what you asked, what happened, and how you responded. It reads what's already on your machine, with no cloud. If you want to see how often you accepted something without a pause, or where you stepped in and corrected course, that history is where the evidence lives.</p>
+
+  <h2>A fair reading</h2>
+  <p class="sub">None of this says automated advice is bad. The aids in these studies were reliable, and that's why people leaned on them. The lesson is narrower. Trust that's calibrated to how often advice is right is sensible. Trust that stops checking isn't. The goal isn't to doubt every suggestion. It's to keep one part of your attention reserved for the times it's wrong.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Linda J. Skitka, Kathleen L. Mosier and Mark Burdick. <a href="https://www.sciencedirect.com/science/article/abs/pii/S1071581999902525" rel="noopener">Does automation bias decision-making?</a> International Journal of Human-Computer Studies, 51(5), 991-1006, 1999.</li>
+    <li id="fn2">Raja Parasuraman and Dietrich H. Manzey. <a href="https://journals.sagepub.com/doi/10.1177/0018720810376055" rel="noopener">Complacency and Bias in Human Use of Automation: An Attentional Integration</a>. Human Factors, 52(3), 381-410, 2010.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="/blog/">Blog</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why a correction is the most informative prompt in a session</title>
+<meta name="description" content="A correction shows the gap between what you asked and what you meant. Here's what repair research and one vendor's docs say about reading it.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt">
+<meta property="og:title" content="Why a correction is the most informative prompt in a session">
+<meta property="og:description" content="A correction shows the gap between what you asked and what you meant. Here's what repair research and one vendor's docs say about reading it.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Why a correction is the most informative prompt in a session","description":"A correction shows the gap between what you asked and what you meant. Here's what repair research and one vendor's docs say about reading it.","url":"https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt","mainEntityOfPage":"https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt","datePublished":"2026-10-08","dateModified":"2026-10-08","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Why a correction is the most informative prompt in a session","item":"https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Why a correction is the most informative prompt in a session</h1>
+  <p class="lead">Most prompts say what you want. A correction says what your last prompt failed to say, and that makes it worth a second look.</p>
+  <p class="meta">By Team Cartographer · October 8th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+      <p class="sub">Every session has a few prompts that do more work than the rest. They aren't the long ones or the clever ones. They're the short, slightly deflated ones: "No, I meant the other file." "Not that. Keep the old behavior." "Why did you rewrite the tests?"</p>
+  <p class="sub">A correction is the moment a conversation stops and checks itself. That makes it unusually rich in information, and it's worth knowing why.</p>
+
+  <h2>A correction is a measurement of a gap</h2>
+  <p class="sub">A first prompt is a guess about how to say what you want. The reply is a test of that guess. When the reply is right, you learn little, because the words did their job. When it's wrong, you learn something specific: the sentence you wrote and the thing you meant weren't the same.</p>
+  <p class="sub">The correction is where that gap gets written down. It usually names what was missing. A constraint you assumed was obvious. A file you thought was implied. A word that meant one thing to you and another to the reader. No other prompt in the session says so much about what you hadn't said.</p>
+
+  <h2>Conversation researchers have studied this for decades</h2>
+  <p class="sub">People fix misunderstandings all the time when they talk, and there's a body of work on how. In 1977, Schegloff, Jefferson and Sacks published <a href="https://muse.jhu.edu/article/453740/summary" rel="noopener">a paper on the preference for self-correction in the organization of repair in conversation</a>.<sup><a href="#fn1">1</a></sup> Their subject was the machinery speakers use to deal with recurring problems in speaking, hearing and understanding.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Two points from that tradition carry over well. First, repair is a normal part of talk, not a sign that something has gone badly wrong. Second, the person who spots the trouble and the person who caused it aren't always the same, and who fixes what matters. In that paper, the authors describe a preference for self-correction over correction by someone else.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Later work found that this isn't a quirk of one language. A survey of repair requests in twenty-one languages reports that speakers of all the spoken languages sampled have <a href="https://library.oapen.org/handle/20.500.12657/31343" rel="noopener">a monosyllabic "huh?"-type interjection that is strikingly similar across languages</a>.<sup><a href="#fn2">2</a></sup> Our reading: "huh?" flags that something went wrong without saying what, and people everywhere seem to want a cheap way to say "that didn't land."</p>
+  <p class="sub">None of this research is about coding agents, and we won't pretend it is. Reading it across is our own interpretation. But the shape fits. In a session, you are the one who knows what you meant. The reply is the one that missed. Your correction is you repairing a misunderstanding that began in your own wording.</p>
+
+  <h2>What the vendor's own guidance says</h2>
+  <p class="sub">Anthropic's documentation for Claude Code treats correction as a routine part of the work. Its best-practices page advises you to <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">correct Claude as soon as you notice it going off track</a>, and says that correcting quickly generally produces better solutions faster.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">The same page also marks a limit. It says that if you've corrected Claude more than twice on the same issue in one session, <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">the context is cluttered with failed approaches</a>, and it suggests clearing the session and starting fresh with a more specific prompt that incorporates what you learned.<sup><a href="#fn3">3</a></sup> It lists "correcting over and over" among the common failure patterns.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">Read that as a point about information. One correction tells you what was missing. A third correction on the same issue tells you the repair isn't working, and the thing to change is the prompt itself.</p>
+
+  <h2>How to read your own corrections</h2>
+  <p class="sub">If a correction is a measurement of a gap, you can learn from the measurements. A few questions help:</p>
+  <ul class="list">
+    <li>What did the correction add that the first prompt lacked? A constraint, a scope, a name, a preference?</li>
+    <li>Could you have known to say it up front? If yes, that's a reusable habit. If no, it was just discovery.</li>
+    <li>Did the correction fix things, or did you need another one? A string of them on one issue is a sign to restart.</li>
+    <li>Did you correct the reply, or your own earlier prompt? Both happen, and they teach different things.</li>
+  </ul>
+  <p class="sub">Over many sessions, the same gaps tend to show up. Maybe you always forget to say which tests to leave alone. Maybe you name things loosely. Those patterns are hard to see from inside a single session and easy to see in a pile of them.</p>
+
+  <h2>Where a record helps</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Its maps note what you did, including the prompt, the correction and the decision, and how you responded next: whether you repaired, accepted or moved on. It reads what's already on your machine, with no cloud. If you want to look back at your corrections as a set, that's what the record is for.</p>
+
+  <h2>A small habit</h2>
+  <p class="sub">Next time you type a correction, pause for a second before sending it. Ask what the first prompt would have needed to say for the correction not to exist. You don't have to act on the answer. Just notice it. Over time, the corrections you write will tell you more about how you ask than about what the agent did.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+            <li id="fn1">Schegloff, Jefferson and Sacks. <a href="https://muse.jhu.edu/article/453740/summary" rel="noopener">The Preference for Self-Correction in the Organization of Repair in Conversation</a>. Language, vol. 53, no. 2, 1977, pp. 361-382.</li>
+    <li id="fn2">Enfield, Dingemanse and colleagues. <a href="https://library.oapen.org/handle/20.500.12657/31343" rel="noopener">Chapter 12, Huh? What? - A first survey in 21 languages</a>. OAPEN library.</li>
+    <li id="fn3">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation, section "Course-correct early and often" and "Avoid common failure patterns".</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

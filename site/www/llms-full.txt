@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-09.
+> Generated 2026-10-10.
 
 
 ---
@@ -706,6 +706,540 @@ None of this needs a new tool or a long checklist. It needs a pause long enough 
 - Alberto Bacchelli and Christian Bird. Expectations, Outcomes, and Challenges of Modern Code Review. 35th International Conference on Software Engineering (ICSE), 2013.
 
 - Pavlína Wurzel Gonçalves, Pooja Rani, Margaret-Anne Storey, Diomidis Spinellis and Alberto Bacchelli. Code Review Comprehension: Reviewing Strategies Seen Through Code Comprehension Theories. International Conference on Program Comprehension (ICPC), 2025. arXiv:2503.21455.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Why a correction is the most informative prompt in a session
+URL: https://codecartographer.dev/blog/why-corrections-are-the-most-informative-prompt
+Description: A correction shows the gap between what you asked and what you meant. Here's what repair research and one vendor's docs say about reading it.
+
+Every session has a few prompts that do more work than the rest. They aren't the long ones or the clever ones. They're the short, slightly deflated ones: "No, I meant the other file." "Not that. Keep the old behavior." "Why did you rewrite the tests?"
+
+A correction is the moment a conversation stops and checks itself. That makes it unusually rich in information, and it's worth knowing why.
+
+## A correction is a measurement of a gap
+
+A first prompt is a guess about how to say what you want. The reply is a test of that guess. When the reply is right, you learn little, because the words did their job. When it's wrong, you learn something specific: the sentence you wrote and the thing you meant weren't the same.
+
+The correction is where that gap gets written down. It usually names what was missing. A constraint you assumed was obvious. A file you thought was implied. A word that meant one thing to you and another to the reader. No other prompt in the session says so much about what you hadn't said.
+
+## Conversation researchers have studied this for decades
+
+People fix misunderstandings all the time when they talk, and there's a body of work on how. In 1977, Schegloff, Jefferson and Sacks published a paper on the preference for self-correction in the organization of repair in conversation.1 Their subject was the machinery speakers use to deal with recurring problems in speaking, hearing and understanding.1
+
+Two points from that tradition carry over well. First, repair is a normal part of talk, not a sign that something has gone badly wrong. Second, the person who spots the trouble and the person who caused it aren't always the same, and who fixes what matters. In that paper, the authors describe a preference for self-correction over correction by someone else.1
+
+Later work found that this isn't a quirk of one language. A survey of repair requests in twenty-one languages reports that speakers of all the spoken languages sampled have a monosyllabic "huh?"-type interjection that is strikingly similar across languages.2 Our reading: "huh?" flags that something went wrong without saying what, and people everywhere seem to want a cheap way to say "that didn't land."
+
+None of this research is about coding agents, and we won't pretend it is. Reading it across is our own interpretation. But the shape fits. In a session, you are the one who knows what you meant. The reply is the one that missed. Your correction is you repairing a misunderstanding that began in your own wording.
+
+## What the vendor's own guidance says
+
+Anthropic's documentation for Claude Code treats correction as a routine part of the work. Its best-practices page advises you to correct Claude as soon as you notice it going off track, and says that correcting quickly generally produces better solutions faster.3
+
+The same page also marks a limit. It says that if you've corrected Claude more than twice on the same issue in one session, the context is cluttered with failed approaches, and it suggests clearing the session and starting fresh with a more specific prompt that incorporates what you learned.3 It lists "correcting over and over" among the common failure patterns.3
+
+Read that as a point about information. One correction tells you what was missing. A third correction on the same issue tells you the repair isn't working, and the thing to change is the prompt itself.
+
+## How to read your own corrections
+
+If a correction is a measurement of a gap, you can learn from the measurements. A few questions help:
+
+- What did the correction add that the first prompt lacked? A constraint, a scope, a name, a preference?
+
+- Could you have known to say it up front? If yes, that's a reusable habit. If no, it was just discovery.
+
+- Did the correction fix things, or did you need another one? A string of them on one issue is a sign to restart.
+
+- Did you correct the reply, or your own earlier prompt? Both happen, and they teach different things.
+
+Over many sessions, the same gaps tend to show up. Maybe you always forget to say which tests to leave alone. Maybe you name things loosely. Those patterns are hard to see from inside a single session and easy to see in a pile of them.
+
+## Where a record helps
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Its maps note what you did, including the prompt, the correction and the decision, and how you responded next: whether you repaired, accepted or moved on. It reads what's already on your machine, with no cloud. If you want to look back at your corrections as a set, that's what the record is for.
+
+## A small habit
+
+Next time you type a correction, pause for a second before sending it. Ask what the first prompt would have needed to say for the correction not to exist. You don't have to act on the answer. Just notice it. Over time, the corrections you write will tell you more about how you ask than about what the agent did.
+
+## Sources
+
+- Schegloff, Jefferson and Sacks. The Preference for Self-Correction in the Organization of Repair in Conversation. Language, vol. 53, no. 2, 1977, pp. 361-382.
+
+- Enfield, Dingemanse and colleagues. Chapter 12, Huh? What? - A first survey in 21 languages. OAPEN library.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation, section "Course-correct early and often" and "Avoid common failure patterns".
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Declaring done before you start: goals as a yardstick
+URL: https://codecartographer.dev/blog/declaring-done-before-you-start
+Description: Goal-setting research and the agile 'definition of done' agree: say what finished looks like first. Here's why that helps when an agent writes the code.
+
+You ask for a feature. The agent works, the tests go green, the summary says it's finished. Is it? That depends on a question you may never have answered: finished compared to what?
+
+If the answer only forms after the work is on your screen, you end up judging the result by how it feels. A tidy diff feels done. A confident summary feels done. Neither is a yardstick. This post is about setting the yardstick first.
+
+## What goal research found
+
+Edwin Locke and Gary Latham spent decades studying how goals shape work. In a 2002 review of 35 years of their research, they report that specific, difficult goals consistently led to higher performance than urging people to do their best.1 "Do your best" sounds encouraging. It's also a goal nobody can fail, because it never says what success is.
+
+The same review is careful about conditions. The advantage holds when people get feedback about their progress, are committed to the goal, and have the ability and knowledge to do the task.1 A goal does two jobs here. It directs effort, and it gives you something to measure against as you go.
+
+That research is about people doing work, mostly people doing their own. It isn't about coding agents, and we won't claim it is. What follows is our reading of it, not a finding.
+
+## What agile teams call it
+
+Software teams reached for the same idea under a different name. In Scrum, the Definition of Done is a written statement of what it takes for work to count as complete. Scrum.org's write-up says that work that fails the Definition of Done isn't released or shown at the Sprint Review and goes back to the Product Backlog.2
+
+Notice what it does for a team. Nobody has to argue, afterwards, about whether something is finished. The argument happened earlier, when it was cheap.
+
+## Why it matters more with an agent
+
+When you write the code yourself, you carry the goal in your head and adjust it as you go. When something else writes it, your head isn't in the loop in the same way. You see a result and have to decide what to make of it.
+
+Without a stated finish line, three things tend to happen:
+
+- The goal drifts. Each new prompt nudges it, and nobody notices the sum.
+
+- "Done" becomes whatever the agent reports. Its summary becomes the yardstick, which makes it both the author and the judge.
+
+- Extras slip in. Without edges, anything that works looks like progress.
+
+None of that is anyone's fault. It's what happens when there's nothing to compare against.
+
+## What a good yardstick looks like
+
+It doesn't need to be long. A few lines before you start will do:
+
+- The outcome, in terms someone could observe. "Users can reset their password by email," not "improve login."
+
+- What would show it works. A test, a command you can run, a page you can open.
+
+- What's out of scope. Naming the edges stops the slow creep.
+
+- What you'd accept as good enough. Specific doesn't have to mean perfect.
+
+Then comes the part people skip: compare the result against what you wrote, not against what you now remember wanting. Memory is generous to whatever got built.
+
+You're also allowed to revise the yardstick. Plans change, and sometimes the build teaches you what you actually wanted. Just change it on purpose, in writing, rather than letting it slide.
+
+## Where a session record helps
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Because the outcome you wanted is only known when a version is done, it treats session maps as provisional. You can declare what done means with cartographer goal, each wrap is judged against it, and /complete writes the closing reading. It all runs on your machine, with no cloud.
+
+## A small habit to try
+
+Before your next prompt, write one sentence that starts with "This is done when." If you can't finish it, that's useful news, and it arrived before any code did. If you can, you've given yourself something the summary can't talk you out of.
+
+## Sources
+
+- Edwin A. Locke and Gary P. Latham. Building a Practically Useful Theory of Goal Setting and Task Motivation: A 35-Year Odyssey. American Psychologist, 57(9), 705-717, 2002.
+
+- Scrum.org. TL; DR: Definition of Done Theses. Scrum.org blog.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Reading your own dead ends
+URL: https://codecartographer.dev/blog/reading-your-own-dead-ends
+Description: Abandoned branches and discarded attempts aren't waste. What research on abandoned work and recorded rationale says, and how to read your own.
+
+Open any repository you've worked in for a while and look at the branches. Some merged. Some are still sitting there, three weeks stale, named something hopeful. We all have a few of those, and we rarely open them again.
+
+We'd like to make a case for opening them. Not out of nostalgia, and not to feel bad about unfinished work. A dead end holds something the finished code doesn't: a record of what you tried, and why it didn't hold.
+
+## Abandoned work is common, and mostly silent
+
+It helps to know how ordinary this is. Researchers studying open source have counted it. Khatoonabadi and colleagues built a dataset of 265,325 pull requests, including 4,450 abandoned ones, from ten popular and mature GitHub projects.1 That's a small share of the total, but it's far from zero, and these were well-run projects.
+
+They also read through a random sample of 354 abandoned pull requests to ask why. Their abstract reports that the most common reasons for abandonment involve obstacles faced by contributors, followed by hurdles imposed by maintainers during the review process.1 On the question of what makes abandonment more likely, they link complex pull requests, novice contributors and lengthy reviews to a higher chance of abandonment.1
+
+Notice what's missing from that list. Nobody abandons work because they were careless. They abandon it because it got hard, or slow, or tangled. That's exactly the kind of information a team would want back later, and it's exactly the kind that disappears when a branch gets deleted.
+
+## The reasons are the valuable part
+
+Software engineering has a name for the thing we lose. It's called rationale: the reasons behind a design, not just the design. Janet Burge, John Carroll, Raymond McCall and Ivan Mistrik wrote a whole book on it. Their starting point is that design decisions and the decision-making process behind them can best be documented as the rationale for the system, and they follow that idea through the software lifecycle, from the first decisions in a project to maintenance and reuse.2
+
+Here's our own reading of that, and it's an inference rather than something the book says in these words. A discarded attempt is a piece of rationale in its purest form. It's a decision (we tried this) with an outcome (it didn't work) that nobody had to argue for afterward. Finished code shows you the path that survived. Dead ends show you the walls.
+
+## What a dead end can tell you
+
+When we go back through our own abandoned attempts, a few questions tend to be useful:
+
+- What were we trying to do when we started down this path? The goal is often clearer in the first hour than the last.
+
+- Where did it stop working? A specific error teaches more than a vague sense that it was "getting messy."
+
+- Did we leave because the idea was wrong, or because the moment was? Those are different lessons.
+
+- Would we make the same call again, knowing what we know now?
+
+The third question matters most to us. Some ideas fail because they're bad. Others fail because we ran out of time, or got pulled into something urgent. If you can't tell which was which, you may end up avoiding a good idea for years, or retrying a bad one with fresh optimism.
+
+## Why we don't do it
+
+There's a human reason we skip this. Abandoned work feels like a small failure, and we'd rather move on. Memory helps us along by smoothing the story: we remember the version that shipped and forget the three that didn't.
+
+There's a practical reason too. The evidence is scattered. A branch name tells you almost nothing. The commit history shows what you kept, not what you tried and reverted. The reasoning lived in your head, or in a chat, or in a terminal you've since closed.
+
+If you build with a coding agent, some of that reasoning is written down already, because the session itself is a record of the attempt. Cartographer reads the session history your agent already keeps and turns it into a map of how a project was built, with turning points marked. It records which branch each session was on, and it all stays on your machine. That's a place to start when you want to see where a build changed course.
+
+## A small habit
+
+You don't need a process. Next time you abandon a branch, write two sentences before you walk away: what you were trying, and why you stopped. Put them in the branch description, a commit message, or a notes file. Future you will be reading cold, and two honest sentences are worth more than a clean history.
+
+Dead ends aren't the opposite of progress. They're how the map gets its edges.
+
+## Sources
+
+- SayedHassan Khatoonabadi, Diego Elias Costa, Rabe Abdalkareem and Emad Shihab. On Wasted Contributions: Understanding the Dynamics of Contributor-Abandoned Pull Requests. arXiv:2110.15447.
+
+- Janet E. Burge, John M. Carroll, Raymond McCall and Ivan Mistrik. Rationale-Based Software Engineering. Springer, 2008.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Praise is not evidence: appraising an agent's work honestly
+URL: https://codecartographer.dev/blog/praise-is-not-evidence
+Description: A confident summary or an 'all done' feels like proof. Two studies suggest why that's risky, and a few plain habits for appraising work honestly.
+
+We know the feeling. The terminal goes quiet, a tidy summary scrolls past, and it ends with "all done." Something in us relaxes. We nod, maybe say thanks, and move on.
+
+That relaxed feeling is worth a second look. It's a reaction to tone, and tone isn't evidence of anything. Here's what some research says about why we're so ready to accept automated output, and what we can do about it.
+
+## Leaning on the machine is an old habit
+
+Researchers have a name for it: automation bias, the tendency to over-rely on automation.1 A 2012 systematic review by Kate Goddard, Abdul Roudsari and Jeremy Wyatt looked at it across several research fields, with a focus on clinical decision support in healthcare. Of 13,821 papers retrieved, 74 met their inclusion criteria.1
+
+One observation from that review stays with us. Although most research shows overall improved performance with these tools, there is often a failure to recognize the new errors the tools can introduce.1 The help is real, and so is the blind spot it creates. Both are true at once.
+
+The review also found that how much people lean on automation isn't fixed. Factors such as cognitive style, task specific experience, trust and confidence all played a part, and so did workload, task complexity and time constraints.1 Notice that last group. Busy, hurried people lean harder. That describes most of us at the end of a long session.
+
+## Feeling sure and being right are different things
+
+A second study is closer to our own world. Neil Perry, Megha Srivastava, Deepak Kumar and Dan Boneh ran a user study of people writing code with and without an AI assistant. They found that participants with access to an AI assistant wrote significantly less secure code than those without.2 They also found that the assisted participants were more likely to believe they had written secure code.2
+
+The authors suggest this means such tools may lead users to be overconfident about security flaws in their code.2 That's their reading, and it's worth keeping it that modest. The study was about security tasks and one particular assistant, not about every kind of work. It also noted something encouraging: participants who trusted the AI less and engaged more with their prompts wrote code with fewer vulnerabilities.2
+
+Neither study tells us how any given coding agent behaves, and we won't claim they do. What they show is on the human side of the screen. We can feel secure about work that isn't. And when something automated is helping, we're prone to miss the errors it adds.
+
+## Praise is a mood, not a measurement
+
+So here's our own view, offered as a view and not as a finding. A summary that says "all done" is a statement about the work, written by the one who did it. Sometimes it's right. But it's still only a statement. It can't tell you whether the thing you meant is the thing you got.
+
+When a person tells us "it's finished," we usually ask to see it. We should extend the same courtesy to a tool, and to ourselves when we're feeling pleased. A few habits help:
+
+- Run it. Open the page, call the function, feed it the awkward input. Watching it work beats reading that it works.
+
+- Compare it to what you asked for. Reread your original request, not the summary of it.
+
+- Ask what would prove it wrong. If nothing could, you haven't tested anything yet.
+
+- Look for what the summary skipped. The omissions are often where the trouble sits.
+
+- Slow down when you're rushed. That's when leaning is strongest.
+
+None of this is distrust. It's the ordinary habit of checking work before we sign for it, and it's kinder to our future selves than finding out in production.
+
+## Where a record helps
+
+There's one more piece. To compare the result with what you meant, you need to remember what you meant, and what happened along the way. Cartographer reads the session history your coding agent already keeps and tells each session back to you as a story: what you did, what happened, and how you responded. It reads what's already on your machine, with no cloud. It's a way to look at the build instead of only at its closing summary.
+
+## A smaller kind of honesty
+
+We think appraising work honestly is mostly a matter of keeping two questions apart. "Does this sound finished?" and "Is this what we meant?" feel alike in the moment. Only the second one is evidence. It takes a minute to ask, and it's usually the cheapest minute of the whole project.
+
+## Sources
+
+- Kate Goddard, Abdul Roudsari and Jeremy C. Wyatt. Automation bias: a systematic review of frequency, effect mediators, and mitigators. Journal of the American Medical Informatics Association, 19(1), 2012.
+
+- Neil Perry, Megha Srivastava, Deepak Kumar and Dan Boneh. Do Users Write More Insecure Code with AI Assistants?. ACM Conference on Computer and Communications Security (CCS), 2023. arXiv:2211.03622.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Write the spec before you delegate, to an agent or a colleague
+URL: https://codecartographer.dev/blog/write-the-spec-before-you-delegate
+Description: Requirements research keeps finding incomplete requirements among the most critical problems. Here's what that means before you hand work off.
+
+Delegating feels efficient. You describe the job in a sentence or two, someone else (or something else) takes it, and your afternoon is free. Then the result comes back and it isn't quite what you pictured. Nobody did anything wrong. The picture just never left your head.
+
+## What practitioners report
+
+Software engineers have studied this gap for a long time under the name requirements engineering. One long-running effort, the NaPiRE surveys, asks practitioners which requirements problems they actually run into. In one analysis, survey data from 228 organizations across 10 countries was used to identify the most critical requirements engineering problems, along with their causes and mitigation actions.2 The larger NaPiRE paper reports on 21 problems drawn from the literature, and studies their relevance and criticality in context.3
+
+A narrower paper looked at one problem in two countries. Kalinowski and colleagues replicated the survey with 14 organizations in Austria and 74 in Brazil. They report that respondents from both countries cited the incomplete/hidden requirements problem as one of the most critical requirements engineering problems.1 In the Austrian data, that problem was named among the five most critical by 9 of the 14 participants.1
+
+Notice what that problem is. It isn't a bad design or a clumsy implementation. It's that what somebody needed was never fully written down, or never surfaced at all.
+
+## Why a gap in the spec is expensive
+
+These studies describe people working with people: teams, customers, analysts. They say nothing about coding agents, and we won't claim they do. What follows is our reading, not a finding.
+
+When you hand work to a colleague, a lot of the missing detail gets filled by shared context. They know the codebase, they know your taste, and they can walk over and ask. Even so, the respondents in these surveys, who work with people, still cited incomplete requirements as one of their most critical problems.
+
+Delegating to a tool may remove some of that cushion, depending on what it can see and whether you can easily ask it questions. Either way, whatever you left out is a decision someone else now makes for you, often without telling you it was a decision.
+
+## What a useful spec contains
+
+A spec doesn't need to be long. It needs to settle the things you'd otherwise discover on review. Here's a short list we find holds up:
+
+- The outcome. What should be true when this is done, in a sentence you could check.
+
+- The boundaries. What's out of scope, and which files, interfaces or behaviors must not change.
+
+- The reasons. Why this, why now, and what you already tried. Reasons let the other party make good calls on the cases you didn't foresee.
+
+- The check. How you'll decide it worked: a test, a command, a screen you'll look at.
+
+- The unknowns. What you haven't decided yet. Saying so beats leaving a silent hole.
+
+Writing these down does something before anyone else reads them. It forces you to find the places where your own picture is blurry. Many of those places are invisible until you try to put them in a sentence.
+
+## Specifying isn't the same as dictating
+
+There's a fair worry that a detailed spec turns delegation into typing the code yourself. It doesn't have to. A good spec describes the destination and the constraints, not each step. You're deciding what, and leaving how to the person or tool doing the work.
+
+It also won't be perfect. Requirements change as people learn. The aim isn't a complete document. It's to make the gaps visible early, while they're cheap to fill.
+
+## Where a record helps
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Its prompt reading notes what each prompt anchors to, such as files, symbols, errors or pasted code, and it lets you declare with cartographer goal what done means, so each session is judged against that yardstick. Everything stays on your machine. Looking back, you can see where a hand-off was specific and where it was a hope.
+
+## A habit worth trying
+
+Before your next hand-off, write three lines: what done looks like, what's off limits, and how you'll check. If you can't write them, you've found the real next task. If you can, you've just made the work far easier for whoever picks it up, including future you.
+
+## Sources
+
+- Marcos Kalinowski, Michael Felderer, Tayana Conte, Rodrigo Spínola, Rafael Prikladnicki, Dietmar Winkler, Daniel Méndez Fernández and Stefan Wagner. Preventing Incomplete/Hidden Requirements: Reflections on Survey Data from Austria and Brazil. 8th Software Quality Days (SWQD), 2016.
+
+- Mafra, Kalinowski, Méndez Fernández, Felderer and Wagner. Towards Guidelines for Preventing Critical Requirements Engineering Problems. Euromicro Conference on Software Engineering and Advanced Applications (SEAA), 2016. arXiv:1611.08833.
+
+- Daniel Méndez Fernández, Stefan Wagner and 21 co-authors. Naming the Pain in Requirements Engineering: Contemporary Problems, Causes, and Effects in Practice. Empirical Software Engineering 22(5), 2017. arXiv:1611.10288.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# What a session transcript holds, and what it leaves out
+URL: https://codecartographer.dev/blog/what-a-session-transcript-leaves-out
+Description: A transcript records what was said and done, not why. Here's what research on design rationale says about the gap, and how to work with it.
+
+Open an old session and you can read it like a ledger. Here's the prompt. Here's the reply. Here's the command that ran, the error that came back, the fix that followed. It's all there, in order, and it feels like a complete record.
+
+Then you ask a different question. Why did we choose this approach and not the other one? And the ledger goes quiet. We wanted to spend this post on that quiet, because we think it's the most useful thing to understand about any record of work.
+
+## A log holds events, not reasons
+
+A transcript captures what was said and what was done. Reasons are a different kind of thing. They live in the head of whoever was deciding, and they only reach the page if that person happens to type them out.
+
+Sometimes they do. A prompt might say "use the simple version, we only have two users." That's a reason, sitting in plain sight. More often the reason is a hunch, a half-remembered bug from last year, or a feeling that the last approach was getting too tangled. None of that gets typed. What gets typed is the instruction that came out the other end.
+
+So the transcript shows the choice and hides the choosing. We can see that a dependency was swapped at 4:12 in the afternoon. We can't see the thing that made us tired of the old one.
+
+## Software people have worried about this for a long time
+
+The gap has a name in software engineering: design rationale, meaning the reasons behind a design. Researchers have studied whether people write it down and what stops them.
+
+One survey of software practitioners, based on eighty-one valid responses, found that practitioners recognize the importance of documenting design rationale and frequently use it to reason about their design choices. The same survey also found that they reported barriers to using and documenting it.1 The authors started from the observation that there was little empirical evidence about how practitioners view rationale and how they document it.1
+
+We find that comforting, in a way. People know the reasons matter. They use them. They still struggle to record them. If that's true of careful architects writing documents on purpose, it's no surprise that it's true of a chat window where the goal was to get something working.
+
+## Some knowing doesn't turn into words
+
+There's a deeper reason a log can't hold everything, and it's older than software. The philosopher Michael Polanyi opened his book on the subject with the idea that we can know more than we can tell.2 He called this the tacit dimension of knowing.
+
+Most of us have felt it. You look at a function and sense it's wrong before you can say why. You prefer one name over another and can't defend it. Judgment like that steers a session, and it leaves almost no trace in the text. We'd be careful not to push the point further than it goes: Polanyi was writing about human knowledge in general, not about transcripts. But it's a fair reminder that a record of words can't be a record of everything that guided them.
+
+## What a transcript is good for
+
+None of this makes a transcript useless. It makes it a particular kind of evidence, and it helps to know which kind.
+
+A transcript is strong on sequence. What came first, what came next, where the work stalled. It's strong on exact wording, including the moments you changed your mind. It's strong on friction: the error, the retry, the abandoned attempt. Those are things memory flattens quickly. A week later you'll remember that the thing worked. You won't remember the three tries it took.
+
+It's weak on motive, on the options you considered and dropped silently, and on anything you knew without saying. If you read a transcript hoping for the why, you'll end up inventing one. That's the trap. A tidy story is easy to write after the fact, and it's easy to believe.
+
+## Reading with the gap in mind
+
+A few habits make a record more honest to read, whether it's yours or someone else's.
+
+- Mark what's observed and what's inferred. "The prompt changed direction here" is observed. "Because the first approach felt wrong" is a guess.
+
+- Look hardest at the corrections. A turn that starts with "no, not that" is a rare place where the reasoning surfaces, because you had to say what you wanted instead.
+
+- When you're still in the work, write one line of why next to the what. It costs seconds and it's the thing the log can't supply later.
+
+- Be willing to write "unknown" in the margin. An honest gap is more useful than a confident invention.
+
+## Where a map fits
+
+Cartographer reads the session history Claude Code already keeps, as one file per session, and turns it into a stream of events: prompts, replies, tools, errors and branch changes. It runs on your machine with no cloud. Every move it writes has to cite its evidence in the record, which keeps the telling tied to what happened and not to what sounds plausible. It can show you the sequence and the friction. The why you didn't say aloud stays yours to add.
+
+## A record is a starting point
+
+We think the healthiest way to hold a transcript is as a good witness who only saw part of the scene. It will tell you exactly what happened in the room. It won't tell you what anyone was thinking. For that, you still need the person, and a few honest notes while they still remember.
+
+## Sources
+
+- Antony Tang, Muhammad Ali Babar, Ian Gorton and Jun Han. A Survey of Architecture Design Rationale. Journal of Systems and Software.
+
+- Michael Polanyi. The Tacit Dimension. First published 1966; University of Chicago Press edition.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Automation bias: what research says about trusting suggestions
+URL: https://codecartographer.dev/blog/automation-bias-and-ai-suggestions
+Description: Decades of human-factors research show people over-trust automated advice. Here's what it found, and what it means when you accept code suggestions.
+
+Accepting a suggestion is cheap. A key press, and the code is in. That ease is the point of the feature, and it's also the thing human-factors researchers have been warning about for decades, in cockpits, control rooms and clinics. They have a name for it: automation bias.
+
+## The classic experiment
+
+In 1999, Linda Skitka, Kathleen Mosier and Mark Burdick published a study built on a simulated flight task. Some participants flew with a computer that monitored system states and made recommendations. Others flew without one. The researchers found that participants without automation outperformed those with a very reliable but not perfectly reliable aid on a monitoring task.1
+
+The aid users also made two kinds of mistakes. They made omission errors, missing events when the aid didn't prompt them about it. And they made commission errors, doing what the automated aid recommended even when that contradicted other fully valid and available indicators.1
+
+Read that twice. The aid wasn't bad. It was reliable. The trouble came from the small share of times it was wrong, because people had stopped watching for it.
+
+## A broader picture
+
+A decade later, Raja Parasuraman and Dietrich Manzey reviewed the empirical work in Human Factors. Their conclusion was that complacency and automation bias, which had often been studied apart, are different manifestations of overlapping automation-induced phenomena, with attention playing a central role.2
+
+Two details from their abstract stand out. Automation bias shows up as omission and commission errors when decision aids are imperfect. And it isn't prevented by training or instructions.2 Knowing about the bias helps less than we'd like. Being told to stay alert doesn't reliably make anyone stay alert.
+
+## What we can and can't say about code
+
+These studies weren't about code suggestions, and we won't pretend they were. They looked at pilots-in-simulation and at automated aids in general. We also aren't making any claim about how any particular tool or model behaves. What follows is our own reading of the research, not a finding.
+
+The shape of the problem does carry over. A suggestion is a piece of automated advice. You are the person deciding whether to act on it. The research says that when advice is usually right, attention drifts, and the rare wrong answer gets through. Two failure modes are worth watching for in your own work.
+
+- Commission: you accept a suggestion that conflicts with something you already knew, such as a naming convention, a constraint from earlier in the project, or a failing test.
+
+- Omission: you never notice what the suggestion left out, because nothing on the screen flags it. The missing error handling or the unconsidered edge case doesn't announce itself.
+
+Omission is the harder one. A wrong line sits in front of you and can be read. An absent one can't.
+
+## Habits that fit the research
+
+Since instructions alone don't fix this, it helps to change the setup rather than rely on willpower. These are suggestions drawn from our reading, not proven remedies.
+
+- Decide what you expect before you look. Write the one-line intent first, then compare the suggestion against it.
+
+- Keep an independent check running. A test you wrote before the suggestion is a "fully valid indicator" that doesn't depend on the suggestion's own account of itself.
+
+- Ask what's missing, not only what's wrong. Name one case the code should handle and look for it.
+
+- Slow down on the easy ones. High reliability is exactly the condition under which attention drifts.
+
+## Where a record helps
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built: what you asked, what happened, and how you responded. It reads what's already on your machine, with no cloud. If you want to see how often you accepted something without a pause, or where you stepped in and corrected course, that history is where the evidence lives.
+
+## A fair reading
+
+None of this says automated advice is bad. The aids in these studies were reliable, and that's why people leaned on them. The lesson is narrower. Trust that's calibrated to how often advice is right is sensible. Trust that stops checking isn't. The goal isn't to doubt every suggestion. It's to keep one part of your attention reserved for the times it's wrong.
+
+## Sources
+
+- Linda J. Skitka, Kathleen L. Mosier and Mark Burdick. Does automation bias decision-making? International Journal of Human-Computer Studies, 51(5), 991-1006, 1999.
+
+- Raja Parasuraman and Dietrich H. Manzey. Complacency and Bias in Human Use of Automation: An Attentional Integration. Human Factors, 52(3), 381-410, 2010.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# What the docs say about giving a coding agent context
+URL: https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context
+Description: Anthropic's docs and one study agree on a plain idea: context for a coding agent works best when it's short, specific and checked. Here's the close reading.
+
+Ask ten developers how to set up a coding agent and you'll hear ten rituals. Write a huge instructions file. Paste in the whole architecture. Say it three times, in capitals. It's worth reading what the vendors actually put in writing, because the documentation is quieter than the advice around it. We read Anthropic's Claude Code documentation closely, and set it beside one recent study.
+
+## Every session starts fresh
+
+The starting point in Anthropic's documentation is a plain one: each Claude Code session begins with a fresh context window.1 Two mechanisms carry knowledge across sessions. One is CLAUDE.md files, which the docs describe as instructions you write to give Claude persistent context. The other is auto memory, which the docs describe as notes Claude writes itself based on your corrections and preferences.1
+
+So whatever the agent knows about your project at the start of a session, it knows because something was loaded. Nothing carries over by itself.
+
+## Context, not enforcement
+
+The same page is careful about what these files can promise. It says Claude treats them as context, not enforced configuration.1 If you need an action blocked regardless of what Claude decides, the docs point to a PreToolUse hook instead. The best practices page makes the same split from the other side: CLAUDE.md instructions are advisory, while hooks are deterministic.2
+
+That's a useful habit of mind. A line in an instructions file is a request, not a lock. If something must never happen, it needs a different mechanism than a sentence.
+
+## Short, specific and pruned
+
+The documentation's advice on length is consistent. The memory page says that the more specific and concise your instructions, the more consistently Claude follows them.1 The best practices page goes further and gives a test for every line: ask whether removing it would cause Claude to make mistakes, and if not, cut it. It warns that bloated CLAUDE.md files cause Claude to ignore your actual instructions.2
+
+The same page lists what to leave out, including anything Claude can figure out by reading the code, and file-by-file descriptions of the codebase. It lists what to put in: commands Claude can't guess, style rules that differ from defaults, and architectural decisions specific to your project.2
+
+The reasoning behind the pruning is the docs' main constraint. In their words, Claude's context window fills up fast, and performance degrades as it fills.2 Context isn't free storage. Everything you load competes for room with the work itself.
+
+## Context also means a way to check
+
+Not all context is background. The best practices page puts a different kind near the top: give Claude a way to verify its work, such as tests, a build, or a screenshot to compare.2 Their reasoning is that without a check the agent can run, "looks done" is the only signal available, and you become the verification loop.2
+
+The page also recommends exploring and planning before coding, because letting Claude jump straight to coding can produce code that solves the wrong problem. It adds that if you could describe the diff in one sentence, you can skip the plan.2
+
+## A study that fits the pattern
+
+The vendor docs are guidance, not measurement. A 2026 paper by Thibaud Gloaguen and colleagues tested the idea directly on repository context files such as AGENTS.md. The authors report that context files increase inference cost by over 20%, and that agents tend to follow the instructions in them.3 Their conclusion is that unnecessary requirements make tasks harder, so human-written context files should describe only minimal requirements.3
+
+The abstract's wording on task success differs between versions of the listing, so we won't summarize it here. Read the paper if that number matters to you. The cost and instruction-following findings are enough for our point.
+
+## What we take from the reading
+
+Three things stand out. First, the vendor and the researchers land in the same place: more context isn't better context. Second, the agent will tend to do what the file says, so every stale or unnecessary line is a small tax on every task. Third, a file is only as good as the last time someone checked it against reality.
+
+That third point is ours, not the docs'. Treating the file like code, as Anthropic's page suggests, means reviewing it when things go wrong. But to review it, you need to remember what went wrong. Why did the agent ignore that rule? Which correction did you make three times?
+
+That's where a session record helps. Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built: what you asked, what happened, and how you responded. It reads what's already on your machine, with no cloud. The repeated corrections are right there when you sit down to edit the file.
+
+## A short checklist, drawn from the docs
+
+- Keep the instructions file short, and cut any line whose removal wouldn't cause a mistake.
+
+- Put must-never-happen rules in a mechanism that enforces them, not in prose.
+
+- Give the agent a check it can run, and ask for the evidence.
+
+- Revisit the file when behavior surprises you, not on a schedule.
+
+## Sources
+
+- Anthropic. How Claude remembers your project. Claude Code documentation.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+- Thibaud Gloaguen, Niels M&uuml;ndler, Mark M&uuml;ller, Veselin Raychev and Martin Vechev. Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?. arXiv:2602.11988, 2026.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
 

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What a session transcript holds, and what it leaves out</title>
+<meta name="description" content="A transcript records what was said and done, not why. Here's what research on design rationale says about the gap, and how to work with it.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/what-a-session-transcript-leaves-out">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/what-a-session-transcript-leaves-out">
+<meta property="og:title" content="What a session transcript holds, and what it leaves out">
+<meta property="og:description" content="A transcript records what was said and done, not why. Here's what research on design rationale says about the gap, and how to work with it.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"What a session transcript holds, and what it leaves out","description":"A transcript records what was said and done, not why. Here's what research on design rationale says about the gap, and how to work with it.","url":"https://codecartographer.dev/blog/what-a-session-transcript-leaves-out","mainEntityOfPage":"https://codecartographer.dev/blog/what-a-session-transcript-leaves-out","datePublished":"2026-10-03","dateModified":"2026-10-03","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"What a session transcript holds, and what it leaves out","item":"https://codecartographer.dev/blog/what-a-session-transcript-leaves-out"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>What a session transcript holds, and what it leaves out</h1>
+  <p class="lead">A session transcript is a faithful account of what happened. It's a poor account of what anyone was thinking, and that gap is older than coding agents.</p>
+  <p class="meta">By Team Cartographer · October 3rd 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Open an old session and you can read it like a ledger. Here's the prompt. Here's the reply. Here's the command that ran, the error that came back, the fix that followed. It's all there, in order, and it feels like a complete record.</p>
+  <p class="sub">Then you ask a different question. Why did we choose this approach and not the other one? And the ledger goes quiet. We wanted to spend this post on that quiet, because we think it's the most useful thing to understand about any record of work.</p>
+
+  <h2>A log holds events, not reasons</h2>
+  <p class="sub">A transcript captures what was said and what was done. Reasons are a different kind of thing. They live in the head of whoever was deciding, and they only reach the page if that person happens to type them out.</p>
+  <p class="sub">Sometimes they do. A prompt might say "use the simple version, we only have two users." That's a reason, sitting in plain sight. More often the reason is a hunch, a half-remembered bug from last year, or a feeling that the last approach was getting too tangled. None of that gets typed. What gets typed is the instruction that came out the other end.</p>
+  <p class="sub">So the transcript shows the choice and hides the choosing. We can see that a dependency was swapped at 4:12 in the afternoon. We can't see the thing that made us tired of the old one.</p>
+
+  <h2>Software people have worried about this for a long time</h2>
+  <p class="sub">The gap has a name in software engineering: design rationale, meaning the reasons behind a design. Researchers have studied whether people write it down and what stops them.</p>
+  <p class="sub">One survey of software practitioners, based on eighty-one valid responses, found that <a href="https://figshare.swinburne.edu.au/articles/report/A_survey_of_architecture_design_rationale/26269849" rel="noopener">practitioners recognize the importance of documenting design rationale and frequently use it to reason about their design choices</a>. The same survey also found that they reported barriers to using and documenting it.<sup><a href="#fn1">1</a></sup> The authors started from the observation that there was little empirical evidence about how practitioners view rationale and how they document it.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">We find that comforting, in a way. People know the reasons matter. They use them. They still struggle to record them. If that's true of careful architects writing documents on purpose, it's no surprise that it's true of a chat window where the goal was to get something working.</p>
+
+  <h2>Some knowing doesn't turn into words</h2>
+  <p class="sub">There's a deeper reason a log can't hold everything, and it's older than software. The philosopher Michael Polanyi opened his book on the subject with the idea that <a href="https://bookculture.com/book/9780226672984" rel="noopener">we can know more than we can tell</a>.<sup><a href="#fn2">2</a></sup> He called this the tacit dimension of knowing.</p>
+  <p class="sub">Most of us have felt it. You look at a function and sense it's wrong before you can say why. You prefer one name over another and can't defend it. Judgment like that steers a session, and it leaves almost no trace in the text. We'd be careful not to push the point further than it goes: Polanyi was writing about human knowledge in general, not about transcripts. But it's a fair reminder that a record of words can't be a record of everything that guided them.</p>
+
+  <h2>What a transcript is good for</h2>
+  <p class="sub">None of this makes a transcript useless. It makes it a particular kind of evidence, and it helps to know which kind.</p>
+  <p class="sub">A transcript is strong on sequence. What came first, what came next, where the work stalled. It's strong on exact wording, including the moments you changed your mind. It's strong on friction: the error, the retry, the abandoned attempt. Those are things memory flattens quickly. A week later you'll remember that the thing worked. You won't remember the three tries it took.</p>
+  <p class="sub">It's weak on motive, on the options you considered and dropped silently, and on anything you knew without saying. If you read a transcript hoping for the why, you'll end up inventing one. That's the trap. A tidy story is easy to write after the fact, and it's easy to believe.</p>
+
+  <h2>Reading with the gap in mind</h2>
+  <p class="sub">A few habits make a record more honest to read, whether it's yours or someone else's.</p>
+  <ul class="list">
+    <li>Mark what's observed and what's inferred. "The prompt changed direction here" is observed. "Because the first approach felt wrong" is a guess.</li>
+    <li>Look hardest at the corrections. A turn that starts with "no, not that" is a rare place where the reasoning surfaces, because you had to say what you wanted instead.</li>
+    <li>When you're still in the work, write one line of why next to the what. It costs seconds and it's the thing the log can't supply later.</li>
+    <li>Be willing to write "unknown" in the margin. An honest gap is more useful than a confident invention.</li>
+  </ul>
+
+  <h2>Where a map fits</h2>
+  <p class="sub">Cartographer reads the session history Claude Code already keeps, as one file per session, and turns it into a stream of events: prompts, replies, tools, errors and branch changes. It runs on your machine with no cloud. Every move it writes has to cite its evidence in the record, which keeps the telling tied to what happened and not to what sounds plausible. It can show you the sequence and the friction. The why you didn't say aloud stays yours to add.</p>
+
+  <h2>A record is a starting point</h2>
+  <p class="sub">We think the healthiest way to hold a transcript is as a good witness who only saw part of the scene. It will tell you exactly what happened in the room. It won't tell you what anyone was thinking. For that, you still need the person, and a few honest notes while they still remember.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Antony Tang, Muhammad Ali Babar, Ian Gorton and Jun Han. <a href="https://figshare.swinburne.edu.au/articles/report/A_survey_of_architecture_design_rationale/26269849" rel="noopener">A Survey of Architecture Design Rationale</a>. Journal of Systems and Software.</li>
+    <li id="fn2">Michael Polanyi. <a href="https://bookculture.com/book/9780226672984" rel="noopener">The Tacit Dimension</a>. First published 1966; University of Chicago Press edition.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

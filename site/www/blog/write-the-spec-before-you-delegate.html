@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Write the spec before you delegate, to an agent or a colleague</title>
+<meta name="description" content="Requirements research keeps finding incomplete requirements among the most critical problems. Here's what that means before you hand work off.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/write-the-spec-before-you-delegate">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/write-the-spec-before-you-delegate">
+<meta property="og:title" content="Write the spec before you delegate, to an agent or a colleague">
+<meta property="og:description" content="Requirements research keeps finding incomplete requirements among the most critical problems. Here's what that means before you hand work off.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Write the spec before you delegate, to an agent or a colleague","description":"Requirements research keeps finding incomplete requirements among the most critical problems. Here's what that means before you hand work off.","url":"https://codecartographer.dev/blog/write-the-spec-before-you-delegate","mainEntityOfPage":"https://codecartographer.dev/blog/write-the-spec-before-you-delegate","datePublished":"2026-10-04","dateModified":"2026-10-04","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Write the spec before you delegate, to an agent or a colleague","item":"https://codecartographer.dev/blog/write-the-spec-before-you-delegate"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Write the spec before you delegate, to an agent or a colleague</h1>
+  <p class="lead">Handing work off feels like progress. The research on requirements suggests the real work is deciding, in writing, what you want first.</p>
+  <p class="meta">By Team Cartographer · October 4th 2026 · 3 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Delegating feels efficient. You describe the job in a sentence or two, someone else (or something else) takes it, and your afternoon is free. Then the result comes back and it isn't quite what you pictured. Nobody did anything wrong. The picture just never left your head.</p>
+
+  <h2>What practitioners report</h2>
+  <p class="sub">Software engineers have studied this gap for a long time under the name requirements engineering. One long-running effort, the NaPiRE surveys, asks practitioners which requirements problems they actually run into. In one analysis, <a href="https://www.arxiv.org/pdf/1611.08833" rel="noopener">survey data from 228 organizations across 10 countries</a> was used to identify the most critical requirements engineering problems, along with their causes and mitigation actions.<sup><a href="#fn2">2</a></sup> The larger NaPiRE paper reports on <a href="https://arxiv.org/abs/1611.10288" rel="noopener">21 problems drawn from the literature</a>, and studies their relevance and criticality in context.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">A narrower paper looked at one problem in two countries. Kalinowski and colleagues replicated the survey with 14 organizations in Austria and 74 in Brazil. They report that <a href="https://arxiv.org/pdf/1612.00163" rel="noopener">respondents from both countries cited the incomplete/hidden requirements problem as one of the most critical</a> requirements engineering problems.<sup><a href="#fn1">1</a></sup> In the Austrian data, that problem was named among the five most critical by 9 of the 14 participants.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Notice what that problem is. It isn't a bad design or a clumsy implementation. It's that what somebody needed was never fully written down, or never surfaced at all.</p>
+
+  <h2>Why a gap in the spec is expensive</h2>
+  <p class="sub">These studies describe people working with people: teams, customers, analysts. They say nothing about coding agents, and we won't claim they do. What follows is our reading, not a finding.</p>
+  <p class="sub">When you hand work to a colleague, a lot of the missing detail gets filled by shared context. They know the codebase, they know your taste, and they can walk over and ask. Even so, the respondents in these surveys, who work with people, still cited incomplete requirements as one of their most critical problems.</p>
+  <p class="sub">Delegating to a tool may remove some of that cushion, depending on what it can see and whether you can easily ask it questions. Either way, whatever you left out is a decision someone else now makes for you, often without telling you it was a decision.</p>
+
+  <h2>What a useful spec contains</h2>
+  <p class="sub">A spec doesn't need to be long. It needs to settle the things you'd otherwise discover on review. Here's a short list we find holds up:</p>
+  <ul class="list">
+    <li><strong>The outcome.</strong> What should be true when this is done, in a sentence you could check.</li>
+    <li><strong>The boundaries.</strong> What's out of scope, and which files, interfaces or behaviors must not change.</li>
+    <li><strong>The reasons.</strong> Why this, why now, and what you already tried. Reasons let the other party make good calls on the cases you didn't foresee.</li>
+    <li><strong>The check.</strong> How you'll decide it worked: a test, a command, a screen you'll look at.</li>
+    <li><strong>The unknowns.</strong> What you haven't decided yet. Saying so beats leaving a silent hole.</li>
+  </ul>
+  <p class="sub">Writing these down does something before anyone else reads them. It forces you to find the places where your own picture is blurry. Many of those places are invisible until you try to put them in a sentence.</p>
+
+  <h2>Specifying isn't the same as dictating</h2>
+  <p class="sub">There's a fair worry that a detailed spec turns delegation into typing the code yourself. It doesn't have to. A good spec describes the destination and the constraints, not each step. You're deciding what, and leaving how to the person or tool doing the work.</p>
+  <p class="sub">It also won't be perfect. Requirements change as people learn. The aim isn't a complete document. It's to make the gaps visible early, while they're cheap to fill.</p>
+
+  <h2>Where a record helps</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Its prompt reading notes what each prompt anchors to, such as files, symbols, errors or pasted code, and it lets you declare with <code>cartographer goal</code> what done means, so each session is judged against that yardstick. Everything stays on your machine. Looking back, you can see where a hand-off was specific and where it was a hope.</p>
+
+  <h2>A habit worth trying</h2>
+  <p class="sub">Before your next hand-off, write three lines: what done looks like, what's off limits, and how you'll check. If you can't write them, you've found the real next task. If you can, you've just made the work far easier for whoever picks it up, including future you.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Marcos Kalinowski, Michael Felderer, Tayana Conte, Rodrigo Spínola, Rafael Prikladnicki, Dietmar Winkler, Daniel Méndez Fernández and Stefan Wagner. <a href="https://arxiv.org/pdf/1612.00163" rel="noopener">Preventing Incomplete/Hidden Requirements: Reflections on Survey Data from Austria and Brazil</a>. 8th Software Quality Days (SWQD), 2016.</li>
+    <li id="fn2">Mafra, Kalinowski, Méndez Fernández, Felderer and Wagner. <a href="https://www.arxiv.org/pdf/1611.08833" rel="noopener">Towards Guidelines for Preventing Critical Requirements Engineering Problems</a>. Euromicro Conference on Software Engineering and Advanced Applications (SEAA), 2016. arXiv:1611.08833.</li>
+    <li id="fn3">Daniel Méndez Fernández, Stefan Wagner and 21 co-authors. <a href="https://arxiv.org/abs/1611.10288" rel="noopener">Naming the Pain in Requirements Engineering: Contemporary Problems, Causes, and Effects in Practice</a>. Empirical Software Engineering 22(5), 2017. arXiv:1611.10288.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="/blog/">Blog</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

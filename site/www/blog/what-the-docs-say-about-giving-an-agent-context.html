@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What the docs say about giving a coding agent context</title>
+<meta name="description" content="Anthropic's docs and one study agree on a plain idea: context for a coding agent works best when it's short, specific and checked. Here's the close reading.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context">
+<meta property="og:title" content="What the docs say about giving a coding agent context">
+<meta property="og:description" content="Anthropic's docs and one study agree on a plain idea: context for a coding agent works best when it's short, specific and checked. Here's the close reading.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"What the docs say about giving a coding agent context","description":"Anthropic's docs and one study agree on a plain idea: context for a coding agent works best when it's short, specific and checked. Here's the close reading.","url":"https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context","mainEntityOfPage":"https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context","datePublished":"2026-10-01","dateModified":"2026-10-01","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"What the docs say about giving a coding agent context","item":"https://codecartographer.dev/blog/what-the-docs-say-about-giving-an-agent-context"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>What the docs say about giving a coding agent context</h1>
+  <p class="lead">Every coding session starts from a blank page. The official guidance on filling it is more modest, and more useful, than the folklore.</p>
+  <p class="meta">By Team Cartographer · October 1st 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+    <p class="sub">Ask ten developers how to set up a coding agent and you'll hear ten rituals. Write a huge instructions file. Paste in the whole architecture. Say it three times, in capitals. It's worth reading what the vendors actually put in writing, because the documentation is quieter than the advice around it. We read Anthropic's Claude Code documentation closely, and set it beside one recent study.</p>
+
+  <h2>Every session starts fresh</h2>
+  <p class="sub">The starting point in Anthropic's documentation is a plain one: <a href="https://code.claude.com/docs/en/memory" rel="noopener">each Claude Code session begins with a fresh context window</a>.<sup><a href="#fn1">1</a></sup> Two mechanisms carry knowledge across sessions. One is CLAUDE.md files, which the docs describe as instructions you write to give Claude persistent context. The other is auto memory, which the docs describe as notes Claude writes itself based on your corrections and preferences.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">So whatever the agent knows about your project at the start of a session, it knows because something was loaded. Nothing carries over by itself.</p>
+
+  <h2>Context, not enforcement</h2>
+  <p class="sub">The same page is careful about what these files can promise. It says Claude <a href="https://code.claude.com/docs/en/memory" rel="noopener">treats them as context, not enforced configuration</a>.<sup><a href="#fn1">1</a></sup> If you need an action blocked regardless of what Claude decides, the docs point to a PreToolUse hook instead. The best practices page makes the same split from the other side: <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">CLAUDE.md instructions are advisory, while hooks are deterministic</a>.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">That's a useful habit of mind. A line in an instructions file is a request, not a lock. If something must never happen, it needs a different mechanism than a sentence.</p>
+
+  <h2>Short, specific and pruned</h2>
+  <p class="sub">The documentation's advice on length is consistent. The memory page says that <a href="https://code.claude.com/docs/en/memory" rel="noopener">the more specific and concise your instructions, the more consistently Claude follows them</a>.<sup><a href="#fn1">1</a></sup> The best practices page goes further and gives a test for every line: ask whether removing it would cause Claude to make mistakes, and if not, cut it. It warns that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">bloated CLAUDE.md files cause Claude to ignore your actual instructions</a>.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">The same page lists what to leave out, including anything Claude can figure out by reading the code, and file-by-file descriptions of the codebase. It lists what to put in: commands Claude can't guess, style rules that differ from defaults, and architectural decisions specific to your project.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">The reasoning behind the pruning is the docs' main constraint. In their words, <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Claude's context window fills up fast, and performance degrades as it fills</a>.<sup><a href="#fn2">2</a></sup> Context isn't free storage. Everything you load competes for room with the work itself.</p>
+
+  <h2>Context also means a way to check</h2>
+  <p class="sub">Not all context is background. The best practices page puts a different kind near the top: <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">give Claude a way to verify its work</a>, such as tests, a build, or a screenshot to compare.<sup><a href="#fn2">2</a></sup> Their reasoning is that without a check the agent can run, "looks done" is the only signal available, and you become the verification loop.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">The page also recommends exploring and planning before coding, because letting Claude jump straight to coding can produce code that solves the wrong problem. It adds that if you could describe the diff in one sentence, you can skip the plan.<sup><a href="#fn2">2</a></sup></p>
+
+  <h2>A study that fits the pattern</h2>
+  <p class="sub">The vendor docs are guidance, not measurement. A 2026 paper by Thibaud Gloaguen and colleagues tested the idea directly on repository context files such as AGENTS.md. The authors report that <a href="https://arxiv.org/abs/2602.11988v1" rel="noopener">context files increase inference cost by over 20%</a>, and that agents tend to follow the instructions in them.<sup><a href="#fn3">3</a></sup> Their conclusion is that unnecessary requirements make tasks harder, so human-written context files should describe only minimal requirements.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">The abstract's wording on task success differs between versions of the listing, so we won't summarize it here. Read the paper if that number matters to you. The cost and instruction-following findings are enough for our point.</p>
+
+  <h2>What we take from the reading</h2>
+  <p class="sub">Three things stand out. First, the vendor and the researchers land in the same place: more context isn't better context. Second, the agent will tend to do what the file says, so every stale or unnecessary line is a small tax on every task. Third, a file is only as good as the last time someone checked it against reality.</p>
+  <p class="sub">That third point is ours, not the docs'. Treating the file like code, as Anthropic's page suggests, means reviewing it when things go wrong. But to review it, you need to remember what went wrong. Why did the agent ignore that rule? Which correction did you make three times?</p>
+  <p class="sub">That's where a session record helps. Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built: what you asked, what happened, and how you responded. It reads what's already on your machine, with no cloud. The repeated corrections are right there when you sit down to edit the file.</p>
+
+  <h2>A short checklist, drawn from the docs</h2>
+  <ul class="list">
+    <li>Keep the instructions file short, and cut any line whose removal wouldn't cause a mistake.</li>
+    <li>Put must-never-happen rules in a mechanism that enforces them, not in prose.</li>
+    <li>Give the agent a check it can run, and ask for the evidence.</li>
+    <li>Revisit the file when behavior surprises you, not on a schedule.</li>
+  </ul>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+        <li id="fn1">Anthropic. <a href="https://code.claude.com/docs/en/memory" rel="noopener">How Claude remembers your project</a>. Claude Code documentation.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation.</li>
+    <li id="fn3">Thibaud Gloaguen, Niels M&uuml;ndler, Mark M&uuml;ller, Veselin Raychev and Martin Vechev. <a href="https://arxiv.org/abs/2602.11988v1" rel="noopener">Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?</a>. arXiv:2602.11988, 2026.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>
