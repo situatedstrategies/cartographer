@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why a correction is the most informative prompt in a session</title>
+<meta name="description" content="A correction tells you what you meant, what the agent assumed, and where they split. Here's what research and vendor docs say, and how to read yours.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt">
+<meta property="og:title" content="Why a correction is the most informative prompt in a session">
+<meta property="og:description" content="A correction tells you what you meant, what the agent assumed, and where they split. Here's what research and vendor docs say, and how to read yours.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Why a correction is the most informative prompt in a session","description":"A correction tells you what you meant, what the agent assumed, and where they split. Here's what research and vendor docs say, and how to read yours.","url":"https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt","mainEntityOfPage":"https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt","datePublished":"2026-10-11","dateModified":"2026-10-11","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Why a correction is the most informative prompt in a session","item":"https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Why a correction is the most informative prompt in a session</h1>
+  <p class="lead">Most prompts say what you want. A correction shows where what you wanted and what you got came apart. That makes it worth a second look.</p>
+  <p class="meta">By Team Cartographer · October 11th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Scroll back through a long session and most of it blurs. Requests, replies, more requests. Then you hit one of your own messages that begins "No, not that" or "I meant the other file", and it stops you. Something happened there. We'd argue it's the most informative line in the whole transcript.</p>
+
+  <h2>What a correction carries</h2>
+  <p class="sub">An ordinary prompt is a hope. It describes an outcome you haven't seen yet. A correction is different, because it's a judgment made against something real. You looked at what came back, compared it with what you meant, and found a gap. Then you wrote the gap down.</p>
+  <p class="sub">So a single correction holds three things at once. It holds what you meant, which was often fuzzier in your head than in your first prompt. It holds what the agent took you to mean. And it holds the exact place where the two split. Few other lines in a session do that much work in so few words.</p>
+  <p class="sub">To be clear, that's our reading, not a finding. No study we know of measures "information in a correction." What the research does show is narrower, and it points the same way.</p>
+
+  <h2>What the research says about fixing errors</h2>
+  <p class="sub">Suzhen Zhong, Ying Zou and Bram Adams studied real conversations between developers and a large language model, building a dataset called CodeChat from them. Among their findings: <a href="https://arxiv.org/abs/2509.10402" rel="noopener">prompts that point out mistakes in code generated in prior turns and explicitly request a fix are most effective for resolving errors</a>.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Read that closely. The effective move isn't a louder "try again." It names the mistake and asks for the fix. That's a correction doing its job: it carries the gap along with it, so the next attempt has something to aim at.</p>
+  <p class="sub">The same paper reports that <a href="https://arxiv.org/abs/2509.10402" rel="noopener">syntax and import errors persist across turns</a> of a conversation.<sup><a href="#fn1">1</a></sup> Problems don't always melt away on their own. Somebody has to notice them and say so, and that somebody is usually you.</p>
+
+  <h2>What the vendor docs say about timing</h2>
+  <p class="sub">Anthropic's best practices guide for Claude Code is a vendor document, so it speaks only for that tool. We cite it for what it says, not for anything about how any model works inside. The guide advises that you <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">correct Claude as soon as you notice it going off track</a>, and says the best results come from tight feedback loops.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">It also names a failure pattern worth knowing. The guide says that if you've <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">corrected Claude more than twice on the same issue in one session, the context is cluttered with failed approaches</a>, and it suggests clearing and starting again with a more specific prompt that uses what you learned.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">Put the two together and a correction has a second job. Besides steering the next reply, it tells you something about your own prompt. One correction is normal. Three on the same point is a sign the original ask was missing something, and the pile of corrections is the evidence of what.</p>
+
+  <h2>Reading your corrections afterwards</h2>
+  <p class="sub">Here's a small exercise. After a session, skip everything else and read only your corrections, in order. A few patterns tend to show up.</p>
+  <ul class="list">
+    <li>The same correction twice. Something you assumed was obvious never made it into a prompt or a project note.</li>
+    <li>A correction that changes direction. Your goal moved, and the first prompt no longer describes it.</li>
+    <li>A correction that narrows scope. You were clear about what to do, and less clear about what to leave alone.</li>
+    <li>A correction you almost didn't make. Those are the ones to be honest about, because they mark where you nearly accepted something you didn't understand.</li>
+  </ul>
+  <p class="sub">None of these labels come from a study. They're what we notice when we reread our own sessions. Your list may look different, and that's fine. The point is that corrections are already sorted for you: they're the moments you disagreed.</p>
+  <p class="sub">That's where a session record earns its keep. Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Each move on the map records what you did: the prompt, the correction, the decision, the pause. Dead ends and fixes get marked, so the places where you steered are easy to find. It reads what's already on your machine, with no cloud.</p>
+
+  <h2>A habit worth keeping</h2>
+  <p class="sub">Next time you type "no, I meant", pause for a second and finish the thought. What did you mean? What did the agent assume instead? If you can say both in a sentence, put that sentence in the correction. The research suggests naming the mistake helps, and it'll help you later when you read the record back.</p>
+  <p class="sub">A correction can feel like friction, a small tax on getting things done. We'd rather think of it as the session telling you the truth about itself.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Suzhen Zhong, Ying Zou and Bram Adams. <a href="https://arxiv.org/abs/2509.10402" rel="noopener">Developer-LLM Conversations: An Empirical Study of Interactions and Generated Code Quality</a>. arXiv:2509.10402, 2025.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation, code.claude.com.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

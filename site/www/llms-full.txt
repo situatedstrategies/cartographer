@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-09.
+> Generated 2026-10-11.
 
 
 ---
@@ -648,6 +648,70 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Why a correction is the most informative prompt in a session
+URL: https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt
+Description: A correction tells you what you meant, what the agent assumed, and where they split. Here's what research and vendor docs say, and how to read yours.
+
+Scroll back through a long session and most of it blurs. Requests, replies, more requests. Then you hit one of your own messages that begins "No, not that" or "I meant the other file", and it stops you. Something happened there. We'd argue it's the most informative line in the whole transcript.
+
+## What a correction carries
+
+An ordinary prompt is a hope. It describes an outcome you haven't seen yet. A correction is different, because it's a judgment made against something real. You looked at what came back, compared it with what you meant, and found a gap. Then you wrote the gap down.
+
+So a single correction holds three things at once. It holds what you meant, which was often fuzzier in your head than in your first prompt. It holds what the agent took you to mean. And it holds the exact place where the two split. Few other lines in a session do that much work in so few words.
+
+To be clear, that's our reading, not a finding. No study we know of measures "information in a correction." What the research does show is narrower, and it points the same way.
+
+## What the research says about fixing errors
+
+Suzhen Zhong, Ying Zou and Bram Adams studied real conversations between developers and a large language model, building a dataset called CodeChat from them. Among their findings: prompts that point out mistakes in code generated in prior turns and explicitly request a fix are most effective for resolving errors.1
+
+Read that closely. The effective move isn't a louder "try again." It names the mistake and asks for the fix. That's a correction doing its job: it carries the gap along with it, so the next attempt has something to aim at.
+
+The same paper reports that syntax and import errors persist across turns of a conversation.1 Problems don't always melt away on their own. Somebody has to notice them and say so, and that somebody is usually you.
+
+## What the vendor docs say about timing
+
+Anthropic's best practices guide for Claude Code is a vendor document, so it speaks only for that tool. We cite it for what it says, not for anything about how any model works inside. The guide advises that you correct Claude as soon as you notice it going off track, and says the best results come from tight feedback loops.2
+
+It also names a failure pattern worth knowing. The guide says that if you've corrected Claude more than twice on the same issue in one session, the context is cluttered with failed approaches, and it suggests clearing and starting again with a more specific prompt that uses what you learned.2
+
+Put the two together and a correction has a second job. Besides steering the next reply, it tells you something about your own prompt. One correction is normal. Three on the same point is a sign the original ask was missing something, and the pile of corrections is the evidence of what.
+
+## Reading your corrections afterwards
+
+Here's a small exercise. After a session, skip everything else and read only your corrections, in order. A few patterns tend to show up.
+
+- The same correction twice. Something you assumed was obvious never made it into a prompt or a project note.
+
+- A correction that changes direction. Your goal moved, and the first prompt no longer describes it.
+
+- A correction that narrows scope. You were clear about what to do, and less clear about what to leave alone.
+
+- A correction you almost didn't make. Those are the ones to be honest about, because they mark where you nearly accepted something you didn't understand.
+
+None of these labels come from a study. They're what we notice when we reread our own sessions. Your list may look different, and that's fine. The point is that corrections are already sorted for you: they're the moments you disagreed.
+
+That's where a session record earns its keep. Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Each move on the map records what you did: the prompt, the correction, the decision, the pause. Dead ends and fixes get marked, so the places where you steered are easy to find. It reads what's already on your machine, with no cloud.
+
+## A habit worth keeping
+
+Next time you type "no, I meant", pause for a second and finish the thought. What did you mean? What did the agent assume instead? If you can say both in a sentence, put that sentence in the correction. The research suggests naming the mistake helps, and it'll help you later when you read the record back.
+
+A correction can feel like friction, a small tax on getting things done. We'd rather think of it as the session telling you the truth about itself.
+
+## Sources
+
+- Suzhen Zhong, Ying Zou and Bram Adams. Developer-LLM Conversations: An Empirical Study of Interactions and Generated Code Quality. arXiv:2509.10402, 2025.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation, code.claude.com.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 
