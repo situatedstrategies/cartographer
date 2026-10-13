@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2026 14:02:48 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 13 Oct 2026 14:04:15 GMT</lastBuildDate>
+    <item>
+      <title>Declaring done before you start: goals as a yardstick</title>
+      <link>https://codecartographer.dev/blog/declaring-done-before-you-start</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/declaring-done-before-you-start</guid>
+      <pubDate>Tue, 13 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Decide what finished looks like before your first prompt. What Scrum and vendor docs say about done, and how to write a yardstick an agent can check.</description>
+    </item>
     <item>
       <title>Why a correction is the most informative prompt in a session</title>
       <link>https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt</link>

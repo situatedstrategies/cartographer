@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-11.
+> Generated 2026-10-13.
 
 
 ---
@@ -648,6 +648,70 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Declaring done before you start: goals as a yardstick
+URL: https://codecartographer.dev/blog/declaring-done-before-you-start
+Description: Decide what finished looks like before your first prompt. What Scrum and vendor docs say about done, and how to write a yardstick an agent can check.
+
+There's a moment at the start of most sessions when you know what you want and haven't said what "finished" looks like. You type the request and send it. The agent starts. Somewhere later it stops, and you find yourself deciding, on the spot and a bit tired, whether this is done. We've done it more times than we'd like to admit.
+
+## Done is easier to define before the work
+
+Software teams have a name for this. The Scrum Guide asks teams for a Definition of Done, which it describes as a formal description of the state of the Increment when it meets the quality measures required for the product.1 The idea is plain. A team agrees what counts as finished first, so finishing isn't a mood.
+
+A solo builder with an agent doesn't have a team to agree with. That makes it easier to skip, and it's why we think it's worth doing on purpose. The agreement is just between you and the task.
+
+## What a vendor says about "looks done"
+
+Anthropic's best practices guide for Claude Code is a vendor document, so it speaks for that tool only, and we're citing it for what it says rather than for anything about how a model works. On stopping, it says that Claude stops when the work looks done, and that without a check it can run, "looks done" is the only signal available, which makes you the verification loop.2
+
+That sentence describes the problem from the agent's side, and it maps neatly onto the human side too. If you haven't said what done means, "looks done" is the only signal you have either.
+
+The same guide gives a concrete contrast. Its example of a better prompt isn't "implement a function that validates email addresses". It's a validateEmail function with example test cases, and an instruction to run the tests after implementing.2 The second version contains its own yardstick. Anyone can read the output and say whether it passed.
+
+## What a good yardstick holds
+
+Claude Code's documentation for its /goal command is the clearest written description we've found of a completion condition. It says a condition that holds up across many turns usually has one measurable end state, a stated check, and constraints that matter.3 Its examples of an end state are a test result, a build exit code, a file count and an empty queue.
+
+You don't need that command to borrow the shape. It works in any prompt, with any tool, or none:
+
+- An end state you could observe. Not "cleaner", but "the test suite passes and the lint step is clean".
+
+- A way to prove it. Which command, which screenshot, which output you expect to see.
+
+- A fence. What must not change on the way there.
+
+The goal documentation adds a detail we like. With /goal, completion is decided by a fresh model rather than the one doing the work.3 Whatever tool you use, the principle travels: the thing that did the work shouldn't be the only judge of it.
+
+## When the yardstick is wrong
+
+We should be honest about a limit. A yardstick written before the work is a guess, and sometimes the guess is wrong. Halfway through, you learn the real problem is somewhere else, and "all tests pass" no longer measures what you care about.
+
+That isn't a failure of the habit. Changing the yardstick on purpose, and noticing that you did, is very different from drifting to a new one without saying so. The first is a decision. The second is how a build ends up somewhere nobody chose.
+
+The same guide is blunt about shipping: if you can't verify it, don't ship it.2 We'd add a gentler version for the start of a session. If you can't say how you'd verify it, you may not have finished deciding what you want.
+
+## Reading the record afterwards
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. When you mark a version shipped, partial or abandoned and say what actually happened, it appraises each session's moves against the outcome you declared. A yardstick written down early gives that comparison something firm to measure against. It reads what's already on your machine, with no cloud.
+
+## A small habit
+
+Before your next first prompt, write one more sentence. Say what you'd see if this went well, and how you'd check. Put it in the prompt, or keep it in a note. Then, when the agent stops, you're comparing against something you wrote when you were fresh, not something you invented when you were tired.
+
+## Sources
+
+- Ken Schwaber and Jeff Sutherland. The Scrum Guide. scrumguides.org, 2020.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation, code.claude.com.
+
+- Anthropic. Keep Claude working toward a goal. Claude Code documentation, code.claude.com.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

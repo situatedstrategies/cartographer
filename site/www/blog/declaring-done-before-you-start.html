@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Declaring done before you start: goals as a yardstick</title>
+<meta name="description" content="Decide what finished looks like before your first prompt. What Scrum and vendor docs say about done, and how to write a yardstick an agent can check.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/declaring-done-before-you-start">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/declaring-done-before-you-start">
+<meta property="og:title" content="Declaring done before you start: goals as a yardstick">
+<meta property="og:description" content="Decide what finished looks like before your first prompt. What Scrum and vendor docs say about done, and how to write a yardstick an agent can check.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Declaring done before you start: goals as a yardstick","description":"Decide what finished looks like before your first prompt. What Scrum and vendor docs say about done, and how to write a yardstick an agent can check.","url":"https://codecartographer.dev/blog/declaring-done-before-you-start","mainEntityOfPage":"https://codecartographer.dev/blog/declaring-done-before-you-start","datePublished":"2026-10-13","dateModified":"2026-10-13","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Declaring done before you start: goals as a yardstick","item":"https://codecartographer.dev/blog/declaring-done-before-you-start"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Declaring done before you start: goals as a yardstick</h1>
+  <p class="lead">Most sessions end when the agent stops, and you judge the result tired. Deciding what finished looks like first makes that judgment easier and fairer.</p>
+  <p class="meta">By Team Cartographer · October 13th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+    <p class="sub">There's a moment at the start of most sessions when you know what you want and haven't said what "finished" looks like. You type the request and send it. The agent starts. Somewhere later it stops, and you find yourself deciding, on the spot and a bit tired, whether this is done. We've done it more times than we'd like to admit.</p>
+
+  <h2>Done is easier to define before the work</h2>
+  <p class="sub">Software teams have a name for this. The Scrum Guide asks teams for a Definition of Done, which it describes as <a href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf" rel="noopener">a formal description of the state of the Increment when it meets the quality measures required for the product</a>.<sup><a href="#fn1">1</a></sup> The idea is plain. A team agrees what counts as finished first, so finishing isn't a mood.</p>
+  <p class="sub">A solo builder with an agent doesn't have a team to agree with. That makes it easier to skip, and it's why we think it's worth doing on purpose. The agreement is just between you and the task.</p>
+
+  <h2>What a vendor says about "looks done"</h2>
+  <p class="sub">Anthropic's best practices guide for Claude Code is a vendor document, so it speaks for that tool only, and we're citing it for what it says rather than for anything about how a model works. On stopping, it says that Claude stops when the work looks done, and that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">without a check it can run, "looks done" is the only signal available</a>, which makes you the verification loop.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">That sentence describes the problem from the agent's side, and it maps neatly onto the human side too. If you haven't said what done means, "looks done" is the only signal you have either.</p>
+  <p class="sub">The same guide gives a concrete contrast. Its example of a better prompt isn't "implement a function that validates email addresses". It's <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">a validateEmail function with example test cases, and an instruction to run the tests after implementing</a>.<sup><a href="#fn2">2</a></sup> The second version contains its own yardstick. Anyone can read the output and say whether it passed.</p>
+
+  <h2>What a good yardstick holds</h2>
+  <p class="sub">Claude Code's documentation for its <code>/goal</code> command is the clearest written description we've found of a completion condition. It says a condition that holds up across many turns usually has <a href="https://code.claude.com/docs/en/goal" rel="noopener">one measurable end state, a stated check, and constraints that matter</a>.<sup><a href="#fn3">3</a></sup> Its examples of an end state are a test result, a build exit code, a file count and an empty queue.</p>
+  <p class="sub">You don't need that command to borrow the shape. It works in any prompt, with any tool, or none:</p>
+  <ul class="list">
+    <li>An end state you could observe. Not "cleaner", but "the test suite passes and the lint step is clean".</li>
+    <li>A way to prove it. Which command, which screenshot, which output you expect to see.</li>
+    <li>A fence. What must not change on the way there.</li>
+  </ul>
+  <p class="sub">The goal documentation adds a detail we like. With <code>/goal</code>, <a href="https://code.claude.com/docs/en/goal" rel="noopener">completion is decided by a fresh model rather than the one doing the work</a>.<sup><a href="#fn3">3</a></sup> Whatever tool you use, the principle travels: the thing that did the work shouldn't be the only judge of it.</p>
+
+  <h2>When the yardstick is wrong</h2>
+  <p class="sub">We should be honest about a limit. A yardstick written before the work is a guess, and sometimes the guess is wrong. Halfway through, you learn the real problem is somewhere else, and "all tests pass" no longer measures what you care about.</p>
+  <p class="sub">That isn't a failure of the habit. Changing the yardstick on purpose, and noticing that you did, is very different from drifting to a new one without saying so. The first is a decision. The second is how a build ends up somewhere nobody chose.</p>
+  <p class="sub">The same guide is blunt about shipping: <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">if you can't verify it, don't ship it</a>.<sup><a href="#fn2">2</a></sup> We'd add a gentler version for the start of a session. If you can't say how you'd verify it, you may not have finished deciding what you want.</p>
+
+  <h2>Reading the record afterwards</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. When you mark a version shipped, partial or abandoned and say what actually happened, it appraises each session's moves against the outcome you declared. A yardstick written down early gives that comparison something firm to measure against. It reads what's already on your machine, with no cloud.</p>
+
+  <h2>A small habit</h2>
+  <p class="sub">Before your next first prompt, write one more sentence. Say what you'd see if this went well, and how you'd check. Put it in the prompt, or keep it in a note. Then, when the agent stops, you're comparing against something you wrote when you were fresh, not something you invented when you were tired.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Ken Schwaber and Jeff Sutherland. <a href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf" rel="noopener">The Scrum Guide</a>. scrumguides.org, 2020.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation, code.claude.com.</li>
+    <li id="fn3">Anthropic. <a href="https://code.claude.com/docs/en/goal" rel="noopener">Keep Claude working toward a goal</a>. Claude Code documentation, code.claude.com.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

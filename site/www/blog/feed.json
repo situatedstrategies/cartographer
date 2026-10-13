@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/declaring-done-before-you-start",
+      "url": "https://codecartographer.dev/blog/declaring-done-before-you-start",
+      "title": "Declaring done before you start: goals as a yardstick",
+      "summary": "Decide what finished looks like before your first prompt. What Scrum and vendor docs say about done, and how to write a yardstick an agent can check.",
+      "date_published": "2026-10-13T12:00:00Z",
+      "date_modified": "2026-10-13T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt",
       "url": "https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt",
       "title": "Why a correction is the most informative prompt in a session",
