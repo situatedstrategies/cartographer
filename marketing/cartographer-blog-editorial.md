@@ -54,7 +54,6 @@ When the queue runs low, add new topics that fit the pillars and target real
 search phrases people use. Never repeat a topic an existing post already
 covers.
 
-- Reading your own dead ends: what abandoned branches teach
 - Praise is not evidence: how to appraise an agent's work honestly
 
 ## Citations: real, accurate, live sources, footnoted, always
