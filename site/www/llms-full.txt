@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-15.
+> Generated 2026-10-17.
 
 
 ---
@@ -648,6 +648,68 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Praise is not evidence: appraising an agent's work honestly
+URL: https://codecartographer.dev/blog/praise-is-not-evidence
+Description: A confident all-done feels like proof, but it isn't. What research and vendor docs say about checking an agent's work against evidence, not tone.
+
+"Done. Everything works as expected." It's a lovely sentence to read at the end of a long session. It's also just a sentence. We've learned to notice how much relief it gives us, and how little it tells us.
+
+This one's a bit of a musing. We want to think through why praise, from an agent or about an agent, makes a poor yardstick, and what a more honest appraisal might lean on instead.
+
+## Agreeable answers are easy to like
+
+There's research on why confident, agreeable replies land so well. In a study of how language models are trained on human feedback, Anthropic researchers analysed existing preference data and found that, when a response matches a user's views, it is more likely to be preferred.1 They also ran a human study. The paper reports that independent humans sometimes preferred convincing sycophantic responses over correct ones for challenging common misconceptions, and that the same pattern showed up in a preference model.1
+
+That study is about question answering, not code, so we won't stretch it. But the plain reading is worth keeping. A reply that sounds right and a reply that is right can be hard to tell apart, and people don't always tell them apart. If that's true of strangers rating answers, it's true of us at the end of a long afternoon.
+
+## "Looks done" is a signal, not a result
+
+Anthropic's own Claude Code documentation is blunt about this. It says that Claude stops when the work looks done, and that without a check it can run, "looks done" is the only signal available, which leaves you as the verification loop.2 We're citing that page only for what it says about that tool.
+
+The same guide lists a failure pattern it calls the trust-then-verify gap: a plausible-looking implementation that doesn't handle edge cases. Its fix is to always provide verification, such as tests, scripts or screenshots, and its rule of thumb is short: if you can't verify it, don't ship it.2 It also suggests asking the agent to show evidence rather than assert success: the test output, the command it ran and what it returned, or a screenshot.2
+
+## We trust machines more than we mean to
+
+None of this is new to agents. Clinicians have been studied for years on how they respond to computer advice. A systematic review in the Journal of the American Medical Informatics Association looked at automation bias, the tendency to over-rely on automation, across 74 studies that met its inclusion criteria.3 It notes that clinical decision support can introduce errors that go unnoticed, even though most research shows overall improved performance with it.3
+
+That balance feels familiar. Most of the time the tool helps, and so we stop checking, and so the rare miss goes through. We don't think the answer is distrust. It's making the check cheap enough that we keep doing it.
+
+We find that a little humbling. A pull toward agreement is part of how we rate things, so it's part of how we rate our own builds too.
+
+## What we try to ask instead
+
+When we judge a build now, we try to swap three questions for one feeling.
+
+- What was it supposed to do? We write that down before the first prompt, not after the last one.
+
+- What would show it? A passing test, a diff, a screenshot, a command's output. Something we could point to.
+
+- Where did that evidence come from? If the only source is the agent's own summary, it's still a claim.
+
+Notice that none of these ask whether the agent seemed confident. Confidence is free. Evidence has to exist somewhere you can find it again.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. When a version is done, its /complete step judges the build against a yardstick, and every move and every appraisal item must cite its evidence in the record. Praise words are rejected on save. Everything runs on your machine, with no cloud.
+
+## A small habit
+
+Next time an agent says it's done, don't reply "great". Ask it to show you what it ran and what came back, then read that. It takes a minute, and it turns a nice feeling into something you can actually point at.
+
+## Sources
+
+- Sharma, M., Tong, M., et al. Towards Understanding Sycophancy in Language Models. International Conference on Learning Representations (ICLR), 2024.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation, code.claude.com.
+
+- Goddard, K., Roudsari, A., and Wyatt, J. C. Automation bias: a systematic review of frequency, effect mediators, and mitigators. Journal of the American Medical Informatics Association, 2012;19(1):121-127.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

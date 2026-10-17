@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/praise-is-not-evidence",
+      "url": "https://codecartographer.dev/blog/praise-is-not-evidence",
+      "title": "Praise is not evidence: appraising an agent's work honestly",
+      "summary": "A confident all-done feels like proof, but it isn't. What research and vendor docs say about checking an agent's work against evidence, not tone.",
+      "date_published": "2026-10-17T12:00:00Z",
+      "date_modified": "2026-10-17T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/reading-your-own-dead-ends",
       "url": "https://codecartographer.dev/blog/reading-your-own-dead-ends",
       "title": "Reading your own dead ends: what abandoned work can teach",

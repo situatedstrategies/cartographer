@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Praise is not evidence: appraising an agent's work honestly</title>
+<meta name="description" content="A confident all-done feels like proof, but it isn't. What research and vendor docs say about checking an agent's work against evidence, not tone.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
+<link rel="canonical" href="https://codecartographer.dev/blog/praise-is-not-evidence">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/praise-is-not-evidence">
+<meta property="og:title" content="Praise is not evidence: appraising an agent's work honestly">
+<meta property="og:description" content="A confident all-done feels like proof, but it isn't. What research and vendor docs say about checking an agent's work against evidence, not tone.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Praise is not evidence: appraising an agent's work honestly","description":"A confident all-done feels like proof, but it isn't. What research and vendor docs say about checking an agent's work against evidence, not tone.","url":"https://codecartographer.dev/blog/praise-is-not-evidence","mainEntityOfPage":"https://codecartographer.dev/blog/praise-is-not-evidence","datePublished":"2026-10-17","dateModified":"2026-10-17","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Praise is not evidence: appraising an agent's work honestly","item":"https://codecartographer.dev/blog/praise-is-not-evidence"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Praise is not evidence: appraising an agent's work honestly</h1>
+  <p class="lead">An agent says it's finished, and it sounds sure. We look at why that sentence settles so little, and what to ask for instead.</p>
+  <p class="meta">By Team Cartographer · October 17th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">"Done. Everything works as expected." It's a lovely sentence to read at the end of a long session. It's also just a sentence. We've learned to notice how much relief it gives us, and how little it tells us.</p>
+  <p class="sub">This one's a bit of a musing. We want to think through why praise, from an agent or about an agent, makes a poor yardstick, and what a more honest appraisal might lean on instead.</p>
+
+  <h2>Agreeable answers are easy to like</h2>
+  <p class="sub">There's research on why confident, agreeable replies land so well. In a study of how language models are trained on human feedback, Anthropic researchers analysed existing preference data and found that, <a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/0105f7972202c1d4fb817da9f21a9663-Abstract-Conference.html" rel="noopener">when a response matches a user's views, it is more likely to be preferred</a>.<sup><a href="#fn1">1</a></sup> They also ran a human study. The paper reports that <a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/0105f7972202c1d4fb817da9f21a9663-Abstract-Conference.html" rel="noopener">independent humans sometimes preferred convincing sycophantic responses over correct ones</a> for challenging common misconceptions, and that the same pattern showed up in a preference model.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">That study is about question answering, not code, so we won't stretch it. But the plain reading is worth keeping. A reply that sounds right and a reply that is right can be hard to tell apart, and people don't always tell them apart. If that's true of strangers rating answers, it's true of us at the end of a long afternoon.</p>
+
+  <h2>"Looks done" is a signal, not a result</h2>
+  <p class="sub">Anthropic's own Claude Code documentation is blunt about this. It says that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Claude stops when the work looks done</a>, and that without a check it can run, "looks done" is the only signal available, which leaves you as the verification loop.<sup><a href="#fn2">2</a></sup> We're citing that page only for what it says about that tool.</p>
+  <p class="sub">The same guide lists a failure pattern it calls the trust-then-verify gap: a plausible-looking implementation that doesn't handle edge cases. Its fix is to always provide verification, such as tests, scripts or screenshots, and its rule of thumb is short: if you can't verify it, don't ship it.<sup><a href="#fn2">2</a></sup> It also suggests asking the agent to show evidence rather than assert success: the test output, the command it ran and what it returned, or a screenshot.<sup><a href="#fn2">2</a></sup></p>
+
+  <h2>We trust machines more than we mean to</h2>
+  <p class="sub">None of this is new to agents. Clinicians have been studied for years on how they respond to computer advice. A systematic review in the Journal of the American Medical Informatics Association looked at <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3240751" rel="noopener">automation bias, the tendency to over-rely on automation</a>, across 74 studies that met its inclusion criteria.<sup><a href="#fn3">3</a></sup> It notes that clinical decision support can introduce errors that go unnoticed, even though most research shows overall improved performance with it.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">That balance feels familiar. Most of the time the tool helps, and so we stop checking, and so the rare miss goes through. We don't think the answer is distrust. It's making the check cheap enough that we keep doing it.</p>
+
+  <p class="sub">We find that a little humbling. A pull toward agreement is part of how we rate things, so it's part of how we rate our own builds too.</p>
+
+  <h2>What we try to ask instead</h2>
+  <p class="sub">When we judge a build now, we try to swap three questions for one feeling.</p>
+  <ul class="list">
+    <li>What was it supposed to do? We write that down before the first prompt, not after the last one.</li>
+    <li>What would show it? A passing test, a diff, a screenshot, a command's output. Something we could point to.</li>
+    <li>Where did that evidence come from? If the only source is the agent's own summary, it's still a claim.</li>
+  </ul>
+  <p class="sub">Notice that none of these ask whether the agent seemed confident. Confidence is free. Evidence has to exist somewhere you can find it again.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. When a version is done, its <kbd>/complete</kbd> step judges the build against a yardstick, and every move and every appraisal item must cite its evidence in the record. Praise words are rejected on save. Everything runs on your machine, with no cloud.</p>
+
+  <h2>A small habit</h2>
+  <p class="sub">Next time an agent says it's done, don't reply "great". Ask it to show you what it ran and what came back, then read that. It takes a minute, and it turns a nice feeling into something you can actually point at.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Sharma, M., Tong, M., et al. <a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/0105f7972202c1d4fb817da9f21a9663-Abstract-Conference.html" rel="noopener">Towards Understanding Sycophancy in Language Models</a>. International Conference on Learning Representations (ICLR), 2024.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation, code.claude.com.</li>
+    <li id="fn3">Goddard, K., Roudsari, A., and Wyatt, J. C. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3240751" rel="noopener">Automation bias: a systematic review of frequency, effect mediators, and mitigators</a>. Journal of the American Medical Informatics Association, 2012;19(1):121-127.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

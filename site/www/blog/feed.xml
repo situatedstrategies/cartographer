@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Oct 2026 14:03:02 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 17 Oct 2026 14:03:03 GMT</lastBuildDate>
+    <item>
+      <title>Praise is not evidence: appraising an agent's work honestly</title>
+      <link>https://codecartographer.dev/blog/praise-is-not-evidence</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/praise-is-not-evidence</guid>
+      <pubDate>Sat, 17 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A confident all-done feels like proof, but it isn't. What research and vendor docs say about checking an agent's work against evidence, not tone.</description>
+    </item>
     <item>
       <title>Reading your own dead ends: what abandoned work can teach</title>
       <link>https://codecartographer.dev/blog/reading-your-own-dead-ends</link>
