@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-17.
+> Generated 2026-10-19.
 
 
 ---
@@ -648,6 +648,60 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Write down the why: decision records for agent-built code
+URL: https://codecartographer.dev/blog/write-down-the-why
+Description: Code shows what you chose, not why. What Nygard and Microsoft's guidance say about decision records, and a ten second habit for agent sessions.
+
+Somewhere in your project there's a choice nobody remembers making. A library picked over another. A table split in two. A retry loop that looks too patient. The code shows what you chose. It doesn't say why.
+
+We think about this a lot, because building with a coding agent makes it worse. Decisions fly by. You say "use the simpler one," the agent does, and forty minutes later nobody, including you, could say what the other option was.
+
+## An old fix for an old problem
+
+This isn't a new worry. In 2011, Michael Nygard argued that teams should keep small, modular records of architecturally significant decisions instead of large documents, because large documents don't get kept up to date.1 Each record captures the forces behind one decision. If a decision is later reversed, the old record stays, marked as superseded.1
+
+His warning is the part we keep coming back to. Someone who changes a decision without knowing why it was made could damage the project's overall value without realizing it.1 That someone is often you, three weeks later.
+
+## What a good record keeps
+
+Microsoft's Azure Well-Architected guidance describes an architecture decision record as a log of key decisions, including the alternatives that were ruled out.2 That second half matters. A bare "we chose X" is easy to second-guess. "We chose X over Y, and here's what Y would have cost" is much harder to reopen by accident.
+
+The same page calls the log append-only. When a decision changes, you add a new record that supersedes the old one and link the two, rather than editing history.2 We like that. The record of what you used to believe is as useful as the record of what you believe now.
+
+## Why it matters more with an agent
+
+When you write every line yourself, a decision at least passes through your hands. With an agent, a choice can be made in a single reply and accepted in a single word. It's quick, and it leaves very little behind.
+
+So the habit that helps is small. When you accept or reject something that shapes the project, say it in a sentence, in your own words, and say what you turned down. "Keeping sessions in plain files, not a database, because we want to read them without a server." It takes ten seconds. It's the sentence you'll want later.
+
+It also helps to write the record while the doubt is still fresh. Right after a choice is made, the rejected option is vivid and the reasons are obvious. A week on, both have faded. The sentence you'd have written in ten seconds becomes an hour of detective work, and sometimes it can't be done at all.
+
+Nothing here says you need a formal template. Nygard's point, and Microsoft's, is the same one: keep the records short, keep the reasons, keep the roads not taken.
+
+There's a feeling we know well. You open an old project, find something odd, and your first instinct is to tidy it. Then a small voice asks whether it was odd on purpose. Without a reason on file, you're guessing, and guessing in either direction costs something. Leave it and you carry a mystery forever. Change it and you might undo a lesson somebody paid for.
+
+A short reason takes that guess away. It also makes review kinder. When someone asks "why did we do it this way?", you can point at a line instead of rebuilding an argument from memory.
+
+## Where session history fits
+
+You've probably already written many of these sentences without noticing. They're in your prompts: the "no, use the other approach," the "let's not add a dependency for this." Cartographer reads the session file your agent already keeps and marks decisions, questions, dead ends and fixes on a map of the build, as how it works explains. It's a way to find the decisions you made out loud, so you can write the important ones down properly.
+
+## A small test
+
+Pick one choice in your current project that surprised you when you came back to it. Try to write its record in three lines: what you chose, what you turned down, what would make you change your mind. If you can't, that's the gap. If you can, put it somewhere the next person will look, including the next you.
+
+## Sources
+
+- Nygard, M. Documenting Architecture Decisions. Cognitect blog, November 15th 2011.
+
+- Microsoft. Maintain an architecture decision record (ADR). Microsoft Azure Well-Architected Framework, Microsoft Learn.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

@@ -54,6 +54,9 @@ When the queue runs low, add new topics that fit the pillars and target real
 search phrases people use. Never repeat a topic an existing post already
 covers.
 
+1. Context windows and long sessions: when to start fresh (vendor docs)
+2. Writing a spec before the prompt: what research says about requirements
+
 
 ## Citations: real, accurate, live sources, footnoted, always
 

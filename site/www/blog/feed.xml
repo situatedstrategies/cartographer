@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 17 Oct 2026 14:03:03 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 19 Oct 2026 14:03:09 GMT</lastBuildDate>
+    <item>
+      <title>Write down the why: decision records for agent-built code</title>
+      <link>https://codecartographer.dev/blog/write-down-the-why</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/write-down-the-why</guid>
+      <pubDate>Mon, 19 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Code shows what you chose, not why. What Nygard and Microsoft's guidance say about decision records, and a ten second habit for agent sessions.</description>
+    </item>
     <item>
       <title>Praise is not evidence: appraising an agent's work honestly</title>
       <link>https://codecartographer.dev/blog/praise-is-not-evidence</link>
