@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/when-to-start-a-fresh-session",
+      "url": "https://codecartographer.dev/blog/when-to-start-a-fresh-session",
+      "title": "When to start a fresh session: long chats with a coding agent",
+      "summary": "Long agent sessions get heavy. What Anthropic's own docs say about context, /clear, /compact and rewind, and a plain rule for when to start over.",
+      "date_published": "2026-10-21T12:00:00Z",
+      "date_modified": "2026-10-21T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/write-down-the-why",
       "url": "https://codecartographer.dev/blog/write-down-the-why",
       "title": "Write down the why: decision records for agent-built code",

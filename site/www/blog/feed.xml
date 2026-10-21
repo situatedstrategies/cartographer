@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 19 Oct 2026 14:03:09 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 21 Oct 2026 14:03:05 GMT</lastBuildDate>
+    <item>
+      <title>When to start a fresh session: long chats with a coding agent</title>
+      <link>https://codecartographer.dev/blog/when-to-start-a-fresh-session</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/when-to-start-a-fresh-session</guid>
+      <pubDate>Wed, 21 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Long agent sessions get heavy. What Anthropic's own docs say about context, /clear, /compact and rewind, and a plain rule for when to start over.</description>
+    </item>
     <item>
       <title>Write down the why: decision records for agent-built code</title>
       <link>https://codecartographer.dev/blog/write-down-the-why</link>
