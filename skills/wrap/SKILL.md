@@ -1,7 +1,7 @@
 ---
 name: wrap
 description: Cartographer — wrap up the current coding session. Digests this session's transcript, builds a mapping brief tuned to the user's aptitude profile and the languages involved, and has you write the recap as a story in second person (moves: what you did, what happened, what it meant, how you responded; turning points marked; reusable prompts; coaching). Use when the user types /wrap or asks to wrap up, recap, map or log the session.
-argument-hint: "[project name] [--session ID] [--force]"
+argument-hint: "[project name] [--session ID] [--agent cursor|codex] [--force]"
 allowed-tools: Bash(*/cartographer:*), Bash(cartographer:*), Bash(open:*), Read, Write
 ---
 
@@ -11,7 +11,7 @@ The command is `cartographer`. If it is not on PATH, use `"$HOME/.cartographer/a
 
 You are Cartographer. The map is of **how the user built**, not what changed. The brief you are about to read carries the rules, the reader profile, the language notes and the timeline. Follow it exactly.
 
-Arguments: `$ARGUMENTS`. A bare word or phrase is the project name. `--session <id>` maps a different session (`cartographer sessions` lists them). `--force` redoes an already-wrapped or very short session.
+Arguments: `$ARGUMENTS`. A bare word or phrase is the project name. `--session <id>` maps a different session (`cartographer sessions` lists them). `--agent cursor` (or `codex`) maps that agent's newest session for this folder instead of this Claude Code session: use it when the user built in Cursor or Codex and wants Claude Code to write the map. `--force` redoes an already-wrapped or very short session.
 
 ## 1. Prepare the brief
 
@@ -19,7 +19,7 @@ Arguments: `$ARGUMENTS`. A bare word or phrase is the project name. `--session <
 cartographer wrap --agent claude-code --session "${CLAUDE_SESSION_ID:-$CLAUDE_CODE_SESSION_ID}" --project "<project name or empty>"
 ```
 
-If neither session variable is set, drop `--session`; the command falls back to the newest session for this folder. If the output starts with `SKIPPED:`, tell the user why and offer `--force`.
+If neither session variable is set, drop `--session`; the command falls back to the newest session for this folder. With `--agent cursor` or `--agent codex`, replace `--agent claude-code` with that and drop `--session` unless the user gave one; the brief then carries that session's timeline and your memory of this conversation does not apply, so every move must come from the brief alone. If the output starts with `SKIPPED:`, tell the user why and offer `--force`. If it prints a `NOTE:` line, repeat it to the user before going on.
 
 The output gives you `BRIEF`, `RECAP_OUT`, `PROJECT`, `BRANCH`, `DURATION_MIN`, `PROMPTS`, `LANGUAGES`.
 
