@@ -7,9 +7,6 @@
 <meta name="description" content="Cartographer reads the session history your coding agent keeps and tells it back as a story: what you did, what happened, what it meant. Local and private.">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital;1&family=Figtree:wght..700&family=JetBrains+Mono:wght..600&display=swap">
 <link rel="canonical" href="https://codecartographer.dev/">
 <link rel="alternate" type="application/rss+xml" title="The Cartographer blog" href="https://codecartographer.dev/blog/feed.xml">
 <link rel="alternate" type="application/feed+json" title="The Cartographer blog" href="https://codecartographer.dev/blog/feed.json">
@@ -38,6 +35,7 @@
 }
 </script>
 <link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
 </head>
 <body class="home"><div class="wrap">
 <nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
@@ -56,16 +54,48 @@
 </header>
 <main>
 
-<section>
+<section class="map reveal" aria-labelledby="map-title">
+  <p class="eyebrow">One session, as a map</p>
+  <h2 id="map-title">Six moments. Step through them.</h2>
+  <p class="sub">A made-up session, drawn the way a map reads: what you asked for, what the agent did, where it went sideways, and how you got back. Press Next, or use the arrow keys.</p>
+  <div class="route" data-step="0" tabindex="0" aria-label="A sample session map. Use Next and Back, or the arrow keys.">
+    <svg viewBox="0 0 640 300" aria-hidden="true" focusable="false">
+      <g class="ground">
+        <path d="M-20 60 C 120 20, 220 90, 330 50 S 520 10, 660 70"/>
+        <path d="M-20 130 C 140 100, 240 170, 360 130 S 540 90, 660 150"/>
+        <path d="M-20 210 C 120 180, 230 250, 350 210 S 530 170, 660 230"/>
+        <path d="M-20 280 C 140 250, 250 300, 380 270 S 560 240, 660 290"/>
+      </g>
+      <path class="trail" d="M28 236 C 70 120, 150 90, 200 150 S 290 262, 350 190 S 430 60, 480 110 S 540 230, 612 72"/>
+      <g class="marks"></g>
+    </svg>
+    <ol class="legs">
+      <li><span class="k">01</span><div><b>You asked for a CSV importer for the bank export, with tests.</b><p>What you asked for, in your words.</p></div></li>
+      <li><span class="k">02</span><div><b>The agent wrote the parser and eleven tests. All green.</b><p>What the agent did.</p></div></li>
+      <li><span class="k">03</span><div><b>Sideways: the tests ran on a fixture the agent wrote itself. A real file broke on quoted commas.</b><p>Where things went sideways, and the moment it happened.</p></div></li>
+      <li><span class="k">04</span><div><b>You pasted a real export and said what done meant: every row in, none dropped.</b><p>The correction. In a real map this is the prompt worth keeping.</p></div></li>
+      <li><span class="k">05</span><div><b>The agent rewrote the quoting rules. Fourteen tests, green against the real file.</b><p>How you got back on track.</p></div></li>
+      <li><span class="k">06</span><div><b>/complete judged the build against "every row in, none dropped". Done, with one note: dates stay strings until the next version.</b><p>What it cost, and what it still owes.</p></div></li>
+    </ol>
+    <div class="map-ctl">
+      <button class="btn back" type="button" disabled>Back</button>
+      <button class="btn primary next" type="button">Next</button>
+      <span class="count" aria-live="polite">Press Next to begin</span>
+    </div>
+  </div>
+  <p class="meta">In a real map every moment links to the line in the transcript it came from. <a href="/demo.html" target="_blank" rel="noopener">Watch a real build replay ↗</a></p>
+</section>
+
+<section class="reveal">
   <h2>One line to install</h2>
   <p class="meta">Mac and Linux (Terminal):</p>
-  <div class="cmd"><span>curl -fsSL https://codecartographer.dev/install.sh | sh</span><button onclick="navigator.clipboard.writeText('curl -fsSL https://codecartographer.dev/install.sh | sh').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <div class="cmd"><span>curl -fsSL https://codecartographer.dev/install.sh | sh</span><button type="button" data-copy="curl -fsSL https://codecartographer.dev/install.sh | sh">Copy</button></div>
   <p class="meta">Windows (PowerShell):</p>
-  <div class="cmd"><span>irm https://codecartographer.dev/install.ps1 | iex</span><button onclick="navigator.clipboard.writeText('irm https://codecartographer.dev/install.ps1 | iex').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy</button></div>
+  <div class="cmd"><span>irm https://codecartographer.dev/install.ps1 | iex</span><button type="button" data-copy="irm https://codecartographer.dev/install.ps1 | iex">Copy</button></div>
   <p class="meta">Needs Python 3.9+ and Claude Code. Step by step, in plain language and in detail, on the <a href="/install">Install</a> page.</p>
 </section>
 
-<section>
+<section class="reveal">
   <h2>What you get</h2>
   <table class="atlas hl">
     <thead><tr><th>Command</th><th>When</th><th>What you get back</th></tr></thead>
@@ -77,7 +107,7 @@
   </table>
 </section>
 
-<section class="about">
+<section class="about reveal">
   <h2>About</h2>
   <p>Cartographer is for people who code with AI: engineers who work with an agent every day, and yes, even vibe coders. It's meant to help you understand your own process, and what your projects look like in practice, session by session.</p>
   <p>There are only so many words you can remember, and only so many prompts. A few weeks into a build, it's hard to say which prompts did the work and which ones sent the agent in circles. Cartographer isn't a prompt library, and it isn't trying to replace one. It shows you how you've been using your prompts, and how well your natural language held up against the code the AI generated.</p>

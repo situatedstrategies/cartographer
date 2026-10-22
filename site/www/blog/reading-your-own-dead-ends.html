@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading your own dead ends: what abandoned work can teach</title>
+<meta name="description" content="Abandoned branches and rewound sessions are the part of a build nobody keeps. Here's why they're worth reading, and what the docs say about keeping them.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/reading-your-own-dead-ends">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/reading-your-own-dead-ends">
+<meta property="og:title" content="Reading your own dead ends: what abandoned work can teach">
+<meta property="og:description" content="Abandoned branches and rewound sessions are the part of a build nobody keeps. Here's why they're worth reading, and what the docs say about keeping them.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Reading your own dead ends: what abandoned work can teach","description":"Abandoned branches and rewound sessions are the part of a build nobody keeps. Here's why they're worth reading, and what the docs say about keeping them.","url":"https://codecartographer.dev/blog/reading-your-own-dead-ends","mainEntityOfPage":"https://codecartographer.dev/blog/reading-your-own-dead-ends","datePublished":"2026-10-15","dateModified":"2026-10-15","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Reading your own dead ends: what abandoned work can teach","item":"https://codecartographer.dev/blog/reading-your-own-dead-ends"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Reading your own dead ends: what abandoned work can teach</h1>
+  <p class="lead">The code that got thrown away says as much about a project as the code that shipped. Most of us never look at it again.</p>
+  <p class="meta">By Team Cartographer · October 15th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+    <p class="sub">Every project has a graveyard. A branch you stopped touching in March. A session where the agent spent an hour on an approach that turned out to be wrong, and you said so, and it started over. The shipped code remembers none of it. It looks like the answer was obvious all along.</p>
+  <p class="sub">We think that's a loss. The dead ends are the only record of what you tried, what you believed at the time, and why you changed your mind. Here's how we've come to read them, and what the documentation says about keeping them around.</p>
+
+  <h2>Abandoning something is cheap. Remembering why isn't.</h2>
+  <p class="sub">Git makes it easy to try things. The Pro Git book describes a branch as <a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell" rel="noopener">simply a lightweight movable pointer to one of these commits</a>.<sup><a href="#fn1">1</a></sup> Starting one is a small act, and so is walking away from one. That's a good thing. It means you can follow a hunch without much ceremony.</p>
+  <p class="sub">The cost shows up later. A branch name like <code>try-new-parser</code> tells you that you tried. It doesn't tell you what went wrong, what you'd hoped for, or what you learned. Six months on, you might try the same thing again for the same reasons and hit the same wall.</p>
+
+  <h2>Rewinding is a kind of abandoning too</h2>
+  <p class="sub">Working with an agent adds a second way to leave something behind. You don't have to branch. You can just back up. Anthropic's documentation for Claude Code lists <a href="https://code.claude.com/docs/en/checkpointing" rel="noopener">exploring alternatives, to try different implementation approaches without losing your starting point</a>, as one of the situations checkpoints are meant for.<sup><a href="#fn2">2</a></sup> That page is a vendor document, so we're citing it only for what it says about that tool.</p>
+  <p class="sub">The same page is also plain about how long that safety net lasts. It says Claude Code deletes a session's file snapshots <a href="https://code.claude.com/docs/en/checkpointing" rel="noopener">by default about 30 days after the session last saved one</a>, and that checkpoints are for quick, session-level recovery, not a replacement for version control.<sup><a href="#fn2">2</a></sup> Whatever you think of that design, the lesson for the reader is a quiet one. The undo button is a short-term safety net. It isn't an archive of what you tried.</p>
+
+  <h2>Read them without blame</h2>
+  <p class="sub">There's a reason people skip their own dead ends. They feel like evidence against us. Looking back at an hour spent on the wrong approach can bring on a small flinch, and so we don't.</p>
+  <p class="sub">Software operations has an old answer to that. Google's Site Reliability Engineering book says that for a postmortem to be truly blameless, it <a href="https://sre.google/sre-book/postmortem-culture/" rel="noopener">must focus on identifying the contributing causes of the incident without indicting any individual or team for bad or inappropriate behavior</a>.<sup><a href="#fn3">3</a></sup> The same chapter works from the assumption that everyone involved had good intentions and did the right thing with the information they had.</p>
+  <p class="sub">An abandoned branch isn't an incident, and your afternoon isn't an outage. But the stance carries over nicely. When you read an old dead end, assume you did the sensible thing with what you knew then. Then ask what you didn't know, and when you found it out. That question is useful. "What was wrong with me?" isn't.</p>
+
+  <h2>What a dead end can tell you</h2>
+  <p class="sub">When we read our own, a few questions come up again and again:</p>
+  <ul class="list">
+    <li>What did we think was true when we started? A dead end usually begins with an assumption, and the assumption is the interesting part.</li>
+    <li>What was the first sign it wasn't working? It's rarely the moment we stopped. It's usually earlier, and easy to spot afterwards.</li>
+    <li>What did the correction change? If we told the agent "no, not like that", what had it assumed, and what had we left unsaid?</li>
+    <li>Was it really wrong, or just early? Some abandoned ideas come back a month later and work.</li>
+  </ul>
+  <p class="sub">None of these need special tools. They need the record to still exist, and a few minutes of looking at it.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Its replay marks decisions, questions, dead ends, fixes, artifacts, pivots and insights, and it flags turn-initial repairs like "no, I meant..." because they usually mark a dead end. It reads what's already on your machine, with no cloud.</p>
+
+  <h2>A small habit</h2>
+  <p class="sub">The next time you abandon a branch or rewind a session, write one line before you move on. What you tried, and what stopped you. Put it in the commit message, the branch description or a note file. It takes thirty seconds, and it's the cheapest way we know to keep a dead end useful.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+        <li id="fn1"><a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell" rel="noopener">Pro Git, Branches in a Nutshell</a>. git-scm.com.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/checkpointing" rel="noopener">Checkpointing</a>. Claude Code documentation, code.claude.com.</li>
+    <li id="fn3"><a href="https://sre.google/sre-book/postmortem-culture/" rel="noopener">Postmortem Culture: Learning from Failure</a>, Chapter 15 of Site Reliability Engineering. sre.google.</li>
+  
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

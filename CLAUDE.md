@@ -12,6 +12,20 @@ the public site for codecartographer.dev in `site/www/`, deployed as a
 Cloudflare Worker with static assets (root directory `site`, build
 `sh build.sh`, deploy `npx wrangler deploy`). Pushing to `main` deploys.
 
+## Type and motion on the site
+
+- Type (owner, October 20th 2026, the same decision across every Situated
+  Strategies site): Newsreader for the wordmark, titles and headings, IBM Plex
+  Sans for reading, IBM Plex Mono for the nav, labels, keys, buttons and code.
+  Self-hosted as latin woff2 files in `site/www/fonts`; the site makes no
+  request to Google Fonts (the old Google Fonts link answered HTTP 400 and
+  every page had been falling back to system fonts).
+- Motion (owner, October 21st 2026): everything that moves moves because the
+  reader did something. `site/www/motion.js` runs the sample map on the home
+  page (six moments, stepped with Next, Back or the arrow keys), the copy
+  buttons, and the arrivals; `prefers-reduced-motion` skips the arrivals and
+  the map still steps. Nothing loops or autoplays.
+
 ## Hard copy rules for the site
 
 - No em dashes and no en dashes in anything new. Grep the diff for U+2014

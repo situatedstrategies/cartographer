@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When to start a fresh session: long chats with a coding agent</title>
+<meta name="description" content="Long agent sessions get heavy. What Anthropic's own docs say about context, /clear, /compact and rewind, and a plain rule for when to start over.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/when-to-start-a-fresh-session">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/when-to-start-a-fresh-session">
+<meta property="og:title" content="When to start a fresh session: long chats with a coding agent">
+<meta property="og:description" content="Long agent sessions get heavy. What Anthropic's own docs say about context, /clear, /compact and rewind, and a plain rule for when to start over.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"When to start a fresh session: long chats with a coding agent","description":"Long agent sessions get heavy. What Anthropic's own docs say about context, /clear, /compact and rewind, and a plain rule for when to start over.","url":"https://codecartographer.dev/blog/when-to-start-a-fresh-session","mainEntityOfPage":"https://codecartographer.dev/blog/when-to-start-a-fresh-session","datePublished":"2026-10-21","dateModified":"2026-10-21","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"When to start a fresh session: long chats with a coding agent","item":"https://codecartographer.dev/blog/when-to-start-a-fresh-session"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>When to start a fresh session: long chats with a coding agent</h1>
+  <p class="lead">Every session has a moment where starting over would be faster than carrying on. Here's how to spot it, and what the vendor docs say about your options.</p>
+  <p class="meta">By Team Cartographer · October 21st 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">There's a particular feeling about two hours into a long session. The conversation is huge. Early decisions are buried. The agent's answers have gone slightly off, and you can't say exactly when. You keep typing because stopping feels like losing everything.</p>
+  <p class="sub">We've been there, and we think the feeling deserves a straight look. What follows leans on one vendor's own documentation, Anthropic's for Claude Code, because it's the clearest we found on the subject. Other tools may work differently, so check your own tool's docs.</p>
+
+  <h2>What a long session costs</h2>
+  <p class="sub">Anthropic's own post puts it plainly: <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">using context has a slight impact on performance, which is often called context rot</a>.<sup><a href="#fn1">1</a></sup> They describe context rot as the observation that <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">model performance degrades as context grows</a>.<sup><a href="#fn1">1</a></sup> Notice the word "slight". It isn't a cliff. It's a slope, and the longer you stay on it, the more it matters.</p>
+  <p class="sub">There's a money side too. The Claude Code cost documentation says the tool <a href="https://code.claude.com/docs/en/costs" rel="noopener">sends your full conversation with every request</a>, so a one-line question in a session that has been open all day still draws usage for the whole conversation.<sup><a href="#fn2">2</a></sup> That page also lists, among the causes of unexpectedly high spend, <a href="https://code.claude.com/docs/en/costs" rel="noopener">long sessions that were never cleared</a>.<sup><a href="#fn2">2</a></sup></p>
+
+  <h2>The rule of thumb</h2>
+  <p class="sub">Anthropic's stated rule is short: <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">when you start a new task, you should also start a new session</a>.<sup><a href="#fn1">1</a></sup> The cost documentation agrees, advising you to use <code>/clear</code> <a href="https://code.claude.com/docs/en/costs" rel="noopener">to start fresh when switching to unrelated work</a>, because stale context wastes tokens on every message that follows.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">The post is honest about the trade. Related tasks may still need some of what's already in the conversation, and starting fresh means the agent has to reread files, which Anthropic calls <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">slower and more expensive</a>.<sup><a href="#fn1">1</a></sup> So it isn't "always start over." It's "start over when the next job doesn't need the last one."</p>
+
+  <h2>Three ways out</h2>
+  <p class="sub">The same post describes the options, and we like how it frames them as a choice, not a ranking.</p>
+  <ul class="list">
+    <li><strong>Clear and brief.</strong> Start a new session, <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">usually with a brief you've distilled from what you just learned</a>. Anthropic says it's more work, but <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">the resulting context is what you decided was relevant</a>.<sup><a href="#fn1">1</a></sup></li>
+    <li><strong>Compact.</strong> This <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">asks the model to summarize the conversation so far, then replaces the history with that summary</a>. Anthropic calls it lossy, but notes you didn't have to write anything yourself.<sup><a href="#fn1">1</a></sup></li>
+    <li><strong>Rewind.</strong> When the agent took a wrong turn, Anthropic says <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">rewind is often the better approach to correction</a>, since the messages after that point are dropped from the context.<sup><a href="#fn1">1</a></sup></li>
+  </ul>
+  <p class="sub">Writing your own brief is the interesting one. It forces the question the compaction skips: what did we actually learn? The answer is usually three or four sentences. Which files matter, what we ruled out, what the next step is.</p>
+
+  <h2>Signs it's time</h2>
+  <p class="sub">The docs give a rule about tasks. They don't give a number we can quote for "too long", so we won't invent one. In our own experience the signals are human ones. You're repeating yourself. You're correcting something you already corrected. You can't summarize where things stand without scrolling. When we notice two of those, we stop and write the brief. It costs a few minutes, and it usually saves more than that.</p>
+  <p class="sub">The brief is also a small act of honesty. If you can't write it, you don't yet know what the session achieved, and that's worth finding out before you build more on top of it.</p>
+
+  <h2>Where session history fits</h2>
+  <p class="sub">Starting fresh doesn't have to mean losing the thread. Cartographer reads the session file your agent already keeps and turns it into a map of how the project was built, as <a href="/how-it-works">how it works</a> explains. Before you clear, a map of the session so far can show you the decisions and dead ends worth carrying into your brief.</p>
+
+  <h2>A small test</h2>
+  <p class="sub">Next time a session feels heavy, pause and write the brief anyway: what we decided, what we ruled out, what comes next. Then choose. If the brief fits in a few lines, start fresh with it. If it sprawls, the session was telling you something.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Anthropic. <a href="https://claude.com/blog/using-claude-code-session-management-and-1m-context" rel="noopener">Using Claude Code: session management and 1M context</a>. Claude blog, claude.com.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/costs" rel="noopener">Manage costs effectively</a>. Claude Code documentation, code.claude.com.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

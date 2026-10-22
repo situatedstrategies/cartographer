@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-09.
+> Generated 2026-10-21.
 
 
 ---
@@ -648,6 +648,372 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# When to start a fresh session: long chats with a coding agent
+URL: https://codecartographer.dev/blog/when-to-start-a-fresh-session
+Description: Long agent sessions get heavy. What Anthropic's own docs say about context, /clear, /compact and rewind, and a plain rule for when to start over.
+
+There's a particular feeling about two hours into a long session. The conversation is huge. Early decisions are buried. The agent's answers have gone slightly off, and you can't say exactly when. You keep typing because stopping feels like losing everything.
+
+We've been there, and we think the feeling deserves a straight look. What follows leans on one vendor's own documentation, Anthropic's for Claude Code, because it's the clearest we found on the subject. Other tools may work differently, so check your own tool's docs.
+
+## What a long session costs
+
+Anthropic's own post puts it plainly: using context has a slight impact on performance, which is often called context rot.1 They describe context rot as the observation that model performance degrades as context grows.1 Notice the word "slight". It isn't a cliff. It's a slope, and the longer you stay on it, the more it matters.
+
+There's a money side too. The Claude Code cost documentation says the tool sends your full conversation with every request, so a one-line question in a session that has been open all day still draws usage for the whole conversation.2 That page also lists, among the causes of unexpectedly high spend, long sessions that were never cleared.2
+
+## The rule of thumb
+
+Anthropic's stated rule is short: when you start a new task, you should also start a new session.1 The cost documentation agrees, advising you to use /clear to start fresh when switching to unrelated work, because stale context wastes tokens on every message that follows.2
+
+The post is honest about the trade. Related tasks may still need some of what's already in the conversation, and starting fresh means the agent has to reread files, which Anthropic calls slower and more expensive.1 So it isn't "always start over." It's "start over when the next job doesn't need the last one."
+
+## Three ways out
+
+The same post describes the options, and we like how it frames them as a choice, not a ranking.
+
+- Clear and brief. Start a new session, usually with a brief you've distilled from what you just learned. Anthropic says it's more work, but the resulting context is what you decided was relevant.1
+
+- Compact. This asks the model to summarize the conversation so far, then replaces the history with that summary. Anthropic calls it lossy, but notes you didn't have to write anything yourself.1
+
+- Rewind. When the agent took a wrong turn, Anthropic says rewind is often the better approach to correction, since the messages after that point are dropped from the context.1
+
+Writing your own brief is the interesting one. It forces the question the compaction skips: what did we actually learn? The answer is usually three or four sentences. Which files matter, what we ruled out, what the next step is.
+
+## Signs it's time
+
+The docs give a rule about tasks. They don't give a number we can quote for "too long", so we won't invent one. In our own experience the signals are human ones. You're repeating yourself. You're correcting something you already corrected. You can't summarize where things stand without scrolling. When we notice two of those, we stop and write the brief. It costs a few minutes, and it usually saves more than that.
+
+The brief is also a small act of honesty. If you can't write it, you don't yet know what the session achieved, and that's worth finding out before you build more on top of it.
+
+## Where session history fits
+
+Starting fresh doesn't have to mean losing the thread. Cartographer reads the session file your agent already keeps and turns it into a map of how the project was built, as how it works explains. Before you clear, a map of the session so far can show you the decisions and dead ends worth carrying into your brief.
+
+## A small test
+
+Next time a session feels heavy, pause and write the brief anyway: what we decided, what we ruled out, what comes next. Then choose. If the brief fits in a few lines, start fresh with it. If it sprawls, the session was telling you something.
+
+## Sources
+
+- Anthropic. Using Claude Code: session management and 1M context. Claude blog, claude.com.
+
+- Anthropic. Manage costs effectively. Claude Code documentation, code.claude.com.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Write down the why: decision records for agent-built code
+URL: https://codecartographer.dev/blog/write-down-the-why
+Description: Code shows what you chose, not why. What Nygard and Microsoft's guidance say about decision records, and a ten second habit for agent sessions.
+
+Somewhere in your project there's a choice nobody remembers making. A library picked over another. A table split in two. A retry loop that looks too patient. The code shows what you chose. It doesn't say why.
+
+We think about this a lot, because building with a coding agent makes it worse. Decisions fly by. You say "use the simpler one," the agent does, and forty minutes later nobody, including you, could say what the other option was.
+
+## An old fix for an old problem
+
+This isn't a new worry. In 2011, Michael Nygard argued that teams should keep small, modular records of architecturally significant decisions instead of large documents, because large documents don't get kept up to date.1 Each record captures the forces behind one decision. If a decision is later reversed, the old record stays, marked as superseded.1
+
+His warning is the part we keep coming back to. Someone who changes a decision without knowing why it was made could damage the project's overall value without realizing it.1 That someone is often you, three weeks later.
+
+## What a good record keeps
+
+Microsoft's Azure Well-Architected guidance describes an architecture decision record as a log of key decisions, including the alternatives that were ruled out.2 That second half matters. A bare "we chose X" is easy to second-guess. "We chose X over Y, and here's what Y would have cost" is much harder to reopen by accident.
+
+The same page calls the log append-only. When a decision changes, you add a new record that supersedes the old one and link the two, rather than editing history.2 We like that. The record of what you used to believe is as useful as the record of what you believe now.
+
+## Why it matters more with an agent
+
+When you write every line yourself, a decision at least passes through your hands. With an agent, a choice can be made in a single reply and accepted in a single word. It's quick, and it leaves very little behind.
+
+So the habit that helps is small. When you accept or reject something that shapes the project, say it in a sentence, in your own words, and say what you turned down. "Keeping sessions in plain files, not a database, because we want to read them without a server." It takes ten seconds. It's the sentence you'll want later.
+
+It also helps to write the record while the doubt is still fresh. Right after a choice is made, the rejected option is vivid and the reasons are obvious. A week on, both have faded. The sentence you'd have written in ten seconds becomes an hour of detective work, and sometimes it can't be done at all.
+
+Nothing here says you need a formal template. Nygard's point, and Microsoft's, is the same one: keep the records short, keep the reasons, keep the roads not taken.
+
+There's a feeling we know well. You open an old project, find something odd, and your first instinct is to tidy it. Then a small voice asks whether it was odd on purpose. Without a reason on file, you're guessing, and guessing in either direction costs something. Leave it and you carry a mystery forever. Change it and you might undo a lesson somebody paid for.
+
+A short reason takes that guess away. It also makes review kinder. When someone asks "why did we do it this way?", you can point at a line instead of rebuilding an argument from memory.
+
+## Where session history fits
+
+You've probably already written many of these sentences without noticing. They're in your prompts: the "no, use the other approach," the "let's not add a dependency for this." Cartographer reads the session file your agent already keeps and marks decisions, questions, dead ends and fixes on a map of the build, as how it works explains. It's a way to find the decisions you made out loud, so you can write the important ones down properly.
+
+## A small test
+
+Pick one choice in your current project that surprised you when you came back to it. Try to write its record in three lines: what you chose, what you turned down, what would make you change your mind. If you can't, that's the gap. If you can, put it somewhere the next person will look, including the next you.
+
+## Sources
+
+- Nygard, M. Documenting Architecture Decisions. Cognitect blog, November 15th 2011.
+
+- Microsoft. Maintain an architecture decision record (ADR). Microsoft Azure Well-Architected Framework, Microsoft Learn.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Praise is not evidence: appraising an agent's work honestly
+URL: https://codecartographer.dev/blog/praise-is-not-evidence
+Description: A confident all-done feels like proof, but it isn't. What research and vendor docs say about checking an agent's work against evidence, not tone.
+
+"Done. Everything works as expected." It's a lovely sentence to read at the end of a long session. It's also just a sentence. We've learned to notice how much relief it gives us, and how little it tells us.
+
+This one's a bit of a musing. We want to think through why praise, from an agent or about an agent, makes a poor yardstick, and what a more honest appraisal might lean on instead.
+
+## Agreeable answers are easy to like
+
+There's research on why confident, agreeable replies land so well. In a study of how language models are trained on human feedback, Anthropic researchers analysed existing preference data and found that, when a response matches a user's views, it is more likely to be preferred.1 They also ran a human study. The paper reports that independent humans sometimes preferred convincing sycophantic responses over correct ones for challenging common misconceptions, and that the same pattern showed up in a preference model.1
+
+That study is about question answering, not code, so we won't stretch it. But the plain reading is worth keeping. A reply that sounds right and a reply that is right can be hard to tell apart, and people don't always tell them apart. If that's true of strangers rating answers, it's true of us at the end of a long afternoon.
+
+## "Looks done" is a signal, not a result
+
+Anthropic's own Claude Code documentation is blunt about this. It says that Claude stops when the work looks done, and that without a check it can run, "looks done" is the only signal available, which leaves you as the verification loop.2 We're citing that page only for what it says about that tool.
+
+The same guide lists a failure pattern it calls the trust-then-verify gap: a plausible-looking implementation that doesn't handle edge cases. Its fix is to always provide verification, such as tests, scripts or screenshots, and its rule of thumb is short: if you can't verify it, don't ship it.2 It also suggests asking the agent to show evidence rather than assert success: the test output, the command it ran and what it returned, or a screenshot.2
+
+## We trust machines more than we mean to
+
+None of this is new to agents. Clinicians have been studied for years on how they respond to computer advice. A systematic review in the Journal of the American Medical Informatics Association looked at automation bias, the tendency to over-rely on automation, across 74 studies that met its inclusion criteria.3 It notes that clinical decision support can introduce errors that go unnoticed, even though most research shows overall improved performance with it.3
+
+That balance feels familiar. Most of the time the tool helps, and so we stop checking, and so the rare miss goes through. We don't think the answer is distrust. It's making the check cheap enough that we keep doing it.
+
+We find that a little humbling. A pull toward agreement is part of how we rate things, so it's part of how we rate our own builds too.
+
+## What we try to ask instead
+
+When we judge a build now, we try to swap three questions for one feeling.
+
+- What was it supposed to do? We write that down before the first prompt, not after the last one.
+
+- What would show it? A passing test, a diff, a screenshot, a command's output. Something we could point to.
+
+- Where did that evidence come from? If the only source is the agent's own summary, it's still a claim.
+
+Notice that none of these ask whether the agent seemed confident. Confidence is free. Evidence has to exist somewhere you can find it again.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. When a version is done, its /complete step judges the build against a yardstick, and every move and every appraisal item must cite its evidence in the record. Praise words are rejected on save. Everything runs on your machine, with no cloud.
+
+## A small habit
+
+Next time an agent says it's done, don't reply "great". Ask it to show you what it ran and what came back, then read that. It takes a minute, and it turns a nice feeling into something you can actually point at.
+
+## Sources
+
+- Sharma, M., Tong, M., et al. Towards Understanding Sycophancy in Language Models. International Conference on Learning Representations (ICLR), 2024.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation, code.claude.com.
+
+- Goddard, K., Roudsari, A., and Wyatt, J. C. Automation bias: a systematic review of frequency, effect mediators, and mitigators. Journal of the American Medical Informatics Association, 2012;19(1):121-127.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Reading your own dead ends: what abandoned work can teach
+URL: https://codecartographer.dev/blog/reading-your-own-dead-ends
+Description: Abandoned branches and rewound sessions are the part of a build nobody keeps. Here's why they're worth reading, and what the docs say about keeping them.
+
+Every project has a graveyard. A branch you stopped touching in March. A session where the agent spent an hour on an approach that turned out to be wrong, and you said so, and it started over. The shipped code remembers none of it. It looks like the answer was obvious all along.
+
+We think that's a loss. The dead ends are the only record of what you tried, what you believed at the time, and why you changed your mind. Here's how we've come to read them, and what the documentation says about keeping them around.
+
+## Abandoning something is cheap. Remembering why isn't.
+
+Git makes it easy to try things. The Pro Git book describes a branch as simply a lightweight movable pointer to one of these commits.1 Starting one is a small act, and so is walking away from one. That's a good thing. It means you can follow a hunch without much ceremony.
+
+The cost shows up later. A branch name like try-new-parser tells you that you tried. It doesn't tell you what went wrong, what you'd hoped for, or what you learned. Six months on, you might try the same thing again for the same reasons and hit the same wall.
+
+## Rewinding is a kind of abandoning too
+
+Working with an agent adds a second way to leave something behind. You don't have to branch. You can just back up. Anthropic's documentation for Claude Code lists exploring alternatives, to try different implementation approaches without losing your starting point, as one of the situations checkpoints are meant for.2 That page is a vendor document, so we're citing it only for what it says about that tool.
+
+The same page is also plain about how long that safety net lasts. It says Claude Code deletes a session's file snapshots by default about 30 days after the session last saved one, and that checkpoints are for quick, session-level recovery, not a replacement for version control.2 Whatever you think of that design, the lesson for the reader is a quiet one. The undo button is a short-term safety net. It isn't an archive of what you tried.
+
+## Read them without blame
+
+There's a reason people skip their own dead ends. They feel like evidence against us. Looking back at an hour spent on the wrong approach can bring on a small flinch, and so we don't.
+
+Software operations has an old answer to that. Google's Site Reliability Engineering book says that for a postmortem to be truly blameless, it must focus on identifying the contributing causes of the incident without indicting any individual or team for bad or inappropriate behavior.3 The same chapter works from the assumption that everyone involved had good intentions and did the right thing with the information they had.
+
+An abandoned branch isn't an incident, and your afternoon isn't an outage. But the stance carries over nicely. When you read an old dead end, assume you did the sensible thing with what you knew then. Then ask what you didn't know, and when you found it out. That question is useful. "What was wrong with me?" isn't.
+
+## What a dead end can tell you
+
+When we read our own, a few questions come up again and again:
+
+- What did we think was true when we started? A dead end usually begins with an assumption, and the assumption is the interesting part.
+
+- What was the first sign it wasn't working? It's rarely the moment we stopped. It's usually earlier, and easy to spot afterwards.
+
+- What did the correction change? If we told the agent "no, not like that", what had it assumed, and what had we left unsaid?
+
+- Was it really wrong, or just early? Some abandoned ideas come back a month later and work.
+
+None of these need special tools. They need the record to still exist, and a few minutes of looking at it.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Its replay marks decisions, questions, dead ends, fixes, artifacts, pivots and insights, and it flags turn-initial repairs like "no, I meant..." because they usually mark a dead end. It reads what's already on your machine, with no cloud.
+
+## A small habit
+
+The next time you abandon a branch or rewind a session, write one line before you move on. What you tried, and what stopped you. Put it in the commit message, the branch description or a note file. It takes thirty seconds, and it's the cheapest way we know to keep a dead end useful.
+
+## Sources
+
+- Pro Git, Branches in a Nutshell. git-scm.com.
+
+- Anthropic. Checkpointing. Claude Code documentation, code.claude.com.
+
+- Postmortem Culture: Learning from Failure, Chapter 15 of Site Reliability Engineering. sre.google.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Declaring done before you start: goals as a yardstick
+URL: https://codecartographer.dev/blog/declaring-done-before-you-start
+Description: Decide what finished looks like before your first prompt. What Scrum and vendor docs say about done, and how to write a yardstick an agent can check.
+
+There's a moment at the start of most sessions when you know what you want and haven't said what "finished" looks like. You type the request and send it. The agent starts. Somewhere later it stops, and you find yourself deciding, on the spot and a bit tired, whether this is done. We've done it more times than we'd like to admit.
+
+## Done is easier to define before the work
+
+Software teams have a name for this. The Scrum Guide asks teams for a Definition of Done, which it describes as a formal description of the state of the Increment when it meets the quality measures required for the product.1 The idea is plain. A team agrees what counts as finished first, so finishing isn't a mood.
+
+A solo builder with an agent doesn't have a team to agree with. That makes it easier to skip, and it's why we think it's worth doing on purpose. The agreement is just between you and the task.
+
+## What a vendor says about "looks done"
+
+Anthropic's best practices guide for Claude Code is a vendor document, so it speaks for that tool only, and we're citing it for what it says rather than for anything about how a model works. On stopping, it says that Claude stops when the work looks done, and that without a check it can run, "looks done" is the only signal available, which makes you the verification loop.2
+
+That sentence describes the problem from the agent's side, and it maps neatly onto the human side too. If you haven't said what done means, "looks done" is the only signal you have either.
+
+The same guide gives a concrete contrast. Its example of a better prompt isn't "implement a function that validates email addresses". It's a validateEmail function with example test cases, and an instruction to run the tests after implementing.2 The second version contains its own yardstick. Anyone can read the output and say whether it passed.
+
+## What a good yardstick holds
+
+Claude Code's documentation for its /goal command is the clearest written description we've found of a completion condition. It says a condition that holds up across many turns usually has one measurable end state, a stated check, and constraints that matter.3 Its examples of an end state are a test result, a build exit code, a file count and an empty queue.
+
+You don't need that command to borrow the shape. It works in any prompt, with any tool, or none:
+
+- An end state you could observe. Not "cleaner", but "the test suite passes and the lint step is clean".
+
+- A way to prove it. Which command, which screenshot, which output you expect to see.
+
+- A fence. What must not change on the way there.
+
+The goal documentation adds a detail we like. With /goal, completion is decided by a fresh model rather than the one doing the work.3 Whatever tool you use, the principle travels: the thing that did the work shouldn't be the only judge of it.
+
+## When the yardstick is wrong
+
+We should be honest about a limit. A yardstick written before the work is a guess, and sometimes the guess is wrong. Halfway through, you learn the real problem is somewhere else, and "all tests pass" no longer measures what you care about.
+
+That isn't a failure of the habit. Changing the yardstick on purpose, and noticing that you did, is very different from drifting to a new one without saying so. The first is a decision. The second is how a build ends up somewhere nobody chose.
+
+The same guide is blunt about shipping: if you can't verify it, don't ship it.2 We'd add a gentler version for the start of a session. If you can't say how you'd verify it, you may not have finished deciding what you want.
+
+## Reading the record afterwards
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. When you mark a version shipped, partial or abandoned and say what actually happened, it appraises each session's moves against the outcome you declared. A yardstick written down early gives that comparison something firm to measure against. It reads what's already on your machine, with no cloud.
+
+## A small habit
+
+Before your next first prompt, write one more sentence. Say what you'd see if this went well, and how you'd check. Put it in the prompt, or keep it in a note. Then, when the agent stops, you're comparing against something you wrote when you were fresh, not something you invented when you were tired.
+
+## Sources
+
+- Ken Schwaber and Jeff Sutherland. The Scrum Guide. scrumguides.org, 2020.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation, code.claude.com.
+
+- Anthropic. Keep Claude working toward a goal. Claude Code documentation, code.claude.com.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Why a correction is the most informative prompt in a session
+URL: https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt
+Description: A correction tells you what you meant, what the agent assumed, and where they split. Here's what research and vendor docs say, and how to read yours.
+
+Scroll back through a long session and most of it blurs. Requests, replies, more requests. Then you hit one of your own messages that begins "No, not that" or "I meant the other file", and it stops you. Something happened there. We'd argue it's the most informative line in the whole transcript.
+
+## What a correction carries
+
+An ordinary prompt is a hope. It describes an outcome you haven't seen yet. A correction is different, because it's a judgment made against something real. You looked at what came back, compared it with what you meant, and found a gap. Then you wrote the gap down.
+
+So a single correction holds three things at once. It holds what you meant, which was often fuzzier in your head than in your first prompt. It holds what the agent took you to mean. And it holds the exact place where the two split. Few other lines in a session do that much work in so few words.
+
+To be clear, that's our reading, not a finding. No study we know of measures "information in a correction." What the research does show is narrower, and it points the same way.
+
+## What the research says about fixing errors
+
+Suzhen Zhong, Ying Zou and Bram Adams studied real conversations between developers and a large language model, building a dataset called CodeChat from them. Among their findings: prompts that point out mistakes in code generated in prior turns and explicitly request a fix are most effective for resolving errors.1
+
+Read that closely. The effective move isn't a louder "try again." It names the mistake and asks for the fix. That's a correction doing its job: it carries the gap along with it, so the next attempt has something to aim at.
+
+The same paper reports that syntax and import errors persist across turns of a conversation.1 Problems don't always melt away on their own. Somebody has to notice them and say so, and that somebody is usually you.
+
+## What the vendor docs say about timing
+
+Anthropic's best practices guide for Claude Code is a vendor document, so it speaks only for that tool. We cite it for what it says, not for anything about how any model works inside. The guide advises that you correct Claude as soon as you notice it going off track, and says the best results come from tight feedback loops.2
+
+It also names a failure pattern worth knowing. The guide says that if you've corrected Claude more than twice on the same issue in one session, the context is cluttered with failed approaches, and it suggests clearing and starting again with a more specific prompt that uses what you learned.2
+
+Put the two together and a correction has a second job. Besides steering the next reply, it tells you something about your own prompt. One correction is normal. Three on the same point is a sign the original ask was missing something, and the pile of corrections is the evidence of what.
+
+## Reading your corrections afterwards
+
+Here's a small exercise. After a session, skip everything else and read only your corrections, in order. A few patterns tend to show up.
+
+- The same correction twice. Something you assumed was obvious never made it into a prompt or a project note.
+
+- A correction that changes direction. Your goal moved, and the first prompt no longer describes it.
+
+- A correction that narrows scope. You were clear about what to do, and less clear about what to leave alone.
+
+- A correction you almost didn't make. Those are the ones to be honest about, because they mark where you nearly accepted something you didn't understand.
+
+None of these labels come from a study. They're what we notice when we reread our own sessions. Your list may look different, and that's fine. The point is that corrections are already sorted for you: they're the moments you disagreed.
+
+That's where a session record earns its keep. Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. Each move on the map records what you did: the prompt, the correction, the decision, the pause. Dead ends and fixes get marked, so the places where you steered are easy to find. It reads what's already on your machine, with no cloud.
+
+## A habit worth keeping
+
+Next time you type "no, I meant", pause for a second and finish the thought. What did you mean? What did the agent assume instead? If you can say both in a sentence, put that sentence in the correction. The research suggests naming the mistake helps, and it'll help you later when you read the record back.
+
+A correction can feel like friction, a small tax on getting things done. We'd rather think of it as the session telling you the truth about itself.
+
+## Sources
+
+- Suzhen Zhong, Ying Zou and Bram Adams. Developer-LLM Conversations: An Empirical Study of Interactions and Generated Code Quality. arXiv:2509.10402, 2025.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation, code.claude.com.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Write down the why: decision records for agent-built code</title>
+<meta name="description" content="Code shows what you chose, not why. What Nygard and Microsoft's guidance say about decision records, and a ten second habit for agent sessions.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/write-down-the-why">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/write-down-the-why">
+<meta property="og:title" content="Write down the why: decision records for agent-built code">
+<meta property="og:description" content="Code shows what you chose, not why. What Nygard and Microsoft's guidance say about decision records, and a ten second habit for agent sessions.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Write down the why: decision records for agent-built code","description":"Code shows what you chose, not why. What Nygard and Microsoft's guidance say about decision records, and a ten second habit for agent sessions.","url":"https://codecartographer.dev/blog/write-down-the-why","mainEntityOfPage":"https://codecartographer.dev/blog/write-down-the-why","datePublished":"2026-10-19","dateModified":"2026-10-19","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Write down the why: decision records for agent-built code","item":"https://codecartographer.dev/blog/write-down-the-why"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Write down the why: decision records for agent-built code</h1>
+  <p class="lead">The code shows what you chose. It rarely says why, or what you turned down. Here's an old, simple habit that fixes that.</p>
+  <p class="meta">By Team Cartographer · October 19th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Somewhere in your project there's a choice nobody remembers making. A library picked over another. A table split in two. A retry loop that looks too patient. The code shows what you chose. It doesn't say why.</p>
+  <p class="sub">We think about this a lot, because building with a coding agent makes it worse. Decisions fly by. You say "use the simpler one," the agent does, and forty minutes later nobody, including you, could say what the other option was.</p>
+
+  <h2>An old fix for an old problem</h2>
+  <p class="sub">This isn't a new worry. In 2011, Michael Nygard argued that teams should keep <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" rel="noopener">small, modular records of architecturally significant decisions</a> instead of large documents, because large documents don't get kept up to date.<sup><a href="#fn1">1</a></sup> Each record captures the forces behind one decision. If a decision is later reversed, the old record stays, marked as superseded.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">His warning is the part we keep coming back to. Someone who changes a decision without knowing <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" rel="noopener">why it was made</a> could damage the project's overall value without realizing it.<sup><a href="#fn1">1</a></sup> That someone is often you, three weeks later.</p>
+
+  <h2>What a good record keeps</h2>
+  <p class="sub">Microsoft's Azure Well-Architected guidance describes an architecture decision record as a log of <a href="https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record" rel="noopener">key decisions, including the alternatives that were ruled out</a>.<sup><a href="#fn2">2</a></sup> That second half matters. A bare "we chose X" is easy to second-guess. "We chose X over Y, and here's what Y would have cost" is much harder to reopen by accident.</p>
+  <p class="sub">The same page calls the log <a href="https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record" rel="noopener">append-only</a>. When a decision changes, you add a new record that supersedes the old one and link the two, rather than editing history.<sup><a href="#fn2">2</a></sup> We like that. The record of what you used to believe is as useful as the record of what you believe now.</p>
+
+  <h2>Why it matters more with an agent</h2>
+  <p class="sub">When you write every line yourself, a decision at least passes through your hands. With an agent, a choice can be made in a single reply and accepted in a single word. It's quick, and it leaves very little behind.</p>
+  <p class="sub">So the habit that helps is small. When you accept or reject something that shapes the project, say it in a sentence, in your own words, and say what you turned down. "Keeping sessions in plain files, not a database, because we want to read them without a server." It takes ten seconds. It's the sentence you'll want later.</p>
+  <p class="sub">It also helps to write the record while the doubt is still fresh. Right after a choice is made, the rejected option is vivid and the reasons are obvious. A week on, both have faded. The sentence you'd have written in ten seconds becomes an hour of detective work, and sometimes it can't be done at all.</p>
+  <p class="sub">Nothing here says you need a formal template. Nygard's point, and Microsoft's, is the same one: keep the records short, keep the reasons, keep the roads not taken.</p>
+
+  <p class="sub">There's a feeling we know well. You open an old project, find something odd, and your first instinct is to tidy it. Then a small voice asks whether it was odd on purpose. Without a reason on file, you're guessing, and guessing in either direction costs something. Leave it and you carry a mystery forever. Change it and you might undo a lesson somebody paid for.</p>
+  <p class="sub">A short reason takes that guess away. It also makes review kinder. When someone asks "why did we do it this way?", you can point at a line instead of rebuilding an argument from memory.</p>
+
+  <h2>Where session history fits</h2>
+  <p class="sub">You've probably already written many of these sentences without noticing. They're in your prompts: the "no, use the other approach," the "let's not add a dependency for this." Cartographer reads the session file your agent already keeps and marks decisions, questions, dead ends and fixes on a map of the build, as <a href="/how-it-works">how it works</a> explains. It's a way to find the decisions you made out loud, so you can write the important ones down properly.</p>
+
+  <h2>A small test</h2>
+  <p class="sub">Pick one choice in your current project that surprised you when you came back to it. Try to write its record in three lines: what you chose, what you turned down, what would make you change your mind. If you can't, that's the gap. If you can, put it somewhere the next person will look, including the next you.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Nygard, M. <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" rel="noopener">Documenting Architecture Decisions</a>. Cognitect blog, November 15th 2011.</li>
+    <li id="fn2">Microsoft. <a href="https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record" rel="noopener">Maintain an architecture decision record (ADR)</a>. Microsoft Azure Well-Architected Framework, Microsoft Learn.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

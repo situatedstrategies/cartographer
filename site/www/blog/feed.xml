@@ -6,7 +6,49 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Oct 2026 14:09:29 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 21 Oct 2026 14:03:05 GMT</lastBuildDate>
+    <item>
+      <title>When to start a fresh session: long chats with a coding agent</title>
+      <link>https://codecartographer.dev/blog/when-to-start-a-fresh-session</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/when-to-start-a-fresh-session</guid>
+      <pubDate>Wed, 21 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Long agent sessions get heavy. What Anthropic's own docs say about context, /clear, /compact and rewind, and a plain rule for when to start over.</description>
+    </item>
+    <item>
+      <title>Write down the why: decision records for agent-built code</title>
+      <link>https://codecartographer.dev/blog/write-down-the-why</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/write-down-the-why</guid>
+      <pubDate>Mon, 19 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Code shows what you chose, not why. What Nygard and Microsoft's guidance say about decision records, and a ten second habit for agent sessions.</description>
+    </item>
+    <item>
+      <title>Praise is not evidence: appraising an agent's work honestly</title>
+      <link>https://codecartographer.dev/blog/praise-is-not-evidence</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/praise-is-not-evidence</guid>
+      <pubDate>Sat, 17 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A confident all-done feels like proof, but it isn't. What research and vendor docs say about checking an agent's work against evidence, not tone.</description>
+    </item>
+    <item>
+      <title>Reading your own dead ends: what abandoned work can teach</title>
+      <link>https://codecartographer.dev/blog/reading-your-own-dead-ends</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/reading-your-own-dead-ends</guid>
+      <pubDate>Thu, 15 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Abandoned branches and rewound sessions are the part of a build nobody keeps. Here's why they're worth reading, and what the docs say about keeping them.</description>
+    </item>
+    <item>
+      <title>Declaring done before you start: goals as a yardstick</title>
+      <link>https://codecartographer.dev/blog/declaring-done-before-you-start</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/declaring-done-before-you-start</guid>
+      <pubDate>Tue, 13 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Decide what finished looks like before your first prompt. What Scrum and vendor docs say about done, and how to write a yardstick an agent can check.</description>
+    </item>
+    <item>
+      <title>Why a correction is the most informative prompt in a session</title>
+      <link>https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/why-a-correction-is-the-most-informative-prompt</guid>
+      <pubDate>Sun, 11 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A correction tells you what you meant, what the agent assumed, and where they split. Here's what research and vendor docs say, and how to read yours.</description>
+    </item>
     <item>
       <title>What the research says about reviewing code you didn't write</title>
       <link>https://codecartographer.dev/blog/reviewing-code-you-did-not-write</link>
