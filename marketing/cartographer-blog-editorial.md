@@ -54,7 +54,7 @@ When the queue runs low, add new topics that fit the pillars and target real
 search phrases people use. Never repeat a topic an existing post already
 covers.
 
-1. Writing a spec before the prompt: what research says about requirements
+(The queue is empty. Add new topics that fit the pillars before the next run.)
 
 
 ## Citations: real, accurate, live sources, footnoted, always

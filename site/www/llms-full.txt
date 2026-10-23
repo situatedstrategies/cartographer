@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-21.
+> Generated 2026-10-23.
 
 
 ---
@@ -11,15 +11,39 @@
 URL: https://codecartographer.dev/
 Description: Cartographer reads the session history your coding agent keeps and tells it back as a story: what you did, what happened, what it meant. Local and private.
 
+One session, as a map
+
+## Six moments. Step through them.
+
+A made-up session, drawn the way a map reads: what you asked for, what the agent did, where it went sideways, and how you got back. Press Next, or use the arrow keys.
+
+- 01You asked for a CSV importer for the bank export, with tests.What you asked for, in your words.
+
+- 02The agent wrote the parser and eleven tests. All green.What the agent did.
+
+- 03Sideways: the tests ran on a fixture the agent wrote itself. A real file broke on quoted commas.Where things went sideways, and the moment it happened.
+
+- 04You pasted a real export and said what done meant: every row in, none dropped.The correction. In a real map this is the prompt worth keeping.
+
+- 05The agent rewrote the quoting rules. Fourteen tests, green against the real file.How you got back on track.
+
+- 06/complete judged the build against "every row in, none dropped". Done, with one note: dates stay strings until the next version.What it cost, and what it still owes.
+
+Back
+Next
+Press Next to begin
+
+In a real map every moment links to the line in the transcript it came from. Watch a real build replay ↗
+
 ## One line to install
 
 Mac and Linux (Terminal):
 
-curl -fsSL https://codecartographer.dev/install.sh | sh{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+curl -fsSL https://codecartographer.dev/install.sh | shCopy
 
 Windows (PowerShell):
 
-irm https://codecartographer.dev/install.ps1 | iex{this.textContent='Copied';setTimeout(()=>this.textContent='Copy',1500)})">Copy
+irm https://codecartographer.dev/install.ps1 | iexCopy
 
 Needs Python 3.9+ and Claude Code. Step by step, in plain language and in detail, on the Install page.
 
@@ -113,7 +137,7 @@ Technical
 ## Manual install
 
 git clone https://github.com/situatedstrategies/cartographer && cd cartographer
-./bin/cartographer install --agent claude-code # add --auto for hooks
+./bin/cartographer install --agent all # or --agent claude-code | cursor | codex; --auto for hooks
 cartographer config init # or: cartographer serve --open
 cartographer doctor # what is installed, where, and what it found
 
@@ -161,7 +185,7 @@ Change your profile in conversation, switch manual and automatic wrapping, or ba
 
 - /complete when the version ships. The honest reading of the whole build against what you wanted.
 
-Codex and Cursor: coming soon. We're checking them against real session history before calling them supported.
+Cursor and Codex CLI: the same three commands, /wrap, /replay and /complete, installed with --agent all (Cursor reads them from .cursor/commands, Codex from ~/.codex/prompts). If the agent you built in cannot write the map, for instance Cursor out of credit, /wrap --agent cursor in Claude Code writes it from the record. Cursor has been checked against a real 2.x install; Codex follows its documented layout and has not.
 
 ← InstallCommands →
 
@@ -435,7 +459,7 @@ What does "honest" mean here, mechanically?Three enforced rules. Every move list
 
 How do I update?Run the install line again. It replaces ~/.cartographer/app and the skills; your maps and config stay.
 
-Which agents?Claude Code, today. Codex and Cursor are coming soon. We're checking them against real session history before calling them supported.
+Which agents?Claude Code is what we polish and test. Cursor works too, with the same /wrap, /replay and /complete commands, and its adapter has been checked against a real Cursor 2.x install. Codex CLI follows its documented layout and has not been checked on real history yet. install --agent all sets up all three.
 
 Something broke. Where do I write?support@codecartographer.dev with what you typed and what came back. Maps you'd like to show us, or thoughts on the maps you got: mapit@codecartographer.dev.
 
@@ -587,8 +611,6 @@ When a page loads it asks the following services for a file, which means each of
 
 - Google AdSense. The pages carry Google's advertising script. Google, as a third party vendor, uses cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to this site and other sites on the Internet. You can opt out of personalised advertising at Google's ads settings. How Google uses data when you use a site that carries its services is explained at policies.google.com/technologies/partner-sites.
 
-- Google Fonts. The typefaces are loaded from fonts.googleapis.com and fonts.gstatic.com. Google's handling of those requests is covered by the same page linked above.
-
 - Ko-fi. The floating support button is a script loaded from storage.ko-fi.com. Nothing happens unless you click it; if you do, you are dealing with Ko-fi under Ko-fi's own terms and privacy policy.
 
 - PeerPush. The badge in the footer is an image loaded from peerpush.com.
@@ -609,7 +631,7 @@ This site is not directed at children under the age of 13, and we do not knowing
 
 If this policy changes, the new version is published here with a new date. Material changes, such as adding an analytics service, will be called out on this page for at least thirty days.
 
-This policy is published by Situated Strategies LLC and was last updated October 8th 2026.
+This policy is published by Situated Strategies LLC and was last updated October 21st 2026.
 
 ← AboutTerms →
 
@@ -648,6 +670,64 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Writing a spec before the prompt: what the research says
+URL: https://codecartographer.dev/blog/write-the-spec-before-the-prompt
+Description: Vague requirements are an old problem, and agents don't remove it. What a requirements survey and Anthropic's docs say about writing the spec first.
+
+Most of us start a session the same way. We type what we want in a sentence or two and press enter. Sometimes that's exactly right. Often it isn't, and we find out forty minutes later when the result is tidy, working, and not what we meant.
+
+That gap is older than coding agents. Requirements engineering, the part of software work that decides what to build, has been studying it for decades. We think its findings travel well.
+
+## An old problem with a survey behind it
+
+The Naming the Pain in Requirements Engineering initiative surveys practitioners about the problems they hit in practice. One published analysis draws on data from 228 companies in 10 countries, covering 21 requirements problems and a cause-effect analysis of the most critical ones.1 The authors describe the aim as grounding the field in observation, because decisions about practice had been driven mostly by conventional wisdom.1
+
+We won't quote percentages here, because we couldn't open the full paper to check them. What we can say is the point of the exercise: requirements trouble is common enough, across enough companies, that people built a multi-country survey to name it. If that's true for teams with analysts and review meetings, it's true for a one-line prompt.
+
+## What the agent's docs ask of you
+
+Anthropic's best practices guide for Claude Code is vendor documentation, so it speaks only for that tool. Still, its advice reads like a requirements checklist. It warns that letting Claude jump straight to coding can produce code that solves the wrong problem.2 Its remedy is to separate exploring and planning from implementing.2
+
+For larger features it goes further and suggests you have Claude interview you first, asking about things you might not have considered yet, including edge cases and tradeoffs, and then write the result to a spec file.2 Notice who's doing the work there. The agent asks, but you answer. The spec only gets better if you actually decide.
+
+## What goes in a small spec
+
+The same guide says the most useful specs are self-contained, name the files and interfaces involved, state what is out of scope, and end with an end-to-end verification step.2 That's a short list, and it's worth taking one item at a time.
+
+- Where it touches. Name the files and interfaces. This is the part you'd have to explain to a new teammate anyway.
+
+- What's out of scope. This is the line people skip. Writing it forces you to notice the neighbouring work you were half expecting.
+
+- How you'll know it works. One check you can run or look at. If you can't name one, you haven't finished deciding what you want.
+
+The guide's own summary is blunt: time spent making the spec precise pays off more than time spent watching the implementation.2 We'd add that a spec is also a record. When the build drifts, you have something to hold it against.
+
+## When to skip it
+
+A spec isn't free, and the docs say so. Planning adds overhead, and for small fixes the advice is to ask directly: if you could describe the diff in one sentence, skip the plan.2 A typo doesn't need a document.
+
+So here's the rule we use. If the change touches several files, or we're unsure of the approach, we write the spec first. If we can say it in one sentence, we just say it.
+
+## Where session history fits
+
+Cartographer reads the session history your agent already keeps and turns it into a map of how a project was built, as how it works explains. If you wrote a spec, the map gives you a way to read the build against it afterwards. If you didn't, it shows where the requirements were being decided anyway, one prompt at a time.
+
+## A small test
+
+Before your next prompt that touches more than one file, write three lines: where it touches, what's out of scope, and how you'll check it. Paste them in with the request. It takes a couple of minutes, and you may find the decision you'd been putting off.
+
+## Sources
+
+- Daniel Méndez Fernández, Stefan Wagner, et al. Naming the Pain in Requirements Engineering: Contemporary Problems, Causes, and Effects in Practice. Empirical Software Engineering, 2017 (arXiv preprint 1611.10288).
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation, code.claude.com.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing a spec before the prompt: what the research says</title>
+<meta name="description" content="Vague requirements are an old problem, and agents don't remove it. What a requirements survey and Anthropic's docs say about writing the spec first.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/write-the-spec-before-the-prompt">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/write-the-spec-before-the-prompt">
+<meta property="og:title" content="Writing a spec before the prompt: what the research says">
+<meta property="og:description" content="Vague requirements are an old problem, and agents don't remove it. What a requirements survey and Anthropic's docs say about writing the spec first.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Writing a spec before the prompt: what the research says","description":"Vague requirements are an old problem, and agents don't remove it. What a requirements survey and Anthropic's docs say about writing the spec first.","url":"https://codecartographer.dev/blog/write-the-spec-before-the-prompt","mainEntityOfPage":"https://codecartographer.dev/blog/write-the-spec-before-the-prompt","datePublished":"2026-10-23","dateModified":"2026-10-23","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Writing a spec before the prompt: what the research says","item":"https://codecartographer.dev/blog/write-the-spec-before-the-prompt"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Writing a spec before the prompt: what the research says</h1>
+  <p class="lead">A prompt is a request. A spec is a decision. Here's why the order matters, and how small a spec can be.</p>
+  <p class="meta">By Team Cartographer · October 23rd 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Most of us start a session the same way. We type what we want in a sentence or two and press enter. Sometimes that's exactly right. Often it isn't, and we find out forty minutes later when the result is tidy, working, and not what we meant.</p>
+  <p class="sub">That gap is older than coding agents. Requirements engineering, the part of software work that decides what to build, has been studying it for decades. We think its findings travel well.</p>
+
+  <h2>An old problem with a survey behind it</h2>
+  <p class="sub">The Naming the Pain in Requirements Engineering initiative surveys practitioners about the problems they hit in practice. One published analysis draws on <a href="https://arxiv.org/abs/1611.10288" rel="noopener">data from 228 companies in 10 countries</a>, covering 21 requirements problems and a cause-effect analysis of the most critical ones.<sup><a href="#fn1">1</a></sup> The authors describe the aim as grounding the field in observation, because decisions about practice had been driven mostly by conventional wisdom.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">We won't quote percentages here, because we couldn't open the full paper to check them. What we can say is the point of the exercise: requirements trouble is common enough, across enough companies, that people built a multi-country survey to name it. If that's true for teams with analysts and review meetings, it's true for a one-line prompt.</p>
+
+  <h2>What the agent's docs ask of you</h2>
+  <p class="sub">Anthropic's best practices guide for Claude Code is vendor documentation, so it speaks only for that tool. Still, its advice reads like a requirements checklist. It warns that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">letting Claude jump straight to coding can produce code that solves the wrong problem</a>.<sup><a href="#fn2">2</a></sup> Its remedy is to separate exploring and planning from implementing.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">For larger features it goes further and suggests you <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">have Claude interview you first</a>, asking about things you might not have considered yet, including edge cases and tradeoffs, and then write the result to a spec file.<sup><a href="#fn2">2</a></sup> Notice who's doing the work there. The agent asks, but you answer. The spec only gets better if you actually decide.</p>
+
+  <h2>What goes in a small spec</h2>
+  <p class="sub">The same guide says the most useful specs are <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">self-contained, name the files and interfaces involved, state what is out of scope, and end with an end-to-end verification step</a>.<sup><a href="#fn2">2</a></sup> That's a short list, and it's worth taking one item at a time.</p>
+  <ul class="list">
+    <li><strong>Where it touches.</strong> Name the files and interfaces. This is the part you'd have to explain to a new teammate anyway.</li>
+    <li><strong>What's out of scope.</strong> This is the line people skip. Writing it forces you to notice the neighbouring work you were half expecting.</li>
+    <li><strong>How you'll know it works.</strong> One check you can run or look at. If you can't name one, you haven't finished deciding what you want.</li>
+  </ul>
+  <p class="sub">The guide's own summary is blunt: <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">time spent making the spec precise pays off more than time spent watching the implementation</a>.<sup><a href="#fn2">2</a></sup> We'd add that a spec is also a record. When the build drifts, you have something to hold it against.</p>
+
+  <h2>When to skip it</h2>
+  <p class="sub">A spec isn't free, and the docs say so. Planning adds overhead, and for small fixes the advice is to ask directly: <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">if you could describe the diff in one sentence, skip the plan</a>.<sup><a href="#fn2">2</a></sup> A typo doesn't need a document.</p>
+  <p class="sub">So here's the rule we use. If the change touches several files, or we're unsure of the approach, we write the spec first. If we can say it in one sentence, we just say it.</p>
+
+  <h2>Where session history fits</h2>
+  <p class="sub">Cartographer reads the session history your agent already keeps and turns it into a map of how a project was built, as <a href="/how-it-works">how it works</a> explains. If you wrote a spec, the map gives you a way to read the build against it afterwards. If you didn't, it shows where the requirements were being decided anyway, one prompt at a time.</p>
+
+  <h2>A small test</h2>
+  <p class="sub">Before your next prompt that touches more than one file, write three lines: where it touches, what's out of scope, and how you'll check it. Paste them in with the request. It takes a couple of minutes, and you may find the decision you'd been putting off.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Daniel Méndez Fernández, Stefan Wagner, et al. <a href="https://arxiv.org/abs/1611.10288" rel="noopener">Naming the Pain in Requirements Engineering: Contemporary Problems, Causes, and Effects in Practice</a>. Empirical Software Engineering, 2017 (arXiv preprint 1611.10288).</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation, code.claude.com.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

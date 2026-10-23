@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 21 Oct 2026 14:03:05 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 23 Oct 2026 14:04:04 GMT</lastBuildDate>
+    <item>
+      <title>Writing a spec before the prompt: what the research says</title>
+      <link>https://codecartographer.dev/blog/write-the-spec-before-the-prompt</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/write-the-spec-before-the-prompt</guid>
+      <pubDate>Fri, 23 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Vague requirements are an old problem, and agents don't remove it. What a requirements survey and Anthropic's docs say about writing the spec first.</description>
+    </item>
     <item>
       <title>When to start a fresh session: long chats with a coding agent</title>
       <link>https://codecartographer.dev/blog/when-to-start-a-fresh-session</link>

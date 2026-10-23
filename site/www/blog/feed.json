@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/write-the-spec-before-the-prompt",
+      "url": "https://codecartographer.dev/blog/write-the-spec-before-the-prompt",
+      "title": "Writing a spec before the prompt: what the research says",
+      "summary": "Vague requirements are an old problem, and agents don't remove it. What a requirements survey and Anthropic's docs say about writing the spec first.",
+      "date_published": "2026-10-23T12:00:00Z",
+      "date_modified": "2026-10-23T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/when-to-start-a-fresh-session",
       "url": "https://codecartographer.dev/blog/when-to-start-a-fresh-session",
       "title": "When to start a fresh session: long chats with a coding agent",
