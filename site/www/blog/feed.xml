@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Oct 2026 14:04:04 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 25 Oct 2026 14:02:59 GMT</lastBuildDate>
+    <item>
+      <title>Feeling fast versus being fast: timing your agent-assisted work</title>
+      <link>https://codecartographer.dev/blog/feeling-fast-versus-being-fast</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/feeling-fast-versus-being-fast</guid>
+      <pubDate>Sun, 25 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Developers in one trial felt faster with AI and measured slower. What that and the planning fallacy suggest about timing your own agent sessions.</description>
+    </item>
     <item>
       <title>Writing a spec before the prompt: what the research says</title>
       <link>https://codecartographer.dev/blog/write-the-spec-before-the-prompt</link>

@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-23.
+> Generated 2026-10-25.
 
 
 ---
@@ -670,6 +670,64 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Feeling fast versus being fast: timing your agent-assisted work
+URL: https://codecartographer.dev/blog/feeling-fast-versus-being-fast
+Description: Developers in one trial felt faster with AI and measured slower. What that and the planning fallacy suggest about timing your own agent sessions.
+
+Ask someone at the end of a long agent session whether it saved them time and they'll almost always say yes. It feels true. Things appeared on screen quickly, and we weren't staring at a blank file.
+
+This is a bit of a musing about that feeling. We're not here to say agents are slow. We're curious how well any of us can tell.
+
+## One trial that split the feeling from the clock
+
+In 2025, the research group METR ran a randomized controlled trial with experienced open-source developers. According to the paper, 16 developers completed 246 tasks in mature projects they already worked on, and each task was randomly assigned to allow AI tools or not.1
+
+Before starting, the developers forecast that allowing AI would reduce completion time by 24%. Afterwards they estimated it had reduced time by 20%. The measured result went the other way: allowing AI increased completion time by 19%.1
+
+That's a striking gap between how the work felt and how long it took. It's worth holding it loosely, though. METR describes the result as a snapshot of early-2025 AI capabilities in one setting, and the study covers a small group working in codebases they knew well.2 It doesn't tell us how your project goes. What it does tell us is that the feeling of speed and the measurement of speed can come apart, even for experienced people.
+
+## This is an old habit of mind
+
+Psychologists noticed something similar long before coding agents. In a set of studies of what's called the planning fallacy, Buehler, Griffin and Ross reported that people underestimate their own task completion times but not other people's, and that they lean on plan-based scenarios more than on their past experience.3
+
+We find that oddly comforting. Misjudging our own pace isn't a failing of the tools or of us in particular. It's how estimating works when we're the ones inside the story.
+
+## Why a session feels quicker than it was
+
+We can only offer a guess here, and it's ours, not a finding. Agent work gives you lots of small, visible progress: a file appears, a test runs, a summary lands. The waiting, the re-prompting, the reading of output and the repair of a wrong turn are quieter. They're easy to forget by evening.
+
+If that's roughly right, the fix isn't to feel worse about the work. It's to stop relying on the feeling alone.
+
+## Fast at what, exactly?
+
+Part of the trouble is that "faster" hides several questions. Did the first draft arrive sooner? Did the working version? Did the version you'd happily hand to someone else? Those can have very different answers, and a clock that stops at the first one flatters the whole session.
+
+The trial above measured the time to finish each task. It doesn't say anything about quality, learning, or how pleasant the work was, and we wouldn't want to claim it does. Some of those may matter more to you than minutes. The point is only that you can't weigh them if you've never looked at the minutes at all.
+
+So we try to keep the question narrow. Not "is this better?" but "what did this task cost me, start to finished, and was that what I expected?" Narrow questions are easier to answer honestly.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. It runs on your machine, with no cloud. We mention it only because a record you didn't write from memory is a kinder witness than recollection.
+
+## A small habit
+
+Before a task, write down a guess in minutes. After it, write down when you actually started and finished. Do it for a handful of tasks, with the agent and without. You're not building a study. You're just giving your future self something better than a feeling to look at, and the gap between the two numbers is usually the most interesting part.
+
+## Sources
+
+- Becker, J., Rush, N., Barnes, E., Rein, D. Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity. METR, arXiv:2507.09089, 2025.
+
+- METR. Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity. METR blog, July 10th 2025.
+
+- Buehler, R., Griffin, D., Ross, M. Exploring the "Planning Fallacy": Why People Underestimate Their Task Completion Times. Journal of Personality and Social Psychology, 67(3), 366-381, 1994.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

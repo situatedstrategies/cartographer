@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/feeling-fast-versus-being-fast",
+      "url": "https://codecartographer.dev/blog/feeling-fast-versus-being-fast",
+      "title": "Feeling fast versus being fast: timing your agent-assisted work",
+      "summary": "Developers in one trial felt faster with AI and measured slower. What that and the planning fallacy suggest about timing your own agent sessions.",
+      "date_published": "2026-10-25T12:00:00Z",
+      "date_modified": "2026-10-25T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/write-the-spec-before-the-prompt",
       "url": "https://codecartographer.dev/blog/write-the-spec-before-the-prompt",
       "title": "Writing a spec before the prompt: what the research says",
