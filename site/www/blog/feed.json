@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/ironies-of-automation-and-agent-built-code",
+      "url": "https://codecartographer.dev/blog/ironies-of-automation-and-agent-built-code",
+      "title": "Ironies of automation: staying sharp when an agent writes the code",
+      "summary": "Bainbridge warned in 1983 that automation can erode the skills needed to supervise it. A 2026 trial of AI-assisted coding suggests a similar worry.",
+      "date_published": "2026-10-27T12:00:00Z",
+      "date_modified": "2026-10-27T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/feeling-fast-versus-being-fast",
       "url": "https://codecartographer.dev/blog/feeling-fast-versus-being-fast",
       "title": "Feeling fast versus being fast: timing your agent-assisted work",
