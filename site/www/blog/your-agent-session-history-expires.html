@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your agent's session history expires: what to keep, and when</title>
+<meta name="description" content="Claude Code deletes old session transcripts after 30 days by default. Here's what that means for the record of your build, and a simple way to keep it.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/your-agent-session-history-expires">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/your-agent-session-history-expires">
+<meta property="og:title" content="Your agent's session history expires: what to keep, and when">
+<meta property="og:description" content="Claude Code deletes old session transcripts after 30 days by default. Here's what that means for the record of your build, and a simple way to keep it.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Your agent's session history expires: what to keep, and when","description":"Claude Code deletes old session transcripts after 30 days by default. Here's what that means for the record of your build, and a simple way to keep it.","url":"https://codecartographer.dev/blog/your-agent-session-history-expires","mainEntityOfPage":"https://codecartographer.dev/blog/your-agent-session-history-expires","datePublished":"2026-10-29","dateModified":"2026-10-29","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Your agent's session history expires: what to keep, and when","item":"https://codecartographer.dev/blog/your-agent-session-history-expires"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Your agent's session history expires: what to keep, and when</h1>
+  <p class="lead">The record of how your project got built may have a shelf life. It's worth knowing the date before it passes.</p>
+  <p class="meta">By Team Cartographer · October 29th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">There's a moment most of us have had with a long-running project. You want to know why something works the way it does, so you go looking for the conversation where you built it. And it isn't there.</p>
+  <p class="sub">We think it's worth knowing, before that moment, that the history your coding agent keeps may not be kept forever. This is a short tour of what the documentation says, what we'd do about it, and why we bother.</p>
+
+  <h2>Where the history lives</h2>
+  <p class="sub">Anthropic's documentation for Claude Code says a session is <a href="https://code.claude.com/docs/en/sessions" rel="noopener">a saved conversation tied to a project directory</a>, stored locally as you work.<sup><a href="#fn1">1</a></sup> By default the transcripts are <a href="https://code.claude.com/docs/en/sessions" rel="noopener">JSONL files under ~/.claude/projects</a>, one per session.<sup><a href="#fn1">1</a></sup> We're citing these pages only for what they say about that one tool. Other agents keep their history differently, and we won't guess how.</p>
+  <p class="sub">What's inside is rich. The docs describe a transcript as holding <a href="https://code.claude.com/docs/en/claude-directory" rel="noopener">messages, tool calls, and tool results</a>, plus the system prompt, tool definitions and parameters of the requests sent to the model.<sup><a href="#fn2">2</a></sup> In other words, it holds your side of the conversation, the agent's side, and what each of you did about it.</p>
+
+  <h2>The part that surprised us</h2>
+  <p class="sub">The same page is plain about retention. It says Claude Code <a href="https://code.claude.com/docs/en/claude-directory" rel="noopener">deletes the files in these paths once they're older than cleanupPeriodDays</a>, that <a href="https://code.claude.com/docs/en/claude-directory" rel="noopener">the default is 30 days and the minimum is 1</a>, and that setting 0 fails with a validation error.<sup><a href="#fn2">2</a></sup> The setting is yours to change. Most of us never look.</p>
+  <p class="sub">Thirty days is a sensible default for a tool that writes plaintext to your disk. The same documentation notes that the files are <a href="https://code.claude.com/docs/en/claude-directory" rel="noopener">not encrypted at rest</a>, and that a credential printed by a command ends up in the transcript.<sup><a href="#fn2">2</a></sup> A shorter life for that data is a reasonable choice. But it means a quiet trade is being made for you. The tool keeps your history lean and safe by letting it age out, and the cost is that last month's reasoning is gone by next month.</p>
+
+  <h2>Why a record is worth keeping at all</h2>
+  <p class="sub">Researchers who write software have been making this argument for a while. In their paper on good enough practices in scientific computing, Wilson and colleagues say that for tracking changes they <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1005510" rel="noopener">recommend that projects adopt either a systematic manual approach or version control</a>, and they note that version control saves the user from having to be disciplined about updating a changelog, because it prompts for a description every time a change is saved.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">That paper is about code and data, not agent conversations. We're borrowing the instinct, not the finding. Your commits hold what changed and a line about why. They don't hold the three approaches you tried first, or the sentence where you told the agent it had misread you. That lives in the transcript, and the transcript has an expiry date.</p>
+
+  <h2>What we'd actually do</h2>
+  <p class="sub">None of this needs a heavy process. A few small choices go a long way:</p>
+  <ul class="list">
+    <li>Decide on purpose. Look at your <code>cleanupPeriodDays</code> value and ask whether 30 days matches how long you want the record. If it's shorter than your projects, you've found the gap.</li>
+    <li>Copy out what matters. The docs describe <a href="https://code.claude.com/docs/en/sessions" rel="noopener">a SessionEnd hook that can archive the transcript when a session ends</a>, and a <code>/export</code> command that saves a readable plain-text version.<sup><a href="#fn1">1</a></sup></li>
+    <li>Prefer exports for anything you'll parse. The docs warn that <a href="https://code.claude.com/docs/en/sessions" rel="noopener">the entry format is internal to Claude Code and changes between versions</a>, so a saved export outlives a script better than a raw file does.<sup><a href="#fn1">1</a></sup></li>
+    <li>Mind the secrets. Because transcripts can hold whatever a tool printed, check an archive before you share it or commit it anywhere.</li>
+  </ul>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps on your machine and turns it into a map of how a project was built. No capture, no plugin in the loop, no cloud. The flip side is simple: it can only map what still exists. If the history is gone, so is the map.</p>
+
+  <h2>A small musing to end on</h2>
+  <p class="sub">We tend to treat the conversation with an agent as scaffolding, something you take down when the building is up. Sometimes it is. But when we've gone back to ours, it's often the only place we wrote down what we meant. That seems worth a few minutes of thought about how long to keep it.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Anthropic. <a href="https://code.claude.com/docs/en/sessions" rel="noopener">Manage sessions</a>. Claude Code documentation, code.claude.com.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/claude-directory" rel="noopener">Explore the .claude directory</a>, sections "Application data" and "Cleaned up automatically". Claude Code documentation, code.claude.com.</li>
+    <li id="fn3">Wilson G, Bryan J, Cranston K, Kitzes J, Nederbragt L, Teal TK. <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1005510" rel="noopener">Good enough practices in scientific computing</a>. PLOS Computational Biology, 2017.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

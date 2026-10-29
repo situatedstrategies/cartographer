@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-27.
+> Generated 2026-10-29.
 
 
 ---
@@ -670,6 +670,66 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Your agent's session history expires: what to keep, and when
+URL: https://codecartographer.dev/blog/your-agent-session-history-expires
+Description: Claude Code deletes old session transcripts after 30 days by default. Here's what that means for the record of your build, and a simple way to keep it.
+
+There's a moment most of us have had with a long-running project. You want to know why something works the way it does, so you go looking for the conversation where you built it. And it isn't there.
+
+We think it's worth knowing, before that moment, that the history your coding agent keeps may not be kept forever. This is a short tour of what the documentation says, what we'd do about it, and why we bother.
+
+## Where the history lives
+
+Anthropic's documentation for Claude Code says a session is a saved conversation tied to a project directory, stored locally as you work.1 By default the transcripts are JSONL files under ~/.claude/projects, one per session.1 We're citing these pages only for what they say about that one tool. Other agents keep their history differently, and we won't guess how.
+
+What's inside is rich. The docs describe a transcript as holding messages, tool calls, and tool results, plus the system prompt, tool definitions and parameters of the requests sent to the model.2 In other words, it holds your side of the conversation, the agent's side, and what each of you did about it.
+
+## The part that surprised us
+
+The same page is plain about retention. It says Claude Code deletes the files in these paths once they're older than cleanupPeriodDays, that the default is 30 days and the minimum is 1, and that setting 0 fails with a validation error.2 The setting is yours to change. Most of us never look.
+
+Thirty days is a sensible default for a tool that writes plaintext to your disk. The same documentation notes that the files are not encrypted at rest, and that a credential printed by a command ends up in the transcript.2 A shorter life for that data is a reasonable choice. But it means a quiet trade is being made for you. The tool keeps your history lean and safe by letting it age out, and the cost is that last month's reasoning is gone by next month.
+
+## Why a record is worth keeping at all
+
+Researchers who write software have been making this argument for a while. In their paper on good enough practices in scientific computing, Wilson and colleagues say that for tracking changes they recommend that projects adopt either a systematic manual approach or version control, and they note that version control saves the user from having to be disciplined about updating a changelog, because it prompts for a description every time a change is saved.3
+
+That paper is about code and data, not agent conversations. We're borrowing the instinct, not the finding. Your commits hold what changed and a line about why. They don't hold the three approaches you tried first, or the sentence where you told the agent it had misread you. That lives in the transcript, and the transcript has an expiry date.
+
+## What we'd actually do
+
+None of this needs a heavy process. A few small choices go a long way:
+
+- Decide on purpose. Look at your cleanupPeriodDays value and ask whether 30 days matches how long you want the record. If it's shorter than your projects, you've found the gap.
+
+- Copy out what matters. The docs describe a SessionEnd hook that can archive the transcript when a session ends, and a /export command that saves a readable plain-text version.1
+
+- Prefer exports for anything you'll parse. The docs warn that the entry format is internal to Claude Code and changes between versions, so a saved export outlives a script better than a raw file does.1
+
+- Mind the secrets. Because transcripts can hold whatever a tool printed, check an archive before you share it or commit it anywhere.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps on your machine and turns it into a map of how a project was built. No capture, no plugin in the loop, no cloud. The flip side is simple: it can only map what still exists. If the history is gone, so is the map.
+
+## A small musing to end on
+
+We tend to treat the conversation with an agent as scaffolding, something you take down when the building is up. Sometimes it is. But when we've gone back to ours, it's often the only place we wrote down what we meant. That seems worth a few minutes of thought about how long to keep it.
+
+## Sources
+
+- Anthropic. Manage sessions. Claude Code documentation, code.claude.com.
+
+- Anthropic. Explore the .claude directory, sections "Application data" and "Cleaned up automatically". Claude Code documentation, code.claude.com.
+
+- Wilson G, Bryan J, Cranston K, Kitzes J, Nederbragt L, Teal TK. Good enough practices in scientific computing. PLOS Computational Biology, 2017.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/your-agent-session-history-expires",
+      "url": "https://codecartographer.dev/blog/your-agent-session-history-expires",
+      "title": "Your agent's session history expires: what to keep, and when",
+      "summary": "Claude Code deletes old session transcripts after 30 days by default. Here's what that means for the record of your build, and a simple way to keep it.",
+      "date_published": "2026-10-29T12:00:00Z",
+      "date_modified": "2026-10-29T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/ironies-of-automation-and-agent-built-code",
       "url": "https://codecartographer.dev/blog/ironies-of-automation-and-agent-built-code",
       "title": "Ironies of automation: staying sharp when an agent writes the code",
