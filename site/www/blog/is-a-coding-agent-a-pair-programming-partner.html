@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is a coding agent a pair programming partner? What research says</title>
+<meta name="description" content="Pair programming research found it isn't uniformly beneficial. What that meta-analysis and Anthropic's docs suggest about working with an agent.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/is-a-coding-agent-a-pair-programming-partner">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/is-a-coding-agent-a-pair-programming-partner">
+<meta property="og:title" content="Is a coding agent a pair programming partner? What research says">
+<meta property="og:description" content="Pair programming research found it isn't uniformly beneficial. What that meta-analysis and Anthropic's docs suggest about working with an agent.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Is a coding agent a pair programming partner? What research says","description":"Pair programming research found it isn't uniformly beneficial. What that meta-analysis and Anthropic's docs suggest about working with an agent.","url":"https://codecartographer.dev/blog/is-a-coding-agent-a-pair-programming-partner","mainEntityOfPage":"https://codecartographer.dev/blog/is-a-coding-agent-a-pair-programming-partner","datePublished":"2026-10-31","dateModified":"2026-10-31","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Is a coding agent a pair programming partner? What research says","item":"https://codecartographer.dev/blog/is-a-coding-agent-a-pair-programming-partner"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Is a coding agent a pair programming partner? What research says</h1>
+  <p class="lead">We keep calling agents pair programming partners. The research on pairing is older than agents, and more careful than the phrase.</p>
+  <p class="meta">By Team Cartographer · October 31st 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">When people describe working with a coding agent, the word "pair" comes up a lot. It's a natural comparison. Someone's typing, something's reacting, and there's a running conversation. We've caught ourselves saying it too. So we went looking for what the research on pairing actually found, to see which parts of the comparison we'd keep.</p>
+
+  <h2>What the pairing research found</h2>
+  <p class="sub">The most cited summary we know of is a 2009 meta-analysis by Hannay, Dyb&aring;, Arisholm and Sj&oslash;berg, which pooled published experiments comparing pairs with solo programmers. Its headline is a modest one. The authors suggest that <a href="https://www.sintef.no/en/publications/publication/500724/" rel="noopener">pair programming is faster than solo programming when task complexity is low and yields code solutions of higher quality when task complexity is high</a>.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Then comes the part we think gets dropped in conversation. According to the same abstract, the higher quality on complex tasks <a href="https://www.sintef.no/en/publications/publication/500724/" rel="noopener">comes at a price of considerably greater effort</a>, and the shorter completion time on simple tasks <a href="https://www.sintef.no/en/publications/publication/500724/" rel="noopener">comes at a price of noticeably lower quality</a>.<sup><a href="#fn1">1</a></sup> The authors conclude that pair programming is not uniformly beneficial.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">That's studies of two people, mostly in experiments. It doesn't tell us anything about an agent. What it does give us is a better question than "does pairing help?" The better question is "help with what, and at what cost?"</p>
+
+  <h2>Where the comparison holds, and where it doesn't</h2>
+  <p class="sub">Here's the part that's our own reading, so weigh it accordingly. A human pair shares something an agent session doesn't, which is memory of why. Two people can pause, look at each other, and say "wait, why are we doing it this way?" Both of them were there when the choice got made.</p>
+  <p class="sub">In an agent session, you're usually the one carrying the reasons. The transcript has them, but only if somebody reads it. That's a difference worth noticing, because it changes who's responsible for noticing when the work has drifted. With a human partner, the drift gets caught by two people. With an agent, it gets caught by you, or it doesn't.</p>
+
+  <h2>What a partner needs in order to say "done"</h2>
+  <p class="sub">There's one place where Anthropic's own documentation speaks to this directly. In the Claude Code best practices, the section on giving the agent a check to run says that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Claude stops when the work looks done</a>, and that if it has nothing to run that tells it whether the work actually is done, "looks done" is all it has to go on.<sup><a href="#fn2">2</a></sup> The page adds that, in practice, this makes you the test suite.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">We find that a useful way to see the whole "pair" idea. A good human partner pushes back, asks what would count as finished, and notices when the answer is fuzzy. An agent can do a version of that when you hand it a pass-or-fail check. Without one, the checking falls to you, whether or not you meant to take it on.</p>
+
+  <h2>What we'd keep from the metaphor</h2>
+  <p class="sub">We'd keep the idea that pairing is a choice you make per task, not a default. A small, clear change might not need the conversation. A tricky one might be worth the extra effort that the research says goes with it. And we'd keep the reminder that someone has to hold the reasons. If the partner doesn't hold them, you have to, or you have to write them down.</p>
+  <p class="sub">We'd drop the assumption that having a partner at all is the good part. The research doesn't say that about people, and we don't see why it would be safer to assume it about software.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. It runs on your machine, with no cloud. We mention it only because the reasons behind a choice are easier to recover from a record than from memory.</p>
+
+  <h2>A small habit</h2>
+  <p class="sub">Before you start your next session, decide whether the task wants a partner at all, and say what a passing check would look like. If you can't say, that's useful information too. It usually means the task isn't ready yet. Afterwards, spend a minute noting whether the partnership earned its keep. Over a few weeks, those notes tell you which kinds of work you'd rather do together and which you'd rather do alone.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Hannay, J. E., Dyb&aring;, T., Arisholm, E., Sj&oslash;berg, D. I. K. <a href="https://www.sintef.no/en/publications/publication/500724/" rel="noopener">The effectiveness of pair programming: A meta-analysis</a>. Information and Software Technology, 51(7), 1110-1122, 2009.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>, section "Give Claude a check to run". Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

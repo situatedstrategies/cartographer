@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-29.
+> Generated 2026-10-31.
 
 
 ---
@@ -670,6 +670,58 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Is a coding agent a pair programming partner? What research says
+URL: https://codecartographer.dev/blog/is-a-coding-agent-a-pair-programming-partner
+Description: Pair programming research found it isn't uniformly beneficial. What that meta-analysis and Anthropic's docs suggest about working with an agent.
+
+When people describe working with a coding agent, the word "pair" comes up a lot. It's a natural comparison. Someone's typing, something's reacting, and there's a running conversation. We've caught ourselves saying it too. So we went looking for what the research on pairing actually found, to see which parts of the comparison we'd keep.
+
+## What the pairing research found
+
+The most cited summary we know of is a 2009 meta-analysis by Hannay, Dyb&aring;, Arisholm and Sj&oslash;berg, which pooled published experiments comparing pairs with solo programmers. Its headline is a modest one. The authors suggest that pair programming is faster than solo programming when task complexity is low and yields code solutions of higher quality when task complexity is high.1
+
+Then comes the part we think gets dropped in conversation. According to the same abstract, the higher quality on complex tasks comes at a price of considerably greater effort, and the shorter completion time on simple tasks comes at a price of noticeably lower quality.1 The authors conclude that pair programming is not uniformly beneficial.1
+
+That's studies of two people, mostly in experiments. It doesn't tell us anything about an agent. What it does give us is a better question than "does pairing help?" The better question is "help with what, and at what cost?"
+
+## Where the comparison holds, and where it doesn't
+
+Here's the part that's our own reading, so weigh it accordingly. A human pair shares something an agent session doesn't, which is memory of why. Two people can pause, look at each other, and say "wait, why are we doing it this way?" Both of them were there when the choice got made.
+
+In an agent session, you're usually the one carrying the reasons. The transcript has them, but only if somebody reads it. That's a difference worth noticing, because it changes who's responsible for noticing when the work has drifted. With a human partner, the drift gets caught by two people. With an agent, it gets caught by you, or it doesn't.
+
+## What a partner needs in order to say "done"
+
+There's one place where Anthropic's own documentation speaks to this directly. In the Claude Code best practices, the section on giving the agent a check to run says that Claude stops when the work looks done, and that if it has nothing to run that tells it whether the work actually is done, "looks done" is all it has to go on.2 The page adds that, in practice, this makes you the test suite.2
+
+We find that a useful way to see the whole "pair" idea. A good human partner pushes back, asks what would count as finished, and notices when the answer is fuzzy. An agent can do a version of that when you hand it a pass-or-fail check. Without one, the checking falls to you, whether or not you meant to take it on.
+
+## What we'd keep from the metaphor
+
+We'd keep the idea that pairing is a choice you make per task, not a default. A small, clear change might not need the conversation. A tricky one might be worth the extra effort that the research says goes with it. And we'd keep the reminder that someone has to hold the reasons. If the partner doesn't hold them, you have to, or you have to write them down.
+
+We'd drop the assumption that having a partner at all is the good part. The research doesn't say that about people, and we don't see why it would be safer to assume it about software.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. It runs on your machine, with no cloud. We mention it only because the reasons behind a choice are easier to recover from a record than from memory.
+
+## A small habit
+
+Before you start your next session, decide whether the task wants a partner at all, and say what a passing check would look like. If you can't say, that's useful information too. It usually means the task isn't ready yet. Afterwards, spend a minute noting whether the partnership earned its keep. Over a few weeks, those notes tell you which kinds of work you'd rather do together and which you'd rather do alone.
+
+## Sources
+
+- Hannay, J. E., Dyb&aring;, T., Arisholm, E., Sj&oslash;berg, D. I. K. The effectiveness of pair programming: A meta-analysis. Information and Software Technology, 51(7), 1110-1122, 2009.
+
+- Anthropic. Best practices for Claude Code, section "Give Claude a check to run". Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 
