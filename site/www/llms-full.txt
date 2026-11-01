@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-10-31.
+> Generated 2026-11-01.
 
 
 ---
@@ -670,6 +670,64 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Run a retrospective on your agent session, not only the code
+URL: https://codecartographer.dev/blog/run-a-retrospective-on-your-agent-session
+Description: Teams have long paused to ask how they worked, not just what they shipped. Here's what Scrum and the Agile principles say, and a small version for one.
+
+After a long session with a coding agent, we usually look at what changed. The diff, the tests, whether it runs. That's the right first look. But it only covers the thing we made. It says very little about how we made it, and how we made it is the part we can actually change next time.
+
+Software teams have had a habit for this for a long time. It's called a retrospective, and we've been wondering what a one-person, one-agent version would look like.
+
+## What teams already agreed on
+
+The Agile Manifesto's twelfth principle says that at regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.1 Notice what it asks the team to look at. Not the product. The team's own behavior.
+
+Scrum turns that principle into a named event. According to the Scrum Guide, the purpose of the Sprint Retrospective is to plan ways to increase quality and effectiveness.2 The same guide says the team identifies the most helpful changes, that the most impactful improvements are addressed as soon as possible, and that they may even be added to the Sprint Backlog for the next sprint.2
+
+Two things stand out to us. The goal is a plan, not a verdict. And the plan is small enough to carry into the very next piece of work.
+
+## Why this fits an agent session
+
+Neither source is about coding agents, and we won't pretend they are. Scrum is written for teams, and a solo builder with an agent isn't quite one. What we're borrowing is the shape: stop, look at how the work went, pick a change, try it.
+
+Here's why we think the shape travels well. An agent session leaves a record of how it went. Each prompt, each correction, each time we backed out of something. That's the raw material of a retrospective, sitting there whether we read it or not. Most of us don't. We close the terminal and move on, and the lesson stays buried in the transcript.
+
+There's a quieter reason, too. Memory is generous to us. By the next morning, a rough session feels smoother than it was, and a lucky one feels more deliberate. A retrospective written the same day, from the record, keeps us honest in a way recollection doesn't. We're not hunting for blame. We're trying to see the session the way a newcomer would, and that view is usually the more useful one.
+
+It also helps to keep the scale modest. A retrospective that takes an hour will get skipped by the third session. One that takes five minutes survives. The Scrum Guide's own framing is about picking the most helpful changes, not listing every flaw, and we think that restraint is most of the craft.
+
+## What we'd actually ask
+
+This part is our own, so treat it as a suggestion and not a finding. We keep it to three questions.
+
+- Where did we lose the most time, and what would have prevented it?
+
+- Which prompt got us furthest, and what made it work?
+
+- What's one thing we'll do differently at the start of the next session?
+
+The last question is the one that matters. It's the Scrum Guide's idea in miniature: a change small enough to be the first item on the next list. If the answer is vague, like "be clearer", we push until it's something we could check. "Write the done condition in the first prompt" is checkable. "Be clearer" isn't.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. It runs on your machine, with no cloud. We mention it only because a retrospective is easier when the record of what happened is already laid out in order.
+
+## A small habit
+
+At the end of your next session, give it five minutes. Answer the three questions in a sentence each, and put the third answer somewhere you'll see it before you type your next first prompt. Then, after a few sessions, look back at your own answers. If the same one keeps showing up, that's your retrospective telling you what to change.
+
+## Sources
+
+- Principles behind the Agile Manifesto, twelfth principle. agilemanifesto.org.
+
+- The Scrum Guide, section "Sprint Retrospective". scrumguides.org, 2020 edition.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

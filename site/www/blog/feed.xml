@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 31 Oct 2026 14:02:41 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 01 Nov 2026 14:02:44 GMT</lastBuildDate>
+    <item>
+      <title>Run a retrospective on your agent session, not only the code</title>
+      <link>https://codecartographer.dev/blog/run-a-retrospective-on-your-agent-session</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/run-a-retrospective-on-your-agent-session</guid>
+      <pubDate>Sun, 01 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Teams have long paused to ask how they worked, not just what they shipped. Here's what Scrum and the Agile principles say, and a small version for one.</description>
+    </item>
     <item>
       <title>Is a coding agent a pair programming partner? What research says</title>
       <link>https://codecartographer.dev/blog/is-a-coding-agent-a-pair-programming-partner</link>
