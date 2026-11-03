@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-01.
+> Generated 2026-11-03.
 
 
 ---
@@ -670,6 +670,62 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Automation bias: why a reliable agent is the hardest to check
+URL: https://codecartographer.dev/blog/automation-bias-and-agent-output
+Description: Research on automation bias found people watched less closely when an aid was nearly reliable. What that suggests for reading what a coding agent hands you.
+
+Imagine a helper that's right nearly every time. That's good news, and it's also a problem. Checking the rare miss takes a kind of effort we can stop spending without noticing. Researchers have a name for the pattern, and they've studied it in simulated flight tasks and other settings.
+
+## What the research found
+
+In a 1999 study, Skitka, Mosier and Burdick ran a simulated flight task with and without an automated aid. On a monitoring task, participants without automation outperformed those who had a very but not perfectly reliable automated aid.1 Read that twice. The aid wasn't bad. It was very reliable. It just wasn't perfect, and the people using it did worse on the monitoring task than people with no aid at all.
+
+A later paper by Parasuraman and Manzey in Human Factors offered an integrated account. They argue that complacency and automation bias are different manifestations of overlapping automation-induced phenomena, with attention playing a central role.2 They also report that automation complacency is found in both naive and expert participants and cannot be overcome with simple practice.2
+
+We'd be careful about how far to carry this. Both papers study people supervising automation in other settings, not people working with coding agents. We're not claiming the same numbers would show up in a terminal. What we do take from it is the shape of the problem: attention drifts when a helper is usually right, and experience alone doesn't fix that.
+
+## What it might look like in a session
+
+This part is our own reading, not a finding. Picture a long afternoon with an agent. The first few diffs get a careful read. By the twentieth, we're skimming. By the fortieth, we're approving on the strength of the summary. Nothing went wrong along the way. Each step was reasonable. The care just thinned out.
+
+The trouble is that a thinning habit doesn't announce itself. Nobody decides to stop reading. And experts aren't exempt, if the Parasuraman and Manzey finding holds in this setting. Being good at the work doesn't switch the drift off.
+
+There's a fairness point here, too. It's tempting to read all this as a warning against trusting the agent. We don't think that's the lesson. A reliable helper is a real gain, and the Skitka study didn't say the aid was a mistake. It said the people using it checked less. The fix is on our side of the keyboard: keep a little of the checking we'd have done anyway, and be honest about when we've stopped.
+
+It's also worth saying what an agent's own summary is. It's a report, not a test. A summary can be sincere and still be wrong, and a tidy one is easy to approve. When we're tired, tidy is exactly what we reach for. That's one more reason to keep a check that doesn't depend on how convincing the write-up reads.
+
+## Habits that put attention back
+
+None of these come from the studies. They're what we'd try, given what the studies describe.
+
+- Decide before the session what you'll check every time, such as running the tests yourself, and don't let a confident summary stand in for it.
+
+- Read one change closely on purpose, even when the last ten were fine. A spot check keeps the skill warm.
+
+- Notice the stretch where you've stopped asking questions. That's a good place to look for where the drift started.
+
+- Take a break between long runs. Fresh attention is cheap to get back and expensive to fake.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. It runs on your machine, with no cloud. We mention it only because a map of the session shows where you corrected the agent often and where you stopped, which is one way to spot the quiet stretches.
+
+## A small habit
+
+Next session, pick one thing to verify yourself every single time. Keep it boring and keep it fixed. When a tool is nearly always right, a fixed check is what stands in for attention on the days you don't have much to spare.
+
+## Sources
+
+- Skitka, L. J., Mosier, K. L., and Burdick, M. Does automation bias decision-making? International Journal of Human-Computer Studies, 51, 991 to 1006, 1999.
+
+- Parasuraman, R., and Manzey, D. H. Complacency and Bias in Human Use of Automation: An Attentional Integration. Human Factors, 52(3), 381 to 410, 2010.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Nov 2026 14:02:44 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 03 Nov 2026 14:03:04 GMT</lastBuildDate>
+    <item>
+      <title>Automation bias: why a reliable agent is the hardest to check</title>
+      <link>https://codecartographer.dev/blog/automation-bias-and-agent-output</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/automation-bias-and-agent-output</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Research on automation bias found people watched less closely when an aid was nearly reliable. What that suggests for reading what a coding agent hands you.</description>
+    </item>
     <item>
       <title>Run a retrospective on your agent session, not only the code</title>
       <link>https://codecartographer.dev/blog/run-a-retrospective-on-your-agent-session</link>

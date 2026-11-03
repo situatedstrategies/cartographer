@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automation bias: why a reliable agent is the hardest to check</title>
+<meta name="description" content="Research on automation bias found people watched less closely when an aid was nearly reliable. What that suggests for reading what a coding agent hands you.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/automation-bias-and-agent-output">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/automation-bias-and-agent-output">
+<meta property="og:title" content="Automation bias: why a reliable agent is the hardest to check">
+<meta property="og:description" content="Research on automation bias found people watched less closely when an aid was nearly reliable. What that suggests for reading what a coding agent hands you.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Automation bias: why a reliable agent is the hardest to check","description":"Research on automation bias found people watched less closely when an aid was nearly reliable. What that suggests for reading what a coding agent hands you.","url":"https://codecartographer.dev/blog/automation-bias-and-agent-output","mainEntityOfPage":"https://codecartographer.dev/blog/automation-bias-and-agent-output","datePublished":"2026-11-03","dateModified":"2026-11-03","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Automation bias: why a reliable agent is the hardest to check","item":"https://codecartographer.dev/blog/automation-bias-and-agent-output"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Automation bias: why a reliable agent is the hardest to check</h1>
+  <p class="lead">The better an aid performs, the less we look at it. Two research papers on why that matters when an agent writes your code.</p>
+  <p class="meta">By Team Cartographer · November 3rd 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+    <p class="sub">Imagine a helper that's right nearly every time. That's good news, and it's also a problem. Checking the rare miss takes a kind of effort we can stop spending without noticing. Researchers have a name for the pattern, and they've studied it in simulated flight tasks and other settings.</p>
+
+  <h2>What the research found</h2>
+  <p class="sub">In a 1999 study, Skitka, Mosier and Burdick ran a simulated flight task with and without an automated aid. On a monitoring task, <a href="https://www.researchgate.net/publication/222507469_Does_automation_bias_decision-making" rel="noopener">participants without automation outperformed those who had a very but not perfectly reliable automated aid</a>.<sup><a href="#fn1">1</a></sup> Read that twice. The aid wasn't bad. It was very reliable. It just wasn't perfect, and the people using it did worse on the monitoring task than people with no aid at all.</p>
+  <p class="sub">A later paper by Parasuraman and Manzey in <em>Human Factors</em> offered an integrated account. They argue that complacency and automation bias are <a href="https://journals.sagepub.com/doi/10.1177/0018720810376055" rel="noopener">different manifestations of overlapping automation-induced phenomena, with attention playing a central role</a>.<sup><a href="#fn2">2</a></sup> They also report that <a href="https://journals.sagepub.com/doi/10.1177/0018720810376055" rel="noopener">automation complacency is found in both naive and expert participants and cannot be overcome with simple practice</a>.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">We'd be careful about how far to carry this. Both papers study people supervising automation in other settings, not people working with coding agents. We're not claiming the same numbers would show up in a terminal. What we do take from it is the shape of the problem: attention drifts when a helper is usually right, and experience alone doesn't fix that.</p>
+
+  <h2>What it might look like in a session</h2>
+  <p class="sub">This part is our own reading, not a finding. Picture a long afternoon with an agent. The first few diffs get a careful read. By the twentieth, we're skimming. By the fortieth, we're approving on the strength of the summary. Nothing went wrong along the way. Each step was reasonable. The care just thinned out.</p>
+  <p class="sub">The trouble is that a thinning habit doesn't announce itself. Nobody decides to stop reading. And experts aren't exempt, if the Parasuraman and Manzey finding holds in this setting. Being good at the work doesn't switch the drift off.</p>
+
+  <p class="sub">There's a fairness point here, too. It's tempting to read all this as a warning against trusting the agent. We don't think that's the lesson. A reliable helper is a real gain, and the Skitka study didn't say the aid was a mistake. It said the people using it checked less. The fix is on our side of the keyboard: keep a little of the checking we'd have done anyway, and be honest about when we've stopped.</p>
+  <p class="sub">It's also worth saying what an agent's own summary is. It's a report, not a test. A summary can be sincere and still be wrong, and a tidy one is easy to approve. When we're tired, tidy is exactly what we reach for. That's one more reason to keep a check that doesn't depend on how convincing the write-up reads.</p>
+
+  <h2>Habits that put attention back</h2>
+  <p class="sub">None of these come from the studies. They're what we'd try, given what the studies describe.</p>
+  <ul class="list">
+    <li>Decide before the session what you'll check every time, such as running the tests yourself, and don't let a confident summary stand in for it.</li>
+    <li>Read one change closely on purpose, even when the last ten were fine. A spot check keeps the skill warm.</li>
+    <li>Notice the stretch where you've stopped asking questions. That's a good place to look for where the drift started.</li>
+    <li>Take a break between long runs. Fresh attention is cheap to get back and expensive to fake.</li>
+  </ul>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. It runs on your machine, with no cloud. We mention it only because a map of the session shows where you corrected the agent often and where you stopped, which is one way to spot the quiet stretches.</p>
+
+  <h2>A small habit</h2>
+  <p class="sub">Next session, pick one thing to verify yourself every single time. Keep it boring and keep it fixed. When a tool is nearly always right, a fixed check is what stands in for attention on the days you don't have much to spare.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+        <li id="fn1">Skitka, L. J., Mosier, K. L., and Burdick, M. <a href="https://www.researchgate.net/publication/222507469_Does_automation_bias_decision-making" rel="noopener">Does automation bias decision-making?</a> International Journal of Human-Computer Studies, 51, 991 to 1006, 1999.</li>
+    <li id="fn2">Parasuraman, R., and Manzey, D. H. <a href="https://journals.sagepub.com/doi/10.1177/0018720810376055" rel="noopener">Complacency and Bias in Human Use of Automation: An Attentional Integration</a>. Human Factors, 52(3), 381 to 410, 2010.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>
