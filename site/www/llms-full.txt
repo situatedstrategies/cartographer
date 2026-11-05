@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-03.
+> Generated 2026-11-05.
 
 
 ---
@@ -670,6 +670,68 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Your agent's instruction file: short, specific, and kept honest
+URL: https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting
+Description: CLAUDE.md and AGENTS.md files are popular, but one study found context files can lower success. What the docs and research say, and how we'd keep ours.
+
+Most of us have one by now. A file at the root of the project that tells the agent how we like things done. We write it in a burst of energy, add a line each time something annoys us, and then stop looking at it. Months later it's long, a bit stale, and nobody can say which lines are doing any work.
+
+## What the docs say it is
+
+Anthropic's documentation for Claude Code says each session begins with a fresh context window, and that CLAUDE.md files are instructions you write to carry context across sessions.1 The same page is plain about the limits. It says Claude treats them as context, not enforced configuration, and that the more specific and concise your instructions, the more consistently Claude follows them.1
+
+On size, the page says to target under 200 lines per CLAUDE.md file, because longer files consume more context and reduce adherence. It also warns that if two instructions contradict each other, Claude may pick one arbitrarily, and suggests reviewing the files now and then to remove outdated or conflicting lines.1 For something that must happen every time, it points to hooks rather than instructions.
+
+The page also says that for large projects you can split instructions into topic-specific files, and that for task-specific instructions that don't need to be in context all the time, skills load only when invoked or relevant.1 The idea running through all of it is the same: don't make the agent carry what it doesn't need right now.
+
+That's one vendor's documentation about its own tool. We're not saying other agents behave the same way.
+
+## What one study found
+
+A team from ETH Zurich and LogicStar.ai evaluated repository-level context files for coding agents. Their abstract reports that, across multiple coding agents and models, context files tend to reduce task success rates compared to providing no repository context, while also increasing inference cost by over 20%.2
+
+Read that carefully. It doesn't say a context file can never help, and it's one study with its own benchmark. It does say the habit of adding one by default deserves a second look. A file isn't free. It's extra text the agent has to carry through every task.
+
+## What it feels like from our side
+
+This part is our own reading, not a finding. Every line in an instruction file is a small memory of a bad afternoon. The agent used the wrong test runner, so we wrote a rule. It reformatted a file we'd rather it left alone, so we wrote another. Each rule made sense when we wrote it. Together they can turn into a pile of old grievances.
+
+We think the useful question is the one the docs hint at: could someone check this line? "Use 2-space indentation" can be checked. "Write clean code" can't. And a line that was true last spring may be false today.
+
+There's a second feeling, too, and it's a little embarrassing. Writing a rule feels like progress. It's a tidy, satisfying act, and it gives us the sense that the problem is handled. But a rule is a request, not a guarantee, and the docs say as much. We'd rather know which of our lines have earned their place than feel covered.
+
+## How we'd keep one honest
+
+- Keep each line concrete enough to verify, and cut the ones you can't.
+
+- Add a rule after the same correction has come up twice, not after the first annoyance.
+
+- Reread the whole file when a project changes direction, and delete what no longer applies.
+
+- Look for pairs of lines that pull in different directions.
+
+- If something must always happen, make it a check or a hook, not a hope.
+
+## Where Cartographer fits
+
+Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. It runs on your machine, with no cloud. We mention it only because the corrections it marks in a session are a good list of candidates for an instruction file: the ones you made more than once.
+
+## A small habit
+
+Open your instruction file today and read it as a stranger would. Pick one line you can't verify and either sharpen it or delete it. A shorter file you trust beats a longer one you've stopped reading.
+
+## Sources
+
+- Anthropic. How Claude remembers your project. Claude Code documentation.
+
+- Gloaguen, T., Mündler, N., Müller, M., Raychev, V., and Vechev, M. Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents? arXiv:2602.11988, 2026.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

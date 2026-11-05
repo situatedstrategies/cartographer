@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting",
+      "url": "https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting",
+      "title": "Your agent's instruction file: short, specific, and kept honest",
+      "summary": "CLAUDE.md and AGENTS.md files are popular, but one study found context files can lower success. What the docs and research say, and how we'd keep ours.",
+      "date_published": "2026-11-05T12:00:00Z",
+      "date_modified": "2026-11-05T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/automation-bias-and-agent-output",
       "url": "https://codecartographer.dev/blog/automation-bias-and-agent-output",
       "title": "Automation bias: why a reliable agent is the hardest to check",

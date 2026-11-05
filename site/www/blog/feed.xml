@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Nov 2026 14:03:04 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 05 Nov 2026 15:03:55 GMT</lastBuildDate>
+    <item>
+      <title>Your agent's instruction file: short, specific, and kept honest</title>
+      <link>https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting</guid>
+      <pubDate>Thu, 05 Nov 2026 12:00:00 GMT</pubDate>
+      <description>CLAUDE.md and AGENTS.md files are popular, but one study found context files can lower success. What the docs and research say, and how we'd keep ours.</description>
+    </item>
     <item>
       <title>Automation bias: why a reliable agent is the hardest to check</title>
       <link>https://codecartographer.dev/blog/automation-bias-and-agent-output</link>

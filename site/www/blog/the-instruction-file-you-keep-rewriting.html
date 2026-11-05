@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your agent's instruction file: short, specific, and kept honest</title>
+<meta name="description" content="CLAUDE.md and AGENTS.md files are popular, but one study found context files can lower success. What the docs and research say, and how we'd keep ours.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting">
+<meta property="og:title" content="Your agent's instruction file: short, specific, and kept honest">
+<meta property="og:description" content="CLAUDE.md and AGENTS.md files are popular, but one study found context files can lower success. What the docs and research say, and how we'd keep ours.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Your agent's instruction file: short, specific, and kept honest","description":"CLAUDE.md and AGENTS.md files are popular, but one study found context files can lower success. What the docs and research say, and how we'd keep ours.","url":"https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting","mainEntityOfPage":"https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting","datePublished":"2026-11-05","dateModified":"2026-11-05","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Your agent's instruction file: short, specific, and kept honest","item":"https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Your agent's instruction file: short, specific, and kept honest</h1>
+  <p class="lead">We all start one of these files with good intentions. Here's what the documentation and one study say about keeping it useful.</p>
+  <p class="meta">By Team Cartographer · November 5th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+      <p class="sub">Most of us have one by now. A file at the root of the project that tells the agent how we like things done. We write it in a burst of energy, add a line each time something annoys us, and then stop looking at it. Months later it's long, a bit stale, and nobody can say which lines are doing any work.</p>
+
+  <h2>What the docs say it is</h2>
+  <p class="sub">Anthropic's documentation for Claude Code says each session <a href="https://code.claude.com/docs/en/memory" rel="noopener">begins with a fresh context window</a>, and that CLAUDE.md files are instructions you write to carry context across sessions.<sup><a href="#fn1">1</a></sup> The same page is plain about the limits. It says Claude <a href="https://code.claude.com/docs/en/memory" rel="noopener">treats them as context, not enforced configuration</a>, and that <a href="https://code.claude.com/docs/en/memory" rel="noopener">the more specific and concise your instructions, the more consistently Claude follows them</a>.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">On size, the page says to <a href="https://code.claude.com/docs/en/memory" rel="noopener">target under 200 lines per CLAUDE.md file</a>, because longer files consume more context and reduce adherence. It also warns that if two instructions contradict each other, <a href="https://code.claude.com/docs/en/memory" rel="noopener">Claude may pick one arbitrarily</a>, and suggests reviewing the files now and then to remove outdated or conflicting lines.<sup><a href="#fn1">1</a></sup> For something that must happen every time, it points to hooks rather than instructions.</p>
+  <p class="sub">The page also says that for large projects you can split instructions into topic-specific files, and that for <a href="https://code.claude.com/docs/en/memory" rel="noopener">task-specific instructions that don't need to be in context all the time</a>, skills load only when invoked or relevant.<sup><a href="#fn1">1</a></sup> The idea running through all of it is the same: don't make the agent carry what it doesn't need right now.</p>
+  <p class="sub">That's one vendor's documentation about its own tool. We're not saying other agents behave the same way.</p>
+
+  <h2>What one study found</h2>
+  <p class="sub">A team from ETH Zurich and LogicStar.ai evaluated repository-level context files for coding agents. Their abstract reports that, across multiple coding agents and models, <a href="https://arxiv.org/abs/2602.11988" rel="noopener">context files tend to reduce task success rates compared to providing no repository context, while also increasing inference cost by over 20%</a>.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">Read that carefully. It doesn't say a context file can never help, and it's one study with its own benchmark. It does say the habit of adding one by default deserves a second look. A file isn't free. It's extra text the agent has to carry through every task.</p>
+
+  <h2>What it feels like from our side</h2>
+  <p class="sub">This part is our own reading, not a finding. Every line in an instruction file is a small memory of a bad afternoon. The agent used the wrong test runner, so we wrote a rule. It reformatted a file we'd rather it left alone, so we wrote another. Each rule made sense when we wrote it. Together they can turn into a pile of old grievances.</p>
+  <p class="sub">We think the useful question is the one the docs hint at: could someone check this line? "Use 2-space indentation" can be checked. "Write clean code" can't. And a line that was true last spring may be false today.</p>
+
+  <p class="sub">There's a second feeling, too, and it's a little embarrassing. Writing a rule feels like progress. It's a tidy, satisfying act, and it gives us the sense that the problem is handled. But a rule is a request, not a guarantee, and the docs say as much. We'd rather know which of our lines have earned their place than feel covered.</p>
+
+  <h2>How we'd keep one honest</h2>
+  <ul class="list">
+    <li>Keep each line concrete enough to verify, and cut the ones you can't.</li>
+    <li>Add a rule after the same correction has come up twice, not after the first annoyance.</li>
+    <li>Reread the whole file when a project changes direction, and delete what no longer applies.</li>
+    <li>Look for pairs of lines that pull in different directions.</li>
+    <li>If something must always happen, make it a check or a hook, not a hope.</li>
+  </ul>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history your coding agent already keeps and turns it into a map of how a project was built. It runs on your machine, with no cloud. We mention it only because the corrections it marks in a session are a good list of candidates for an instruction file: the ones you made more than once.</p>
+
+  <h2>A small habit</h2>
+  <p class="sub">Open your instruction file today and read it as a stranger would. Pick one line you can't verify and either sharpen it or delete it. A shorter file you trust beats a longer one you've stopped reading.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+        <li id="fn1">Anthropic. <a href="https://code.claude.com/docs/en/memory" rel="noopener">How Claude remembers your project</a>. Claude Code documentation.</li>
+    <li id="fn2">Gloaguen, T., Mündler, N., Müller, M., Raychev, V., and Vechev, M. <a href="https://arxiv.org/abs/2602.11988" rel="noopener">Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?</a> arXiv:2602.11988, 2026.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>
