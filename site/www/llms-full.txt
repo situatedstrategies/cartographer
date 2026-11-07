@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-05.
+> Generated 2026-11-07.
 
 
 ---
@@ -670,6 +670,60 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Commit messages for the next reader: record the why, not the diff
+URL: https://codecartographer.dev/blog/commit-messages-for-the-next-reader
+Description: Git's own docs ask for the motivation behind a change, not just the change. What Pro Git and gitworkflows say, and how we'd write messages for later.
+
+Open the history of a project you haven't touched in a while and read the messages. "Fix bug." "Update stuff." "WIP." Each one was written by someone who knew exactly what they meant, and it shows how little that knowledge travels. Six months later, the person who knew is usually us, and we don't remember either.
+
+## What Git's own docs ask for
+
+The Pro Git book has a short section of commit guidelines. On the body of a message, it says the Git project asks that the explanation include your motivation for the change and contrast its implementation with previous behavior, and the book calls that a good guideline to follow.1 Notice what's missing from that list. It doesn't ask you to restate the code. The diff already does that, exactly and completely. What the diff can't carry is the reason.
+
+Think about who reads the message and when. It's rarely the author, and it's never in a hurry to be flattered. It's someone staring at a strange line of code, trying to decide whether it's safe to change. A message that says "Handle empty cart" tells them a little. One that adds "checkout crashed on empty carts; the old code assumed one item" lets them judge for themselves whether the line still earns its place.
+
+The same section says to make each commit a logically separate changeset.1 That matters for messages too. One change is easy to explain in a couple of sentences. Five changes tangled together get a message like "misc fixes," because nothing shorter is true.
+
+Git's gitworkflows page makes the same case from the reader's side. It advises you to split your changes into small logical steps, and commit each of them, and says this makes review easier and the history more useful for later inspection with git blame and git bisect.2 Those two tools are exactly where a stranger meets an old message. They land on a line or a commit and ask why it's there.
+
+## Why this matters more when an agent is typing
+
+This part is our own reading, not a finding. When we write code by hand, the reason for a change is in our heads while we commit, so a lazy message costs us little today. When an agent does much of the typing, we may never have held the reason in our heads at all. We asked for an outcome, glanced at the result, and moved on. If the message is vague, the reason may not be written down anywhere except a conversation we aren't likely to reread.
+
+So we'd treat the commit message as a small act of review. If we can't say in a sentence why this change exists, we probably haven't understood it yet. That's worth finding out before the commit, not after.
+
+## What we'd put in a message
+
+- A short first line that names the change, so a scan of the log reads like a table of contents.
+
+- A sentence or two on the motivation: what was wrong, or what we wanted, that made this worth doing.
+
+- How the new behavior differs from the old, in plain words, when that isn't obvious.
+
+- The road not taken, if we tried something else first and it failed. It's the line we'd most want to find later.
+
+The first two items follow the guidance above. The last two are our habit, and we won't pretend Git's docs said them in those words. None of it needs to be long. A message is a note to a stranger, and strangers don't want an essay.
+
+## If an agent drafts the message
+
+Read it before it goes in. Ask whether it explains why or only describes what the diff already shows. Adding the one sentence only we know, the reason we asked for the change, usually takes about ten seconds. It's the cheapest part of the whole record to keep.
+
+## Where Cartographer fits
+
+Commit messages hold the reasons that made it into version control. The rest of the story, the questions, the corrections and the dead ends, sits in the session history your coding agent keeps. Cartographer reads that history and turns it into a map of how a project was built, on your machine, with no cloud. Between the two, the why has somewhere to live.
+
+## Sources
+
+- Git project. Distributed Git: Contributing to a Project (Commit Guidelines). Pro Git, 2nd edition.
+
+- Git project. gitworkflows: An overview of recommended workflows with Git (Separate changes). Git documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

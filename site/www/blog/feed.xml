@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Nov 2026 15:03:55 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 07 Nov 2026 15:02:42 GMT</lastBuildDate>
+    <item>
+      <title>Commit messages for the next reader: record the why, not the diff</title>
+      <link>https://codecartographer.dev/blog/commit-messages-for-the-next-reader</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/commit-messages-for-the-next-reader</guid>
+      <pubDate>Sat, 07 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Git's own docs ask for the motivation behind a change, not just the change. What Pro Git and gitworkflows say, and how we'd write messages for later.</description>
+    </item>
     <item>
       <title>Your agent's instruction file: short, specific, and kept honest</title>
       <link>https://codecartographer.dev/blog/the-instruction-file-you-keep-rewriting</link>

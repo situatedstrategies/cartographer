@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commit messages for the next reader: record the why, not the diff</title>
+<meta name="description" content="Git's own docs ask for the motivation behind a change, not just the change. What Pro Git and gitworkflows say, and how we'd write messages for later.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/commit-messages-for-the-next-reader">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/commit-messages-for-the-next-reader">
+<meta property="og:title" content="Commit messages for the next reader: record the why, not the diff">
+<meta property="og:description" content="Git's own docs ask for the motivation behind a change, not just the change. What Pro Git and gitworkflows say, and how we'd write messages for later.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Commit messages for the next reader: record the why, not the diff","description":"Git's own docs ask for the motivation behind a change, not just the change. What Pro Git and gitworkflows say, and how we'd write messages for later.","url":"https://codecartographer.dev/blog/commit-messages-for-the-next-reader","mainEntityOfPage":"https://codecartographer.dev/blog/commit-messages-for-the-next-reader","datePublished":"2026-11-07","dateModified":"2026-11-07","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Commit messages for the next reader: record the why, not the diff","item":"https://codecartographer.dev/blog/commit-messages-for-the-next-reader"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Commit messages for the next reader: record the why, not the diff</h1>
+  <p class="lead">The diff already says what changed. The message is the only place left to say why. Here's what Git's own documentation asks for.</p>
+  <p class="meta">By Team Cartographer · November 7th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Open the history of a project you haven't touched in a while and read the messages. "Fix bug." "Update stuff." "WIP." Each one was written by someone who knew exactly what they meant, and it shows how little that knowledge travels. Six months later, the person who knew is usually us, and we don't remember either.</p>
+
+  <h2>What Git's own docs ask for</h2>
+  <p class="sub">The Pro Git book has a short section of commit guidelines. On the body of a message, it says the Git project asks that the explanation <a href="https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project" rel="noopener">include your motivation for the change and contrast its implementation with previous behavior</a>, and the book calls that a good guideline to follow.<sup><a href="#fn1">1</a></sup> Notice what's missing from that list. It doesn't ask you to restate the code. The diff already does that, exactly and completely. What the diff can't carry is the reason.</p>
+  <p class="sub">Think about who reads the message and when. It's rarely the author, and it's never in a hurry to be flattered. It's someone staring at a strange line of code, trying to decide whether it's safe to change. A message that says "Handle empty cart" tells them a little. One that adds "checkout crashed on empty carts; the old code assumed one item" lets them judge for themselves whether the line still earns its place.</p>
+  <p class="sub">The same section says to make each commit <a href="https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project" rel="noopener">a logically separate changeset</a>.<sup><a href="#fn1">1</a></sup> That matters for messages too. One change is easy to explain in a couple of sentences. Five changes tangled together get a message like "misc fixes," because nothing shorter is true.</p>
+  <p class="sub">Git's gitworkflows page makes the same case from the reader's side. It advises you to <a href="https://git-scm.com/docs/gitworkflows#_separate_changes" rel="noopener">split your changes into small logical steps, and commit each of them</a>, and says this makes review easier and the history more useful for later inspection with git blame and git bisect.<sup><a href="#fn2">2</a></sup> Those two tools are exactly where a stranger meets an old message. They land on a line or a commit and ask why it's there.</p>
+
+  <h2>Why this matters more when an agent is typing</h2>
+  <p class="sub">This part is our own reading, not a finding. When we write code by hand, the reason for a change is in our heads while we commit, so a lazy message costs us little today. When an agent does much of the typing, we may never have held the reason in our heads at all. We asked for an outcome, glanced at the result, and moved on. If the message is vague, the reason may not be written down anywhere except a conversation we aren't likely to reread.</p>
+  <p class="sub">So we'd treat the commit message as a small act of review. If we can't say in a sentence why this change exists, we probably haven't understood it yet. That's worth finding out before the commit, not after.</p>
+
+  <h2>What we'd put in a message</h2>
+  <ul class="list">
+    <li>A short first line that names the change, so a scan of the log reads like a table of contents.</li>
+    <li>A sentence or two on the motivation: what was wrong, or what we wanted, that made this worth doing.</li>
+    <li>How the new behavior differs from the old, in plain words, when that isn't obvious.</li>
+    <li>The road not taken, if we tried something else first and it failed. It's the line we'd most want to find later.</li>
+  </ul>
+  <p class="sub">The first two items follow the guidance above. The last two are our habit, and we won't pretend Git's docs said them in those words. None of it needs to be long. A message is a note to a stranger, and strangers don't want an essay.</p>
+
+  <h2>If an agent drafts the message</h2>
+  <p class="sub">Read it before it goes in. Ask whether it explains why or only describes what the diff already shows. Adding the one sentence only we know, the reason we asked for the change, usually takes about ten seconds. It's the cheapest part of the whole record to keep.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Commit messages hold the reasons that made it into version control. The rest of the story, the questions, the corrections and the dead ends, sits in the session history your coding agent keeps. Cartographer reads that history and turns it into a map of how a project was built, on your machine, with no cloud. Between the two, the why has somewhere to live.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Git project. <a href="https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project" rel="noopener">Distributed Git: Contributing to a Project</a> (Commit Guidelines). Pro Git, 2nd edition.</li>
+    <li id="fn2">Git project. <a href="https://git-scm.com/docs/gitworkflows#_separate_changes" rel="noopener">gitworkflows: An overview of recommended workflows with Git</a> (Separate changes). Git documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>
