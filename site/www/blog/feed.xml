@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Nov 2026 15:02:42 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 09 Nov 2026 15:02:56 GMT</lastBuildDate>
+    <item>
+      <title>Small changes, easier reviews: keeping agent output reviewable</title>
+      <link>https://codecartographer.dev/blog/small-changes-are-easier-to-review</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/small-changes-are-easier-to-review</guid>
+      <pubDate>Mon, 09 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Google's review guidance and a controlled experiment on splitting changes say what small changes buy a reviewer. What that suggests for agent-written code.</description>
+    </item>
     <item>
       <title>Commit messages for the next reader: record the why, not the diff</title>
       <link>https://codecartographer.dev/blog/commit-messages-for-the-next-reader</link>

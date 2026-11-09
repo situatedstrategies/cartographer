@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Small changes, easier reviews: keeping agent output reviewable</title>
+<meta name="description" content="Google's review guidance and a controlled experiment on splitting changes say what small changes buy a reviewer. What that suggests for agent-written code.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/small-changes-are-easier-to-review">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/small-changes-are-easier-to-review">
+<meta property="og:title" content="Small changes, easier reviews: keeping agent output reviewable">
+<meta property="og:description" content="Google's review guidance and a controlled experiment on splitting changes say what small changes buy a reviewer. What that suggests for agent-written code.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Small changes, easier reviews: keeping agent output reviewable","description":"Google's review guidance and a controlled experiment on splitting changes say what small changes buy a reviewer. What that suggests for agent-written code.","url":"https://codecartographer.dev/blog/small-changes-are-easier-to-review","mainEntityOfPage":"https://codecartographer.dev/blog/small-changes-are-easier-to-review","datePublished":"2026-11-09","dateModified":"2026-11-09","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Small changes, easier reviews: keeping agent output reviewable","item":"https://codecartographer.dev/blog/small-changes-are-easier-to-review"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Small changes, easier reviews: keeping agent output reviewable</h1>
+  <p class="lead">Big diffs are hard to read, and they're easy to wave through. What Google's review guidance and one controlled experiment say, and how we'd ask for smaller steps.</p>
+  <p class="meta">By Team Cartographer · November 9th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Most of us know the feeling. A pull request lands with forty files in it, and somewhere around file eleven we stop reading and start scrolling. We tell ourselves the tests pass. When an agent can produce that much change in one go, the feeling gets more common, not less.</p>
+
+  <h2>What Google's review guidance says</h2>
+  <p class="sub">Google publishes its engineering practices for code review, including a page on small changes, which it calls CLs. The page lists several benefits. Small changes are <a href="https://google.github.io/eng-practices/review/developer/small-cls.html" rel="noopener">reviewed more quickly</a>, and it gives the reason: it's easier for a reviewer to find five minutes several times than to set aside a 30 minute block for one large change.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">The same list says small changes are <a href="https://google.github.io/eng-practices/review/developer/small-cls.html" rel="noopener">reviewed more thoroughly</a>. With large changes, it says, reviewers and authors tend to get frustrated by large volumes of detailed commentary.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">The page is also blunt about the other direction. It says reviewers have discretion to <a href="https://google.github.io/eng-practices/review/developer/small-cls.html" rel="noopener">reject a change outright for the sole reason of it being too large</a>, and it advises that when in doubt, you should write changes smaller than you think you need to.<sup><a href="#fn1">1</a></sup> It adds that a change which seems to need to be large very rarely does. That's a style guide's view, not a measurement, and we'd read it that way.</p>
+
+  <h2>What a controlled experiment found</h2>
+  <p class="sub">Opinions about size are easy to find. Experiments are rarer. A 2019 paper in PeerJ Computer Science reports a controlled experiment on <a href="https://peerj.com/articles/cs-193/" rel="noopener">the effects of change decomposition on code review</a>, meaning what happens when a composite change is split into smaller, separate parts.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">The results are more mixed than the style guides. The authors report that decomposition led to fewer wrongly reported issues and made reviewers seek more context during review. It did not measurably change how well reviewers understood the rationale of the change, or how many defects they found.<sup><a href="#fn2">2</a></sup> They conclude that decomposition helps the developers doing the reviewing, and reduces noise for later data analysis.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">We find that useful precisely because it isn't a slogan. Splitting a change didn't, in that experiment, turn reviewers into better bug finders. It changed how they worked: fewer mistaken reports, more digging for context. That's a smaller claim than "small is better," and it's the one the source supports.</p>
+
+  <h2>Why this matters when an agent is typing</h2>
+  <p class="sub">This part is our own reading, not a finding. Size is rarely something an agent chooses for the reviewer's sake. We choose it, by how we ask. A prompt like "build the whole feature" invites one large change. A prompt that names one step invites a change we can read in a sitting.</p>
+  <p class="sub">There's a second reason. Anthropic's best practices for Claude Code say to ask for <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">evidence: the command it ran and its output</a>, and note that "All tests pass" on its own tells you very little.<sup><a href="#fn3">3</a></sup> Evidence is far easier to check for a small step than for a sprawling one. One command, one result, one diff, all in view at once.</p>
+
+  <p class="sub">It also helps to remember who the reviewer is. Often it's us, tired, at the end of a long session, with a change we didn't type. A small diff respects that. It asks for five minutes of real attention instead of thirty minutes we don't have, and real attention is the only kind that catches anything.</p>
+
+  <h2>What we'd try</h2>
+  <ul class="list">
+    <li>Ask for one logical step at a time, and say what done looks like for that step.</li>
+    <li>Read the diff after each step, while the reason for it is still fresh.</li>
+    <li>Keep refactors and behavior changes apart, so a reviewer, including us next month, can tell them apart.</li>
+    <li>Treat a diff we can't hold in our heads as a signal to split it, not to skim it.</li>
+  </ul>
+  <p class="sub">None of this is a rule from the sources above. It's the habit we'd draw from them, and we'd adjust it to the project. Some changes really are large, and a tidy sequence of tiny ones isn't always possible.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Small steps leave a trail. Cartographer reads the session history your coding agent keeps and turns it into a map of how a project was built, on your machine, with no cloud. When a step went sideways, the map is one place to see where.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Google. <a href="https://google.github.io/eng-practices/review/developer/small-cls.html" rel="noopener">Small CLs</a>. Google Engineering Practices documentation, code review guide for developers.</li>
+    <li id="fn2">Di Biase, M., Bruntink, M., van Deursen, A., Bacchelli, A. <a href="https://peerj.com/articles/cs-193/" rel="noopener">The effects of change decomposition on code review: a controlled experiment</a>. PeerJ Computer Science 5:e193, 2019.</li>
+    <li id="fn3">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

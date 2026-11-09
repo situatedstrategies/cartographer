@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/small-changes-are-easier-to-review",
+      "url": "https://codecartographer.dev/blog/small-changes-are-easier-to-review",
+      "title": "Small changes, easier reviews: keeping agent output reviewable",
+      "summary": "Google's review guidance and a controlled experiment on splitting changes say what small changes buy a reviewer. What that suggests for agent-written code.",
+      "date_published": "2026-11-09T12:00:00Z",
+      "date_modified": "2026-11-09T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/commit-messages-for-the-next-reader",
       "url": "https://codecartographer.dev/blog/commit-messages-for-the-next-reader",
       "title": "Commit messages for the next reader: record the why, not the diff",

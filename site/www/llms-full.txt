@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-07.
+> Generated 2026-11-09.
 
 
 ---
@@ -670,6 +670,66 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Small changes, easier reviews: keeping agent output reviewable
+URL: https://codecartographer.dev/blog/small-changes-are-easier-to-review
+Description: Google's review guidance and a controlled experiment on splitting changes say what small changes buy a reviewer. What that suggests for agent-written code.
+
+Most of us know the feeling. A pull request lands with forty files in it, and somewhere around file eleven we stop reading and start scrolling. We tell ourselves the tests pass. When an agent can produce that much change in one go, the feeling gets more common, not less.
+
+## What Google's review guidance says
+
+Google publishes its engineering practices for code review, including a page on small changes, which it calls CLs. The page lists several benefits. Small changes are reviewed more quickly, and it gives the reason: it's easier for a reviewer to find five minutes several times than to set aside a 30 minute block for one large change.1
+
+The same list says small changes are reviewed more thoroughly. With large changes, it says, reviewers and authors tend to get frustrated by large volumes of detailed commentary.1
+
+The page is also blunt about the other direction. It says reviewers have discretion to reject a change outright for the sole reason of it being too large, and it advises that when in doubt, you should write changes smaller than you think you need to.1 It adds that a change which seems to need to be large very rarely does. That's a style guide's view, not a measurement, and we'd read it that way.
+
+## What a controlled experiment found
+
+Opinions about size are easy to find. Experiments are rarer. A 2019 paper in PeerJ Computer Science reports a controlled experiment on the effects of change decomposition on code review, meaning what happens when a composite change is split into smaller, separate parts.2
+
+The results are more mixed than the style guides. The authors report that decomposition led to fewer wrongly reported issues and made reviewers seek more context during review. It did not measurably change how well reviewers understood the rationale of the change, or how many defects they found.2 They conclude that decomposition helps the developers doing the reviewing, and reduces noise for later data analysis.2
+
+We find that useful precisely because it isn't a slogan. Splitting a change didn't, in that experiment, turn reviewers into better bug finders. It changed how they worked: fewer mistaken reports, more digging for context. That's a smaller claim than "small is better," and it's the one the source supports.
+
+## Why this matters when an agent is typing
+
+This part is our own reading, not a finding. Size is rarely something an agent chooses for the reviewer's sake. We choose it, by how we ask. A prompt like "build the whole feature" invites one large change. A prompt that names one step invites a change we can read in a sitting.
+
+There's a second reason. Anthropic's best practices for Claude Code say to ask for evidence: the command it ran and its output, and note that "All tests pass" on its own tells you very little.3 Evidence is far easier to check for a small step than for a sprawling one. One command, one result, one diff, all in view at once.
+
+It also helps to remember who the reviewer is. Often it's us, tired, at the end of a long session, with a change we didn't type. A small diff respects that. It asks for five minutes of real attention instead of thirty minutes we don't have, and real attention is the only kind that catches anything.
+
+## What we'd try
+
+- Ask for one logical step at a time, and say what done looks like for that step.
+
+- Read the diff after each step, while the reason for it is still fresh.
+
+- Keep refactors and behavior changes apart, so a reviewer, including us next month, can tell them apart.
+
+- Treat a diff we can't hold in our heads as a signal to split it, not to skim it.
+
+None of this is a rule from the sources above. It's the habit we'd draw from them, and we'd adjust it to the project. Some changes really are large, and a tidy sequence of tiny ones isn't always possible.
+
+## Where Cartographer fits
+
+Small steps leave a trail. Cartographer reads the session history your coding agent keeps and turns it into a map of how a project was built, on your machine, with no cloud. When a step went sideways, the map is one place to see where.
+
+## Sources
+
+- Google. Small CLs. Google Engineering Practices documentation, code review guide for developers.
+
+- Di Biase, M., Bruntink, M., van Deursen, A., Bacchelli, A. The effects of change decomposition on code review: a controlled experiment. PeerJ Computer Science 5:e193, 2019.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 
