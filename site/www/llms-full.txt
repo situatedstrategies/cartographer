@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-09.
+> Generated 2026-11-11.
 
 
 ---
@@ -670,6 +670,70 @@ Questions about these terms go to support@codecartographer.dev. If the terms cha
 These terms are published by Situated Strategies LLC and were last updated October 8th 2026.
 
 ← PrivacyHome →
+
+---
+
+# Test-first with a coding agent: what the TDD research shows
+URL: https://codecartographer.dev/blog/test-first-with-a-coding-agent
+Description: Two studies of test-driven development, and Anthropic's docs, on what a failing test buys before an agent writes code. Order may matter less than rhythm.
+
+Test-driven development has a simple shape. Write a small test that fails, write just enough code to make it pass, tidy up, and repeat. When an agent writes the code, a test written first looks like an obvious way to say what's wanted. The research is worth reading before leaning on that idea, because it's more careful than the slogans on either side.
+
+## What four industrial teams found
+
+One piece of industrial evidence is a 2008 paper in Empirical Software Engineering. It reports case studies of three development teams at Microsoft and one at IBM that had adopted the practice. The results indicate that pre-release defect density decreased between 40% and 90% relative to similar projects that didn't use test-driven development.1
+
+The gain wasn't free. The same paper says that, subjectively, the teams experienced a 15 to 35 percent increase in initial development time after adopting the practice.1 The word "subjectively" is the paper's own: that figure was estimated by management, not measured with a stopwatch.
+
+The authors are also candid about the limits. These are case studies, not controlled experiments, and the paper's section on threats to validity says that comparisons made via case studies can never be perfect.1 It notes, for one, that the projects built test-first might simply have been easier to build. So the fair reading is that four teams saw fewer defects and paid for it in time up front. It isn't proof that the practice causes the drop.
+
+## Does the order matter?
+
+A later study took the practice apart to ask which piece does the work. Fucci and colleagues analyzed 82 data points collected from 39 professionals, each capturing the process used on a development task.2 They described that process along four characteristics: sequencing (whether the test or the code comes first), granularity (how short the cycles are), uniformity (how steady they are), and refactoring effort.
+
+The finding isn't what the name suggests. Sequencing, the order in which test and production code are written, had no important influence on quality or productivity. The improvements were primarily positively associated with granularity and uniformity.2 Refactoring effort was negatively associated with both outcomes.2
+
+The authors draw a measured conclusion. The claimed benefits of test-driven development, they write, may not be due to its distinctive test-first dynamic, but to the fact that processes like it encourage fine-grained, steady steps that improve focus and flow.2 Note the "may". It's one study of 39 people, and it doesn't say tests are optional. It says the rhythm seemed to matter more than the order.
+
+## What changes when an agent writes the code
+
+Neither study involved a coding agent, so what follows is a reading, not a finding. With a person at the keyboard, the test is partly a discipline. With an agent, it's also a way of saying what done means, in a form that can be run.
+
+Anthropic's best practices for Claude Code make that case in their own terms. The page says Claude stops when the work looks done, and that if it has nothing to run that tells it whether the work actually is done, "looks done" is all it has to go on.3 In practice, it adds, that makes you the test suite. Its advice is to give Claude something it can run that comes back pass or fail, and a test file is the first example on its list.3
+
+The same page shows the test-first shape in a sample prompt for a login bug: look at the token refresh code, write a failing test that reproduces it, then fix it.3 And for a run nobody is watching, the first question it suggests asking is whether the agent knows what done looks like: a goal condition, a spec file, or a failing test it has to turn green.3
+
+The docs don't oversell it either. They mention a separate step that builds and runs the app, and say it catches the kind of problem that tests and typechecks miss.3 A green test shows that the code does what the test asks. Whether the test asks for the right thing is still a human question.
+
+## A way to put it to work
+
+- Before a step, write down the one behavior it should add, as a test or as a plain sentence that could become one.
+
+- Ask for the failing test first, and read it. A wrong test is cheaper to catch than wrong code built to satisfy it.
+
+- Keep the steps small and about the same size. That's the part the second study credits.
+
+- Ask for the test output, not a summary of it.
+
+- Don't treat a passing suite as the end of review. It's the start of a shorter one.
+
+None of these is a rule from the sources. They're habits the sources point toward, and they bend to the project. Some work, like a visual tweak or a throwaway script, doesn't earn a test first, and that's fine.
+
+## Where Cartographer fits
+
+Whether the steps were small and steady is hard to judge from memory. Cartographer reads the session history your coding agent keeps and turns it into a map of how a project was built, on your machine. The map is one place to look back and see how the work really went.
+
+## Sources
+
+- Nagappan, N., Maximilien, E. M., Bhat, T., Williams, L. Realizing quality improvement through test driven development: results and experiences of four industrial teams. Empirical Software Engineering 13, pages 289 to 302, 2008. Copy hosted by Microsoft Research.
+
+- Fucci, D., Erdogmus, H., Turhan, B., Oivo, M., Juristo, N. A Dissection of the Test-Driven Development Process: Does It Really Matter to Test-First or to Test-Last? arXiv:1611.05994, 2016.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
 
 ---
 

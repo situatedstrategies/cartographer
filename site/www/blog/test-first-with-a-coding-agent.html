@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test-first with a coding agent: what the TDD research shows</title>
+<meta name="description" content="Two studies of test-driven development, and Anthropic's docs, on what a failing test buys before an agent writes code. Order may matter less than rhythm.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/test-first-with-a-coding-agent">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/test-first-with-a-coding-agent">
+<meta property="og:title" content="Test-first with a coding agent: what the TDD research shows">
+<meta property="og:description" content="Two studies of test-driven development, and Anthropic's docs, on what a failing test buys before an agent writes code. Order may matter less than rhythm.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Test-first with a coding agent: what the TDD research shows","description":"Two studies of test-driven development, and Anthropic's docs, on what a failing test buys before an agent writes code. Order may matter less than rhythm.","url":"https://codecartographer.dev/blog/test-first-with-a-coding-agent","mainEntityOfPage":"https://codecartographer.dev/blog/test-first-with-a-coding-agent","datePublished":"2026-11-11","dateModified":"2026-11-11","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Test-first with a coding agent: what the TDD research shows","item":"https://codecartographer.dev/blog/test-first-with-a-coding-agent"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Test-first with a coding agent: what the TDD research shows</h1>
+  <p class="lead">Writing the test before the code is old advice. Two studies say what it buys, and what it doesn't, and Anthropic's docs say why an agent needs a check to run.</p>
+  <p class="meta">By Team Cartographer · November 11th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Test-driven development has a simple shape. Write a small test that fails, write just enough code to make it pass, tidy up, and repeat. When an agent writes the code, a test written first looks like an obvious way to say what's wanted. The research is worth reading before leaning on that idea, because it's more careful than the slogans on either side.</p>
+
+  <h2>What four industrial teams found</h2>
+  <p class="sub">One piece of industrial evidence is a 2008 paper in Empirical Software Engineering. It reports case studies of three development teams at Microsoft and one at IBM that had adopted the practice. The results indicate that <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2009/10/Realizing-Quality-Improvement-Through-Test-Driven-Development-Results-and-Experiences-of-Four-Industrial-Teams-nagappan_tdd.pdf" rel="noopener">pre-release defect density decreased between 40% and 90%</a> relative to similar projects that didn't use test-driven development.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">The gain wasn't free. The same paper says that, subjectively, the teams experienced <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2009/10/Realizing-Quality-Improvement-Through-Test-Driven-Development-Results-and-Experiences-of-Four-Industrial-Teams-nagappan_tdd.pdf" rel="noopener">a 15 to 35 percent increase in initial development time</a> after adopting the practice.<sup><a href="#fn1">1</a></sup> The word "subjectively" is the paper's own: that figure was estimated by management, not measured with a stopwatch.</p>
+  <p class="sub">The authors are also candid about the limits. These are case studies, not controlled experiments, and the paper's section on threats to validity says that <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2009/10/Realizing-Quality-Improvement-Through-Test-Driven-Development-Results-and-Experiences-of-Four-Industrial-Teams-nagappan_tdd.pdf" rel="noopener">comparisons made via case studies can never be perfect</a>.<sup><a href="#fn1">1</a></sup> It notes, for one, that the projects built test-first might simply have been easier to build. So the fair reading is that four teams saw fewer defects and paid for it in time up front. It isn't proof that the practice causes the drop.</p>
+
+  <h2>Does the order matter?</h2>
+  <p class="sub">A later study took the practice apart to ask which piece does the work. Fucci and colleagues analyzed <a href="https://arxiv.org/abs/1611.05994v1" rel="noopener">82 data points collected from 39 professionals</a>, each capturing the process used on a development task.<sup><a href="#fn2">2</a></sup> They described that process along four characteristics: sequencing (whether the test or the code comes first), granularity (how short the cycles are), uniformity (how steady they are), and refactoring effort.</p>
+  <p class="sub">The finding isn't what the name suggests. Sequencing, the order in which test and production code are written, <a href="https://arxiv.org/abs/1611.05994v1" rel="noopener">had no important influence</a> on quality or productivity. The improvements were primarily positively associated with granularity and uniformity.<sup><a href="#fn2">2</a></sup> Refactoring effort was negatively associated with both outcomes.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">The authors draw a measured conclusion. The claimed benefits of test-driven development, they write, <a href="https://arxiv.org/abs/1611.05994v1" rel="noopener">may not be due to its distinctive test-first dynamic</a>, but to the fact that processes like it encourage fine-grained, steady steps that improve focus and flow.<sup><a href="#fn2">2</a></sup> Note the "may". It's one study of 39 people, and it doesn't say tests are optional. It says the rhythm seemed to matter more than the order.</p>
+
+  <h2>What changes when an agent writes the code</h2>
+  <p class="sub">Neither study involved a coding agent, so what follows is a reading, not a finding. With a person at the keyboard, the test is partly a discipline. With an agent, it's also a way of saying what done means, in a form that can be run.</p>
+  <p class="sub">Anthropic's best practices for Claude Code make that case in their own terms. The page says Claude stops when the work looks done, and that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">if it has nothing to run</a> that tells it whether the work actually is done, "looks done" is all it has to go on.<sup><a href="#fn3">3</a></sup> In practice, it adds, that makes you the test suite. Its advice is to give Claude something it can run that comes back pass or fail, and a test file is the first example on its list.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">The same page shows the test-first shape in a sample prompt for a login bug: look at the token refresh code, <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">write a failing test that reproduces it, then fix it</a>.<sup><a href="#fn3">3</a></sup> And for a run nobody is watching, the first question it suggests asking is whether the agent knows what done looks like: a goal condition, a spec file, or a failing test it has to turn green.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">The docs don't oversell it either. They mention a separate step that builds and runs the app, and say it catches <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">the kind of problem that tests and typechecks miss</a>.<sup><a href="#fn3">3</a></sup> A green test shows that the code does what the test asks. Whether the test asks for the right thing is still a human question.</p>
+
+  <h2>A way to put it to work</h2>
+  <ul class="list">
+    <li>Before a step, write down the one behavior it should add, as a test or as a plain sentence that could become one.</li>
+    <li>Ask for the failing test first, and read it. A wrong test is cheaper to catch than wrong code built to satisfy it.</li>
+    <li>Keep the steps small and about the same size. That's the part the second study credits.</li>
+    <li>Ask for the test output, not a summary of it.</li>
+    <li>Don't treat a passing suite as the end of review. It's the start of a shorter one.</li>
+  </ul>
+  <p class="sub">None of these is a rule from the sources. They're habits the sources point toward, and they bend to the project. Some work, like a visual tweak or a throwaway script, doesn't earn a test first, and that's fine.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Whether the steps were small and steady is hard to judge from memory. Cartographer reads the session history your coding agent keeps and turns it into a map of how a project was built, on your machine. The map is one place to look back and see how the work really went.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Nagappan, N., Maximilien, E. M., Bhat, T., Williams, L. <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2009/10/Realizing-Quality-Improvement-Through-Test-Driven-Development-Results-and-Experiences-of-Four-Industrial-Teams-nagappan_tdd.pdf" rel="noopener">Realizing quality improvement through test driven development: results and experiences of four industrial teams</a>. Empirical Software Engineering 13, pages 289 to 302, 2008. Copy hosted by Microsoft Research.</li>
+    <li id="fn2">Fucci, D., Erdogmus, H., Turhan, B., Oivo, M., Juristo, N. <a href="https://arxiv.org/abs/1611.05994v1" rel="noopener">A Dissection of the Test-Driven Development Process: Does It Really Matter to Test-First or to Test-Last?</a> arXiv:1611.05994, 2016.</li>
+    <li id="fn3">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/test-first-with-a-coding-agent",
+      "url": "https://codecartographer.dev/blog/test-first-with-a-coding-agent",
+      "title": "Test-first with a coding agent: what the TDD research shows",
+      "summary": "Two studies of test-driven development, and Anthropic's docs, on what a failing test buys before an agent writes code. Order may matter less than rhythm.",
+      "date_published": "2026-11-11T12:00:00Z",
+      "date_modified": "2026-11-11T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/small-changes-are-easier-to-review",
       "url": "https://codecartographer.dev/blog/small-changes-are-easier-to-review",
       "title": "Small changes, easier reviews: keeping agent output reviewable",
