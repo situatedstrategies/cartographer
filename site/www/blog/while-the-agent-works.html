@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>While the agent works: interruptions and getting back on task</title>
+<meta name="description" content="Waiting on a coding agent invites a quick switch to something else. What interruption research says about coming back, and how we'd make it easier.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/while-the-agent-works">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/while-the-agent-works">
+<meta property="og:title" content="While the agent works: interruptions and getting back on task">
+<meta property="og:description" content="Waiting on a coding agent invites a quick switch to something else. What interruption research says about coming back, and how we'd make it easier.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"While the agent works: interruptions and getting back on task","description":"Waiting on a coding agent invites a quick switch to something else. What interruption research says about coming back, and how we'd make it easier.","url":"https://codecartographer.dev/blog/while-the-agent-works","mainEntityOfPage":"https://codecartographer.dev/blog/while-the-agent-works","datePublished":"2026-11-13","dateModified":"2026-11-13","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"While the agent works: interruptions and getting back on task","item":"https://codecartographer.dev/blog/while-the-agent-works"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>While the agent works: interruptions and getting back on task</h1>
+  <p class="lead">An agent run leaves a gap, and the gap fills with other things. Two studies of interrupted work, and Anthropic's docs, on what that costs and how to come back well.</p>
+  <p class="meta">By Team Cartographer · November 13th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">There's a moment in most agent sessions that we've all come to know. The request is written, the agent is off reading files and running commands, and there's nothing for us to do for a minute or five. So we do something else. A message, an email, a different tab. Then the agent finishes, or stops to ask a question, and we have to find our way back to what we were thinking.</p>
+  <p class="sub">That gap is new in its shape but not in its nature. It's an interruption, just one we invite ourselves. Researchers have studied interruptions closely, and two of their findings feel uncomfortably close to home.</p>
+
+  <h2>Faster, but at a price</h2>
+  <p class="sub">In a 2008 study at the CHI conference, Gloria Mark, Daniela Gudith and Ulrich Klocke compared people who were interrupted while they worked with people who weren't. The interrupted participants finished faster, not slower. But they also reported <a href="https://www.ics.uci.edu/~gmark/chi08-mark.pdf" rel="noopener">more stress, higher frustration, time pressure and effort</a>.<sup><a href="#fn1">1</a></sup> The authors read the speed as compensation: people made up for the interruptions by working faster, and that came at a price.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">That study came long before coding agents. Still, we recognize the pattern. When we've drifted off during a run, we tend to come back in a hurry, skim the result, and send the next prompt quickly to make up the lost minutes. It feels efficient. If the study's pattern holds here, that may also be where the strain shows up.</p>
+
+  <h2>Getting back in is the hard part</h2>
+  <p class="sub">Programming has its own version of this. Chris Parnin and Spencer Rugaber looked at recorded programming sessions, 10,000 of them, along with a survey of programmers, to see how people pick up a task after a break. Their finding is blunt: <a href="https://sites.cc.gatech.edu/reverse/repository/resumptionstrategies.pdf" rel="noopener">only 10% of the sessions had programming activity resume in less than a minute</a> after an interruption, and only 7% involved no navigation to other places in the code before editing began.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">In other words, in most sessions people didn't come back and simply carry on. They moved around the code first, rebuilding a picture of where they were. The paper also describes several coping mechanisms programmers use to recover the context of a task.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">That work predates coding agents. But the cost it measured sits in the person, not the tool. When an agent has changed six files while we were away, there's even more to look around at before we can say anything useful about it.</p>
+
+  <h2>What the tools offer</h2>
+  <p class="sub">Some tools plan for the gap. Anthropic's guide to Claude Code hooks walks through setting up a desktop notification so you <a href="https://code.claude.com/docs/en/hooks-guide" rel="noopener">get alerted whenever Claude is waiting for your input</a> instead of watching the terminal.<sup><a href="#fn3">3</a></sup> It uses the Notification event, which the guide says Claude Code fires when Claude is waiting for input or permission, and it frames the point plainly: so you can switch to other tasks without checking the terminal.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">That's genuinely useful. It solves the "is it done yet" problem, so nobody has to keep glancing back. What it can't do is solve the coming-back problem. A notification tells us when to return. It doesn't tell us where we were.</p>
+
+  <h2>How we'd make the return easier</h2>
+  <p class="sub">None of this is a prescription from the research. It's what the research nudges us toward, and it bends to the kind of work in front of us.</p>
+  <ul class="list">
+    <li>Before switching away, write one line about what we expect the agent to hand back. Coming back, compare against that line before reading anything else.</li>
+    <li>Choose the side task on purpose. Something small and closed, like a reply or a quick read, is easier to drop than a second hard problem.</li>
+    <li>When the notification comes, take a breath before the next prompt. The urge to make up time is the one the first study describes.</li>
+    <li>Ask the agent for a short account of what it changed and why, then read the diff anyway. The summary is a map to the changes, not a stand-in for them.</li>
+    <li>For short runs, sometimes just stay and watch. Not every gap needs filling.</li>
+  </ul>
+  <p class="sub">We don't think the answer is to never look away. The waiting is real, and filling it is human. It's more that the return deserves a little care, because that's where the cost the research found actually lands.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Rebuilding where we were is easier with a record to lean on. Cartographer reads the session history your coding agent keeps and turns it into a map of how a project was built, on your machine. It's one place to look back and see what happened while attention was elsewhere.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Mark, G., Gudith, D., Klocke, U. <a href="https://www.ics.uci.edu/~gmark/chi08-mark.pdf" rel="noopener">The cost of interrupted work: more speed and stress</a>. Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI 2008), pages 107 to 110. ACM, 2008.</li>
+    <li id="fn2">Parnin, C., Rugaber, S. <a href="https://sites.cc.gatech.edu/reverse/repository/resumptionstrategies.pdf" rel="noopener">Resumption strategies for interrupted programming tasks</a>. Software Quality Journal 19, pages 5 to 34, 2011. Copy hosted by the Georgia Institute of Technology.</li>
+    <li id="fn3">Anthropic. <a href="https://code.claude.com/docs/en/hooks-guide" rel="noopener">Automate actions with hooks</a>. Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

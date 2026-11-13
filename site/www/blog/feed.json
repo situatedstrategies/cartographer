@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/while-the-agent-works",
+      "url": "https://codecartographer.dev/blog/while-the-agent-works",
+      "title": "While the agent works: interruptions and getting back on task",
+      "summary": "Waiting on a coding agent invites a quick switch to something else. What interruption research says about coming back, and how we'd make it easier.",
+      "date_published": "2026-11-13T12:00:00Z",
+      "date_modified": "2026-11-13T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/test-first-with-a-coding-agent",
       "url": "https://codecartographer.dev/blog/test-first-with-a-coding-agent",
       "title": "Test-first with a coding agent: what the TDD research shows",

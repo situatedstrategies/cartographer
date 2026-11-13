@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-11.
+> Generated 2026-11-13.
 
 
 ---
@@ -732,6 +732,68 @@ Whether the steps were small and steady is hard to judge from memory. Cartograph
 - Anthropic. Best practices for Claude Code. Claude Code documentation.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# While the agent works: interruptions and getting back on task
+URL: https://codecartographer.dev/blog/while-the-agent-works
+Description: Waiting on a coding agent invites a quick switch to something else. What interruption research says about coming back, and how we'd make it easier.
+
+There's a moment in most agent sessions that we've all come to know. The request is written, the agent is off reading files and running commands, and there's nothing for us to do for a minute or five. So we do something else. A message, an email, a different tab. Then the agent finishes, or stops to ask a question, and we have to find our way back to what we were thinking.
+
+That gap is new in its shape but not in its nature. It's an interruption, just one we invite ourselves. Researchers have studied interruptions closely, and two of their findings feel uncomfortably close to home.
+
+## Faster, but at a price
+
+In a 2008 study at the CHI conference, Gloria Mark, Daniela Gudith and Ulrich Klocke compared people who were interrupted while they worked with people who weren't. The interrupted participants finished faster, not slower. But they also reported more stress, higher frustration, time pressure and effort.1 The authors read the speed as compensation: people made up for the interruptions by working faster, and that came at a price.1
+
+That study came long before coding agents. Still, we recognize the pattern. When we've drifted off during a run, we tend to come back in a hurry, skim the result, and send the next prompt quickly to make up the lost minutes. It feels efficient. If the study's pattern holds here, that may also be where the strain shows up.
+
+## Getting back in is the hard part
+
+Programming has its own version of this. Chris Parnin and Spencer Rugaber looked at recorded programming sessions, 10,000 of them, along with a survey of programmers, to see how people pick up a task after a break. Their finding is blunt: only 10% of the sessions had programming activity resume in less than a minute after an interruption, and only 7% involved no navigation to other places in the code before editing began.2
+
+In other words, in most sessions people didn't come back and simply carry on. They moved around the code first, rebuilding a picture of where they were. The paper also describes several coping mechanisms programmers use to recover the context of a task.2
+
+That work predates coding agents. But the cost it measured sits in the person, not the tool. When an agent has changed six files while we were away, there's even more to look around at before we can say anything useful about it.
+
+## What the tools offer
+
+Some tools plan for the gap. Anthropic's guide to Claude Code hooks walks through setting up a desktop notification so you get alerted whenever Claude is waiting for your input instead of watching the terminal.3 It uses the Notification event, which the guide says Claude Code fires when Claude is waiting for input or permission, and it frames the point plainly: so you can switch to other tasks without checking the terminal.3
+
+That's genuinely useful. It solves the "is it done yet" problem, so nobody has to keep glancing back. What it can't do is solve the coming-back problem. A notification tells us when to return. It doesn't tell us where we were.
+
+## How we'd make the return easier
+
+None of this is a prescription from the research. It's what the research nudges us toward, and it bends to the kind of work in front of us.
+
+- Before switching away, write one line about what we expect the agent to hand back. Coming back, compare against that line before reading anything else.
+
+- Choose the side task on purpose. Something small and closed, like a reply or a quick read, is easier to drop than a second hard problem.
+
+- When the notification comes, take a breath before the next prompt. The urge to make up time is the one the first study describes.
+
+- Ask the agent for a short account of what it changed and why, then read the diff anyway. The summary is a map to the changes, not a stand-in for them.
+
+- For short runs, sometimes just stay and watch. Not every gap needs filling.
+
+We don't think the answer is to never look away. The waiting is real, and filling it is human. It's more that the return deserves a little care, because that's where the cost the research found actually lands.
+
+## Where Cartographer fits
+
+Rebuilding where we were is easier with a record to lean on. Cartographer reads the session history your coding agent keeps and turns it into a map of how a project was built, on your machine. It's one place to look back and see what happened while attention was elsewhere.
+
+## Sources
+
+- Mark, G., Gudith, D., Klocke, U. The cost of interrupted work: more speed and stress. Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI 2008), pages 107 to 110. ACM, 2008.
+
+- Parnin, C., Rugaber, S. Resumption strategies for interrupted programming tasks. Software Quality Journal 19, pages 5 to 34, 2011. Copy hosted by the Georgia Institute of Technology.
+
+- Anthropic. Automate actions with hooks. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
 
 ← BlogHow it works →
 

@@ -54,7 +54,9 @@ When the queue runs low, add new topics that fit the pillars and target real
 search phrases people use. Never repeat a topic an existing post already
 covers.
 
-(The queue is empty. Add new topics that fit the pillars before the next run.)
+- Naming things in agent-built code: why names drift and how to keep them honest (pillar 3; search phrase "naming conventions AI generated code")
+- Rubber duck debugging, explaining the problem out loud, and what changes when the listener answers back (pillar 1; search phrase "rubber duck debugging with AI")
+- Technical debt in agent-built code: what the research means by the term and how to spot it early (pillar 4; search phrase "technical debt AI generated code")
 
 
 ## Citations: real, accurate, live sources, footnoted, always
