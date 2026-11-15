@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Names in agent-built code: why they drift and how to keep them honest</title>
+<meta name="description" content="Names in agent-built code drift as the code changes underneath them. What naming research and Anthropic's docs say, and how to keep names honest.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/naming-things-in-agent-built-code">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/naming-things-in-agent-built-code">
+<meta property="og:title" content="Names in agent-built code: why they drift and how to keep them honest">
+<meta property="og:description" content="Names in agent-built code drift as the code changes underneath them. What naming research and Anthropic's docs say, and how to keep names honest.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Names in agent-built code: why they drift and how to keep them honest","description":"Names in agent-built code drift as the code changes underneath them. What naming research and Anthropic's docs say, and how to keep names honest.","url":"https://codecartographer.dev/blog/naming-things-in-agent-built-code","mainEntityOfPage":"https://codecartographer.dev/blog/naming-things-in-agent-built-code","datePublished":"2026-11-15","dateModified":"2026-11-15","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Names in agent-built code: why they drift and how to keep them honest","item":"https://codecartographer.dev/blog/naming-things-in-agent-built-code"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Names in agent-built code: why they drift and how to keep them honest</h1>
+  <p class="lead">Code changes faster than the words attached to it. Three research papers on identifier names, and Anthropic's docs, on why names go wrong and how to keep them true.</p>
+  <p class="meta">By Team Cartographer · November 15th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Every codebase has a few names that used to be true. A function called <code>validateUser</code> that now also writes to the database. A <code>tempConfig</code> that has been load-bearing for a year. A <code>customer</code> in one file and a <code>client</code> in the next, meaning the same thing, or almost the same thing, and nobody's quite sure which.</p>
+  <p class="sub">Names drift because code changes faster than the words attached to it. Working with a coding agent doesn't create that problem, but it can make it easier to miss. When changes arrive in larger batches, a name chosen in one request can get reused or reinvented in the next, and a reviewer reading the diff for behavior can skim right past the vocabulary. It's worth knowing what the research says names are for, and why they go wrong.</p>
+
+  <h2>Names carry a lot of the meaning</h2>
+  <p class="sub">The case for full, descriptive names has been tested directly. Johannes Hofmeister, Janet Siegmund and Daniel Holt ran an experiment in which <a href="https://www.se.cs.uni-saarland.de/publications/docs/HoSeHo17.pdf" rel="noopener">72 professional C# developers located defects in code snippets</a> whose identifiers were single letters, abbreviations or full words.<sup><a href="#fn1">1</a></sup> Their conclusion: code was harder to comprehend when it used only letters and abbreviations, and full words helped comprehension.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Descriptive names are the easy part to ask for. The harder part is whether a name stays accurate, and whether the same idea keeps the same name across the codebase.</p>
+
+  <h2>One concept, one name</h2>
+  <p class="sub">Florian Deissenboeck and Markus Pizka set out a strict rule for this in 2005. Their paper builds on <a href="https://wwwbroy.in.tum.de/publ/papers/deissenboeck_pizka_identifier_naming.pdf" rel="noopener">a formal model based on bijective mappings between concepts and names</a>: each concept gets one name, and each name stands for one concept.<sup><a href="#fn2">2</a></sup> Two names for one thing is a synonym; one name for two things is a homonym. Both make readers guess.</p>
+  <p class="sub">The authors also observe that roughly 70 percent of a system's source code consists of identifiers, and they argue that it's practically impossible to preserve globally consistent naming over long-term maintenance and evolution without additional tools.<sup><a href="#fn2">2</a></sup> They weren't writing about agents. But the cause they point to, concepts changing while the names that refer to them stay put, is exactly what happens when a feature is reshaped over several requests and each request only touches the files in front of it.</p>
+
+  <h2>When the name says one thing and the code does another</h2>
+  <p class="sub">Venera Arnaoudova, Massimiliano Di Penta and Giuliano Antoniol gave the worst version of this a name: linguistic antipatterns, recurring cases where an entity's naming, documentation and implementation are inconsistent with one another. They catalogued 17 of them from open source projects, then asked developers what they thought. Most saw them as poor practice: <a href="https://publications.polymtl.ca/34761/" rel="noopener">69% of external and 51% of internal developers</a>, in studies with 30 developers who didn't know the code and 14 who worked on it.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">A getter that changes state, a method called <code>isValid</code> that returns something other than a yes or no, a comment describing behavior the code no longer has. These are the names that used to be true. They compile, they pass tests, and they mislead the next reader, who may well be you, or an agent working from the names it finds.</p>
+
+  <h2>Telling the agent what the words mean</h2>
+  <p class="sub">The obvious lever is to write the vocabulary down. Anthropic's Claude Code documentation suggests that a project's CLAUDE.md hold instructions that apply to anyone working on the project, listing <a href="https://code.claude.com/docs/en/memory" rel="noopener">build and test commands, coding standards, architectural decisions, naming conventions, and common workflows</a>.<sup><a href="#fn4">4</a></sup> The same page is candid about the limits: Claude treats these files as context, not enforced configuration, and the more specific and concise the instructions, the more consistently Claude follows them.<sup><a href="#fn4">4</a></sup> Its example of specific is "Use 2-space indentation" rather than "Format code properly".<sup><a href="#fn4">4</a></sup></p>
+  <p class="sub">The page also warns that if two instructions contradict each other, Claude may pick one arbitrarily, and suggests reviewing instruction files periodically to remove outdated or conflicting ones.<sup><a href="#fn4">4</a></sup> That applies to naming rules too. A glossary that says "client" while half the code says "customer" is itself a synonym problem.</p>
+
+  <h2>Keeping names honest in practice</h2>
+  <p class="sub">None of this needs a big process. A few habits go a long way.</p>
+  <ul class="list">
+    <li>Keep a short glossary of the project's core nouns, with the one name each concept uses, and put it where the agent will read it. Specific beats general: "a paying account is a Customer, never a Client" rather than "use clear names".</li>
+    <li>When a request changes what something does, ask for the rename in the same request, across every file that refers to it. A concept that changed shape with its old name intact is the drift the research describes.</li>
+    <li>Read the diff for vocabulary once, separately from behavior. Look for new names for old ideas and old names stretched over new ideas.</li>
+    <li>Treat a name that surprises you as a finding. If <code>validateUser</code> writes to the database, either the name or the code is wrong, and it's worth deciding which.</li>
+    <li>Prune the instruction file when the vocabulary moves on, so the rules you hand the agent don't contradict the code it's reading.</li>
+  </ul>
+  <p class="sub">Names are easy to read past. A little attention at the moment a concept changes is far cheaper than untangling three words for one thing later.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Names usually drift for a reason that's buried in the session: a request that reshaped a feature, a correction that changed what a function was for. Cartographer reads the session history your coding agent keeps and turns it into a map of how a project was built. Each move records what you asked, what the agent did, and the consequence, such as the file that changed shape or the assumption that got baked in. A record like that is a good place to look for the moment a name stopped being true.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Hofmeister, J., Siegmund, J., Holt, D. V. <a href="https://www.se.cs.uni-saarland.de/publications/docs/HoSeHo17.pdf" rel="noopener">Shorter identifier names take longer to comprehend</a>. IEEE 24th International Conference on Software Analysis, Evolution and Reengineering (SANER 2017); extended version in Empirical Software Engineering 24, pages 417 to 443, 2019. Copy hosted by Saarland University.</li>
+    <li id="fn2">Deissenboeck, F., Pizka, M. <a href="https://wwwbroy.in.tum.de/publ/papers/deissenboeck_pizka_identifier_naming.pdf" rel="noopener">Concise and consistent naming</a>. 13th International Workshop on Program Comprehension (IWPC 2005); journal version in Software Quality Journal 14, pages 261 to 282, 2006. Copy hosted by the Technical University of Munich.</li>
+    <li id="fn3">Arnaoudova, V., Di Penta, M., Antoniol, G. <a href="https://publications.polymtl.ca/34761/" rel="noopener">Linguistic antipatterns: what they are and how developers perceive them</a>. Empirical Software Engineering 21(1), pages 104 to 158, 2016. Record in PolyPublie, Polytechnique Montréal.</li>
+    <li id="fn4">Anthropic. <a href="https://code.claude.com/docs/en/memory" rel="noopener">How Claude remembers your project</a>. Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

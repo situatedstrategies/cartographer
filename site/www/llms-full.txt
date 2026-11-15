@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-13.
+> Generated 2026-11-15.
 
 
 ---
@@ -794,6 +794,74 @@ Rebuilding where we were is easier with a record to lean on. Cartographer reads 
 - Anthropic. Automate actions with hooks. Claude Code documentation.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Names in agent-built code: why they drift and how to keep them honest
+URL: https://codecartographer.dev/blog/naming-things-in-agent-built-code
+Description: Names in agent-built code drift as the code changes underneath them. What naming research and Anthropic's docs say, and how to keep names honest.
+
+Every codebase has a few names that used to be true. A function called validateUser that now also writes to the database. A tempConfig that has been load-bearing for a year. A customer in one file and a client in the next, meaning the same thing, or almost the same thing, and nobody's quite sure which.
+
+Names drift because code changes faster than the words attached to it. Working with a coding agent doesn't create that problem, but it can make it easier to miss. When changes arrive in larger batches, a name chosen in one request can get reused or reinvented in the next, and a reviewer reading the diff for behavior can skim right past the vocabulary. It's worth knowing what the research says names are for, and why they go wrong.
+
+## Names carry a lot of the meaning
+
+The case for full, descriptive names has been tested directly. Johannes Hofmeister, Janet Siegmund and Daniel Holt ran an experiment in which 72 professional C# developers located defects in code snippets whose identifiers were single letters, abbreviations or full words.1 Their conclusion: code was harder to comprehend when it used only letters and abbreviations, and full words helped comprehension.1
+
+Descriptive names are the easy part to ask for. The harder part is whether a name stays accurate, and whether the same idea keeps the same name across the codebase.
+
+## One concept, one name
+
+Florian Deissenboeck and Markus Pizka set out a strict rule for this in 2005. Their paper builds on a formal model based on bijective mappings between concepts and names: each concept gets one name, and each name stands for one concept.2 Two names for one thing is a synonym; one name for two things is a homonym. Both make readers guess.
+
+The authors also observe that roughly 70 percent of a system's source code consists of identifiers, and they argue that it's practically impossible to preserve globally consistent naming over long-term maintenance and evolution without additional tools.2 They weren't writing about agents. But the cause they point to, concepts changing while the names that refer to them stay put, is exactly what happens when a feature is reshaped over several requests and each request only touches the files in front of it.
+
+## When the name says one thing and the code does another
+
+Venera Arnaoudova, Massimiliano Di Penta and Giuliano Antoniol gave the worst version of this a name: linguistic antipatterns, recurring cases where an entity's naming, documentation and implementation are inconsistent with one another. They catalogued 17 of them from open source projects, then asked developers what they thought. Most saw them as poor practice: 69% of external and 51% of internal developers, in studies with 30 developers who didn't know the code and 14 who worked on it.3
+
+A getter that changes state, a method called isValid that returns something other than a yes or no, a comment describing behavior the code no longer has. These are the names that used to be true. They compile, they pass tests, and they mislead the next reader, who may well be you, or an agent working from the names it finds.
+
+## Telling the agent what the words mean
+
+The obvious lever is to write the vocabulary down. Anthropic's Claude Code documentation suggests that a project's CLAUDE.md hold instructions that apply to anyone working on the project, listing build and test commands, coding standards, architectural decisions, naming conventions, and common workflows.4 The same page is candid about the limits: Claude treats these files as context, not enforced configuration, and the more specific and concise the instructions, the more consistently Claude follows them.4 Its example of specific is "Use 2-space indentation" rather than "Format code properly".4
+
+The page also warns that if two instructions contradict each other, Claude may pick one arbitrarily, and suggests reviewing instruction files periodically to remove outdated or conflicting ones.4 That applies to naming rules too. A glossary that says "client" while half the code says "customer" is itself a synonym problem.
+
+## Keeping names honest in practice
+
+None of this needs a big process. A few habits go a long way.
+
+- Keep a short glossary of the project's core nouns, with the one name each concept uses, and put it where the agent will read it. Specific beats general: "a paying account is a Customer, never a Client" rather than "use clear names".
+
+- When a request changes what something does, ask for the rename in the same request, across every file that refers to it. A concept that changed shape with its old name intact is the drift the research describes.
+
+- Read the diff for vocabulary once, separately from behavior. Look for new names for old ideas and old names stretched over new ideas.
+
+- Treat a name that surprises you as a finding. If validateUser writes to the database, either the name or the code is wrong, and it's worth deciding which.
+
+- Prune the instruction file when the vocabulary moves on, so the rules you hand the agent don't contradict the code it's reading.
+
+Names are easy to read past. A little attention at the moment a concept changes is far cheaper than untangling three words for one thing later.
+
+## Where Cartographer fits
+
+Names usually drift for a reason that's buried in the session: a request that reshaped a feature, a correction that changed what a function was for. Cartographer reads the session history your coding agent keeps and turns it into a map of how a project was built. Each move records what you asked, what the agent did, and the consequence, such as the file that changed shape or the assumption that got baked in. A record like that is a good place to look for the moment a name stopped being true.
+
+## Sources
+
+- Hofmeister, J., Siegmund, J., Holt, D. V. Shorter identifier names take longer to comprehend. IEEE 24th International Conference on Software Analysis, Evolution and Reengineering (SANER 2017); extended version in Empirical Software Engineering 24, pages 417 to 443, 2019. Copy hosted by Saarland University.
+
+- Deissenboeck, F., Pizka, M. Concise and consistent naming. 13th International Workshop on Program Comprehension (IWPC 2005); journal version in Software Quality Journal 14, pages 261 to 282, 2006. Copy hosted by the Technical University of Munich.
+
+- Arnaoudova, V., Di Penta, M., Antoniol, G. Linguistic antipatterns: what they are and how developers perceive them. Empirical Software Engineering 21(1), pages 104 to 158, 2016. Record in PolyPublie, Polytechnique Montréal.
+
+- Anthropic. How Claude remembers your project. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
 
 ← BlogHow it works →
 

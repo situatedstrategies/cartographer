@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Nov 2026 15:17:32 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 15 Nov 2026 15:03:56 GMT</lastBuildDate>
+    <item>
+      <title>Names in agent-built code: why they drift and how to keep them honest</title>
+      <link>https://codecartographer.dev/blog/naming-things-in-agent-built-code</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/naming-things-in-agent-built-code</guid>
+      <pubDate>Sun, 15 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Names in agent-built code drift as the code changes underneath them. What naming research and Anthropic's docs say, and how to keep names honest.</description>
+    </item>
     <item>
       <title>While the agent works: interruptions and getting back on task</title>
       <link>https://codecartographer.dev/blog/while-the-agent-works</link>

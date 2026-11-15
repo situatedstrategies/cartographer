@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/naming-things-in-agent-built-code",
+      "url": "https://codecartographer.dev/blog/naming-things-in-agent-built-code",
+      "title": "Names in agent-built code: why they drift and how to keep them honest",
+      "summary": "Names in agent-built code drift as the code changes underneath them. What naming research and Anthropic's docs say, and how to keep names honest.",
+      "date_published": "2026-11-15T12:00:00Z",
+      "date_modified": "2026-11-15T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/while-the-agent-works",
       "url": "https://codecartographer.dev/blog/while-the-agent-works",
       "title": "While the agent works: interruptions and getting back on task",
