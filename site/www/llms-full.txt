@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-15.
+> Generated 2026-11-17.
 
 
 ---
@@ -862,6 +862,68 @@ Names usually drift for a reason that's buried in the session: a request that re
 - Anthropic. How Claude remembers your project. Claude Code documentation.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Rubber duck debugging with AI: when the duck answers back
+URL: https://codecartographer.dev/blog/rubber-duck-debugging-with-ai
+Description: Explaining a bug out loud often solves it. What self-explanation research says, and how to keep that benefit when the listener is a coding agent.
+
+Most of us have done it. You turn to a colleague, start describing the bug, get halfway through the second sentence and stop, because the answer just turned up in your own words. The colleague didn't say a word. Programmers call this rubber duck debugging, after the idea that a duck on the desk would do the job just as well. The duck's whole job is to sit there while you explain.
+
+The duck now has competition. A coding agent is a listener that answers back, and it answers fast. That's often useful. It also changes the exercise in a way we think is worth noticing, because the part of rubber ducking that does the work was never the listener.
+
+## Why explaining works
+
+Learning researchers call it the self-explanation effect, and one early experiment on it is small and plain. Chi and colleagues asked 14 eighth-grade students to self-explain after reading each line of a passage on the human circulatory system, with no extensive training. Ten students in a control group read the same text twice without being prompted.1 The prompted group gained more from pretest to posttest. Within that group, the students who produced many explanations learned with greater understanding than those who produced few, and all of these high explainers reached the correct mental model of the circulatory system, while many of the unprompted students and the low explainers did not.1
+
+That's 24 students and one text, so it's a starting point rather than a verdict. The broader literature has been pooled since. A 2018 meta-analysis by Bisra and colleagues gathered 69 effect sizes from 64 research reports on prompting people to explain while they study or solve problems, and found an overall weighted mean effect of g = .55 under a random effects model.2
+
+These studies were about learning, not debugging. But the mechanism carries over easily. Saying what each line is supposed to do forces you to notice where your account of the code and the code itself part ways. The duck doesn't find the bug. The sentence you can't finish does.
+
+## What changes when the listener answers back
+
+With an agent, the natural move is to paste the error and ask what's wrong. Sometimes that's exactly right. A stack trace for a typo doesn't need a speech. But for the bugs that come from a wrong assumption, handing the problem over skips the step that would have surfaced it. You get an answer, maybe a good one, and you still don't know which part of your own picture was off.
+
+There's a second, quieter cost. When we explain the problem ourselves, the explanation is a record of what we believed. When the agent explains it, we get its account instead, and it's easy to nod along to a fluent one. The duck never had that problem. It never offered a theory we could borrow.
+
+## A listener that asks instead of answers
+
+The good news is that an agent can play the duck's role, or something better, if you ask it to. Anthropic's best practices for Claude Code suggest that when you don't yet know exactly what you want, you can ask Claude to interview you instead of working it all out before you prompt. Claude comes back with multiple-choice questions about the parts you haven't pinned down and keeps asking until the answers add up to a spec.3 The docs frame this around planning a feature, but a bug is a fine thing to be interviewed about too.
+
+The same page makes the case for explaining up front. It says that if you name the file, describe the symptom, and say what "fixed" looks like, you usually save yourself a round of corrections later.3 That's rubber ducking with a deliverable. Writing the symptom down precisely is the explanation, and the agent gets a better brief out of it.
+
+The Bisra meta-analysis points the same way from the research side: since many of the studies relied on prompts scripted by instructors, the authors suggested that future work explore computer generation of self-explanation prompts.2 A listener that asks good questions was already on the research agenda in 2018.
+
+## How we'd do it
+
+We don't think you need a ritual. A few habits keep the useful part.
+
+- Before you paste the error, write two sentences: what you expected to happen and what happened instead. Often the gap is visible right there.
+
+- If it isn't, ask the agent to question you rather than fix it: what have you checked, what are you assuming, where does the data come from. Answer in full sentences.
+
+- When the agent offers its own explanation, restate it in your words before accepting the fix. If you can't, you haven't understood it yet.
+
+- Keep the explanation. The sentence that cracked the bug is worth more next month than the diff that fixed it.
+
+The duck was never smart. That was its virtue. An agent can be smart and still leave room for you to think out loud, as long as you ask it to listen first.
+
+## Where Cartographer fits
+
+The explanations you give an agent end up in its session history, mixed in with everything else. Cartographer reads that history and turns it into a map of how a project was built. Each move records what you did, such as the prompt, the correction or the decision, alongside what the agent did with it and the consequence. It's a way to find the moment your explanation turned a corner, and the assumption that had to give.
+
+## Sources
+
+- Chi, M. T. H., de Leeuw, N., Chiu, M. H., LaVancher, C. Eliciting self-explanations improves understanding. Cognitive Science 18(3), pages 439 to 477, 1994. Copy hosted by Indiana University.
+
+- Bisra, Liu, Nesbit, Salimi, Winne. Inducing self-explanation: a meta-analysis. Educational Psychology Review 30, pages 703 to 725, 2018.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
 
 ← BlogHow it works →
 

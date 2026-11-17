@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Nov 2026 15:03:56 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 17 Nov 2026 15:04:22 GMT</lastBuildDate>
+    <item>
+      <title>Rubber duck debugging with AI: when the duck answers back</title>
+      <link>https://codecartographer.dev/blog/rubber-duck-debugging-with-ai</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/rubber-duck-debugging-with-ai</guid>
+      <pubDate>Tue, 17 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Explaining a bug out loud often solves it. What self-explanation research says, and how to keep that benefit when the listener is a coding agent.</description>
+    </item>
     <item>
       <title>Names in agent-built code: why they drift and how to keep them honest</title>
       <link>https://codecartographer.dev/blog/naming-things-in-agent-built-code</link>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rubber duck debugging with AI: when the duck answers back</title>
+<meta name="description" content="Explaining a bug out loud often solves it. What self-explanation research says, and how to keep that benefit when the listener is a coding agent.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/rubber-duck-debugging-with-ai">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/rubber-duck-debugging-with-ai">
+<meta property="og:title" content="Rubber duck debugging with AI: when the duck answers back">
+<meta property="og:description" content="Explaining a bug out loud often solves it. What self-explanation research says, and how to keep that benefit when the listener is a coding agent.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Rubber duck debugging with AI: when the duck answers back","description":"Explaining a bug out loud often solves it. What self-explanation research says, and how to keep that benefit when the listener is a coding agent.","url":"https://codecartographer.dev/blog/rubber-duck-debugging-with-ai","mainEntityOfPage":"https://codecartographer.dev/blog/rubber-duck-debugging-with-ai","datePublished":"2026-11-17","dateModified":"2026-11-17","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Rubber duck debugging with AI: when the duck answers back","item":"https://codecartographer.dev/blog/rubber-duck-debugging-with-ai"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Rubber duck debugging with AI: when the duck answers back</h1>
+  <p class="lead">Explaining a problem to a rubber duck works because the duck never helps. A coding agent always does. Here's what the research on explaining says, and how we'd keep the good part.</p>
+  <p class="meta">By Team Cartographer · November 17th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Most of us have done it. You turn to a colleague, start describing the bug, get halfway through the second sentence and stop, because the answer just turned up in your own words. The colleague didn't say a word. Programmers call this rubber duck debugging, after the idea that a duck on the desk would do the job just as well. The duck's whole job is to sit there while you explain.</p>
+  <p class="sub">The duck now has competition. A coding agent is a listener that answers back, and it answers fast. That's often useful. It also changes the exercise in a way we think is worth noticing, because the part of rubber ducking that does the work was never the listener.</p>
+
+  <h2>Why explaining works</h2>
+  <p class="sub">Learning researchers call it the self-explanation effect, and one early experiment on it is small and plain. Chi and colleagues asked <a href="https://pcl.sitehost.iu.edu/rgoldsto/courses/cogscilearning/chiselfexplanation.pdf" rel="noopener">14 eighth-grade students to self-explain after reading each line</a> of a passage on the human circulatory system, with no extensive training. Ten students in a control group read the same text twice without being prompted.<sup><a href="#fn1">1</a></sup> The prompted group gained more from pretest to posttest. Within that group, the students who produced many explanations learned with greater understanding than those who produced few, and all of these high explainers reached the correct mental model of the circulatory system, while many of the unprompted students and the low explainers did not.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">That's 24 students and one text, so it's a starting point rather than a verdict. The broader literature has been pooled since. A 2018 meta-analysis by Bisra and colleagues gathered <a href="https://link.springer.com/article/10.1007/s10648-018-9434-x" rel="noopener">69 effect sizes from 64 research reports</a> on prompting people to explain while they study or solve problems, and found an overall weighted mean effect of g = .55 under a random effects model.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">These studies were about learning, not debugging. But the mechanism carries over easily. Saying what each line is supposed to do forces you to notice where your account of the code and the code itself part ways. The duck doesn't find the bug. The sentence you can't finish does.</p>
+
+  <h2>What changes when the listener answers back</h2>
+  <p class="sub">With an agent, the natural move is to paste the error and ask what's wrong. Sometimes that's exactly right. A stack trace for a typo doesn't need a speech. But for the bugs that come from a wrong assumption, handing the problem over skips the step that would have surfaced it. You get an answer, maybe a good one, and you still don't know which part of your own picture was off.</p>
+  <p class="sub">There's a second, quieter cost. When we explain the problem ourselves, the explanation is a record of what we believed. When the agent explains it, we get its account instead, and it's easy to nod along to a fluent one. The duck never had that problem. It never offered a theory we could borrow.</p>
+
+  <h2>A listener that asks instead of answers</h2>
+  <p class="sub">The good news is that an agent can play the duck's role, or something better, if you ask it to. Anthropic's best practices for Claude Code suggest that when you don't yet know exactly what you want, you can <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">ask Claude to interview you</a> instead of working it all out before you prompt. Claude comes back with multiple-choice questions about the parts you haven't pinned down and keeps asking until the answers add up to a spec.<sup><a href="#fn3">3</a></sup> The docs frame this around planning a feature, but a bug is a fine thing to be interviewed about too.</p>
+  <p class="sub">The same page makes the case for explaining up front. It says that if you name the file, describe the symptom, and say what "fixed" looks like, you usually save yourself a round of corrections later.<sup><a href="#fn3">3</a></sup> That's rubber ducking with a deliverable. Writing the symptom down precisely is the explanation, and the agent gets a better brief out of it.</p>
+  <p class="sub">The Bisra meta-analysis points the same way from the research side: since many of the studies relied on prompts scripted by instructors, the authors suggested that future work explore <a href="https://link.springer.com/article/10.1007/s10648-018-9434-x" rel="noopener">computer generation of self-explanation prompts</a>.<sup><a href="#fn2">2</a></sup> A listener that asks good questions was already on the research agenda in 2018.</p>
+
+  <h2>How we'd do it</h2>
+  <p class="sub">We don't think you need a ritual. A few habits keep the useful part.</p>
+  <ul class="list">
+    <li>Before you paste the error, write two sentences: what you expected to happen and what happened instead. Often the gap is visible right there.</li>
+    <li>If it isn't, ask the agent to question you rather than fix it: what have you checked, what are you assuming, where does the data come from. Answer in full sentences.</li>
+    <li>When the agent offers its own explanation, restate it in your words before accepting the fix. If you can't, you haven't understood it yet.</li>
+    <li>Keep the explanation. The sentence that cracked the bug is worth more next month than the diff that fixed it.</li>
+  </ul>
+  <p class="sub">The duck was never smart. That was its virtue. An agent can be smart and still leave room for you to think out loud, as long as you ask it to listen first.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">The explanations you give an agent end up in its session history, mixed in with everything else. Cartographer reads that history and turns it into a map of how a project was built. Each move records what you did, such as the prompt, the correction or the decision, alongside what the agent did with it and the consequence. It's a way to find the moment your explanation turned a corner, and the assumption that had to give.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Chi, M. T. H., de Leeuw, N., Chiu, M. H., LaVancher, C. <a href="https://pcl.sitehost.iu.edu/rgoldsto/courses/cogscilearning/chiselfexplanation.pdf" rel="noopener">Eliciting self-explanations improves understanding</a>. Cognitive Science 18(3), pages 439 to 477, 1994. Copy hosted by Indiana University.</li>
+    <li id="fn2">Bisra, Liu, Nesbit, Salimi, Winne. <a href="https://link.springer.com/article/10.1007/s10648-018-9434-x" rel="noopener">Inducing self-explanation: a meta-analysis</a>. Educational Psychology Review 30, pages 703 to 725, 2018.</li>
+    <li id="fn3">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

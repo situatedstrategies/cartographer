@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/rubber-duck-debugging-with-ai",
+      "url": "https://codecartographer.dev/blog/rubber-duck-debugging-with-ai",
+      "title": "Rubber duck debugging with AI: when the duck answers back",
+      "summary": "Explaining a bug out loud often solves it. What self-explanation research says, and how to keep that benefit when the listener is a coding agent.",
+      "date_published": "2026-11-17T12:00:00Z",
+      "date_modified": "2026-11-17T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/naming-things-in-agent-built-code",
       "url": "https://codecartographer.dev/blog/naming-things-in-agent-built-code",
       "title": "Names in agent-built code: why they drift and how to keep them honest",
