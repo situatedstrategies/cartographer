@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-17.
+> Generated 2026-11-19.
 
 
 ---
@@ -924,6 +924,68 @@ The explanations you give an agent end up in its session history, mixed in with 
 - Anthropic. Best practices for Claude Code. Claude Code documentation.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Technical debt in AI-generated code: what it means and how to spot it
+URL: https://codecartographer.dev/blog/technical-debt-in-agent-built-code
+Description: Where technical debt comes from, what a large study of AI-authored commits found, and the early signs we'd watch for in agent-built code.
+
+Ask ten developers what technical debt means and you'll get ten answers, most of them some version of "code we're not proud of." That's close, but it loses the part of the idea that makes it useful. The debt metaphor was never only about mess. It was about cost over time, and about who pays.
+
+That distinction matters more now that a lot of code arrives from a coding agent in large, fluent pieces. The question isn't whether agent-built code has debt. All code does. The question is whether you can see it early enough to decide what to do about it.
+
+## What the term actually means
+
+Martin Fowler's entry on the subject credits Ward Cunningham with the metaphor and says Ward first introduced the concept in an experience report for OOPSLA 1992.1 Fowler calls the underlying problem cruft: deficiencies in internal quality that make a system harder than it would ideally be to modify and extend.1 In his framing, the extra effort it takes to add new features because of that cruft is the interest paid on the debt.1
+
+Two things follow from that definition, and both get lost in casual use. First, debt is measured by what it costs the next change, not by how the code looks. Second, the interest only comes due where you keep working. Fowler notes that a terrible area of the code base isn't a problem if you don't have to modify it, and that gradual improvement naturally spends more time removing cruft in the areas you modify frequently.1
+
+In a companion note, Fowler adds two refinements. One is that prudent debt taken on to reach a release may not be worth paying down if the interest payments are small enough.2 The other is that some debt is inadvertent: you only realize you owe it once you see what the design should have been.2 We'd guess that second kind is the one to watch with agent-built code, where a lot of design choices arrive inside a single diff that nobody stopped to deliberate over.
+
+## What one large study found
+
+Liu and colleagues note that earlier work mostly looked at controlled settings, so their study looks at repositories in the wild instead.3 The authors gathered more than 300,000 AI-authored commits from over 6,000 GitHub repositories, covering five widely used AI coding assistants, and ran static analysis before and after each commit to attribute code smells, correctness issues and security issues to the AI.3
+
+Code smells were by far the most common type of issue they found.3 And when they traced each issue forward, 24.2 percent of tracked AI-introduced issues still survived at the latest revision of the repository.3 The authors are clear that their attribution only covers commits where AI use is visible in Git metadata, so this is a view of the visible part, not the whole.3
+
+Read with Fowler's definition in mind, that survival figure is the interesting one. An issue that gets fixed in the next commit was a short loan. One that's still there at the latest revision is sitting in the code, waiting to charge interest whenever someone next touches that file.
+
+## How to spot it early
+
+The useful moment to notice debt is before the change is merged, while the reasoning behind it is still fresh. A few habits help.
+
+- Ask where the next change will land. Debt in code you'll edit next week matters more than debt in a script you'll never open again. That's Fowler's interest point, applied to a diff.
+
+- Give the agent a check it can run. Anthropic's best practices for Claude Code say that Claude stops when the work looks done, and that without something to run that says whether the work actually is done, "looks done" is all it has to go on.4 The page lists checks such as a test file, a build's exit code, a linter, or a script that diffs output against a fixture.4
+
+- Get a reader who didn't write it. The same page describes /code-review as reviewing the diff in a fresh subagent that never saw your conversation, so it isn't swayed by the reasoning that produced the code.4
+
+- Write down the debt you choose. If you're taking a shortcut on purpose, a one-line note on why turns inadvertent debt into the deliberate kind, so it's debt you know you owe instead of debt you discover later.
+
+## Don't pay it all back at once
+
+There's a trap on the other side, too. Anthropic's page warns that a reviewer asked to find problems will always find something, and that if you fix every finding, you end up with extra abstraction layers and tests for cases that can't happen.4 That's debt as well, just taken on in the name of cleanliness. Fowler's point about spending the effort where you modify frequently is a good filter here. Not every smell is worth the principal.
+
+So the goal isn't debt-free code. It's knowing what you owe, where, and roughly what it'll cost the next person who touches it. Often that next person is you.
+
+## Where Cartographer fits
+
+Cartographer reads the session history a coding agent keeps and turns it into a map of how a project was built. When you mark a version shipped, partial or abandoned with /complete, the appraisal judges every session's moves against the outcome you declared, with evidence, minutes, and the technical implications now living in the result. It's a way to look back at what a build owes, with the record that shows where each part of it came from.
+
+## Sources
+
+- Martin Fowler. Technical Debt. martinfowler.com bliki.
+
+- Martin Fowler. Technical Debt Quadrant. martinfowler.com bliki.
+
+- Liu, Widyasari, Zhao, Irsan, Lo. Debt Behind the AI Boom: A Large-Scale Empirical Study of AI-Generated Code in the Wild. arXiv preprint 2603.28592, 2026.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
 
 ← BlogHow it works →
 

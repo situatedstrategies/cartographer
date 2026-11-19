@@ -54,7 +54,6 @@ When the queue runs low, add new topics that fit the pillars and target real
 search phrases people use. Never repeat a topic an existing post already
 covers.
 
-- Technical debt in agent-built code: what the research means by the term and how to spot it early (pillar 4; search phrase "technical debt AI generated code")
 
 
 ## Citations: real, accurate, live sources, footnoted, always

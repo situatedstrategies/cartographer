@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 Nov 2026 15:04:22 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 19 Nov 2026 15:04:54 GMT</lastBuildDate>
+    <item>
+      <title>Technical debt in AI-generated code: what it means and how to spot it</title>
+      <link>https://codecartographer.dev/blog/technical-debt-in-agent-built-code</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/technical-debt-in-agent-built-code</guid>
+      <pubDate>Thu, 19 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Where technical debt comes from, what a large study of AI-authored commits found, and the early signs we'd watch for in agent-built code.</description>
+    </item>
     <item>
       <title>Rubber duck debugging with AI: when the duck answers back</title>
       <link>https://codecartographer.dev/blog/rubber-duck-debugging-with-ai</link>

@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/technical-debt-in-agent-built-code",
+      "url": "https://codecartographer.dev/blog/technical-debt-in-agent-built-code",
+      "title": "Technical debt in AI-generated code: what it means and how to spot it",
+      "summary": "Where technical debt comes from, what a large study of AI-authored commits found, and the early signs we'd watch for in agent-built code.",
+      "date_published": "2026-11-19T12:00:00Z",
+      "date_modified": "2026-11-19T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/rubber-duck-debugging-with-ai",
       "url": "https://codecartographer.dev/blog/rubber-duck-debugging-with-ai",
       "title": "Rubber duck debugging with AI: when the duck answers back",

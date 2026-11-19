@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technical debt in AI-generated code: what it means and how to spot it</title>
+<meta name="description" content="Where technical debt comes from, what a large study of AI-authored commits found, and the early signs we'd watch for in agent-built code.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/technical-debt-in-agent-built-code">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/technical-debt-in-agent-built-code">
+<meta property="og:title" content="Technical debt in AI-generated code: what it means and how to spot it">
+<meta property="og:description" content="Where technical debt comes from, what a large study of AI-authored commits found, and the early signs we'd watch for in agent-built code.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Technical debt in AI-generated code: what it means and how to spot it","description":"Where technical debt comes from, what a large study of AI-authored commits found, and the early signs we'd watch for in agent-built code.","url":"https://codecartographer.dev/blog/technical-debt-in-agent-built-code","mainEntityOfPage":"https://codecartographer.dev/blog/technical-debt-in-agent-built-code","datePublished":"2026-11-19","dateModified":"2026-11-19","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Technical debt in AI-generated code: what it means and how to spot it","item":"https://codecartographer.dev/blog/technical-debt-in-agent-built-code"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Technical debt in AI-generated code: what it means and how to spot it</h1>
+  <p class="lead">Technical debt is one of the most borrowed phrases in software, and agents have given it a new lease of life. Here's what the term was meant to say, what one large study of AI-authored commits found, and how to notice the debt while it's still small.</p>
+  <p class="meta">By Team Cartographer · November 19th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">Ask ten developers what technical debt means and you'll get ten answers, most of them some version of "code we're not proud of." That's close, but it loses the part of the idea that makes it useful. The debt metaphor was never only about mess. It was about cost over time, and about who pays.</p>
+  <p class="sub">That distinction matters more now that a lot of code arrives from a coding agent in large, fluent pieces. The question isn't whether agent-built code has debt. All code does. The question is whether you can see it early enough to decide what to do about it.</p>
+
+  <h2>What the term actually means</h2>
+  <p class="sub">Martin Fowler's entry on the subject credits Ward Cunningham with the metaphor and says <a href="https://martinfowler.com/bliki/TechnicalDebt.html" rel="noopener">Ward first introduced the concept in an experience report for OOPSLA 1992</a>.<sup><a href="#fn1">1</a></sup> Fowler calls the underlying problem cruft: <a href="https://martinfowler.com/bliki/TechnicalDebt.html" rel="noopener">deficiencies in internal quality</a> that make a system harder than it would ideally be to modify and extend.<sup><a href="#fn1">1</a></sup> In his framing, <a href="https://martinfowler.com/bliki/TechnicalDebt.html" rel="noopener">the extra effort it takes to add new features</a> because of that cruft is the interest paid on the debt.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">Two things follow from that definition, and both get lost in casual use. First, debt is measured by what it costs the next change, not by how the code looks. Second, the interest only comes due where you keep working. Fowler notes that <a href="https://martinfowler.com/bliki/TechnicalDebt.html" rel="noopener">a terrible area of the code base isn't a problem if you don't have to modify it</a>, and that gradual improvement naturally spends more time removing cruft in the areas you modify frequently.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">In a companion note, Fowler adds two refinements. One is that <a href="https://martinfowler.com/bliki/TechnicalDebtQuadrant.html" rel="noopener">prudent debt taken on to reach a release may not be worth paying down</a> if the interest payments are small enough.<sup><a href="#fn2">2</a></sup> The other is that <a href="https://martinfowler.com/bliki/TechnicalDebtQuadrant.html" rel="noopener">some debt is inadvertent</a>: you only realize you owe it once you see what the design should have been.<sup><a href="#fn2">2</a></sup> We'd guess that second kind is the one to watch with agent-built code, where a lot of design choices arrive inside a single diff that nobody stopped to deliberate over.</p>
+
+  <h2>What one large study found</h2>
+  <p class="sub">Liu and colleagues note that <a href="https://arxiv.org/abs/2603.28592" rel="noopener">earlier work mostly looked at controlled settings</a>, so their study looks at repositories in the wild instead.<sup><a href="#fn3">3</a></sup> The authors gathered <a href="https://arxiv.org/abs/2603.28592" rel="noopener">more than 300,000 AI-authored commits from over 6,000 GitHub repositories</a>, covering five widely used AI coding assistants, and ran static analysis before and after each commit to attribute code smells, correctness issues and security issues to the AI.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub"><a href="https://arxiv.org/abs/2603.28592" rel="noopener">Code smells were by far the most common type</a> of issue they found.<sup><a href="#fn3">3</a></sup> And when they traced each issue forward, <a href="https://arxiv.org/abs/2603.28592" rel="noopener">24.2 percent of tracked AI-introduced issues still survived at the latest revision</a> of the repository.<sup><a href="#fn3">3</a></sup> The authors are clear that <a href="https://arxiv.org/abs/2603.28592" rel="noopener">their attribution only covers</a> commits where AI use is visible in Git metadata, so this is a view of the visible part, not the whole.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">Read with Fowler's definition in mind, that survival figure is the interesting one. An issue that gets fixed in the next commit was a short loan. One that's still there at the latest revision is sitting in the code, waiting to charge interest whenever someone next touches that file.</p>
+
+  <h2>How to spot it early</h2>
+  <p class="sub">The useful moment to notice debt is before the change is merged, while the reasoning behind it is still fresh. A few habits help.</p>
+  <ul class="list">
+    <li>Ask where the next change will land. Debt in code you'll edit next week matters more than debt in a script you'll never open again. That's Fowler's interest point, applied to a diff.</li>
+    <li>Give the agent a check it can run. Anthropic's best practices for Claude Code say that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Claude stops when the work looks done</a>, and that without something to run that says whether the work actually is done, "looks done" is all it has to go on.<sup><a href="#fn4">4</a></sup> The page lists checks such as <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">a test file, a build's exit code, a linter, or a script that diffs output against a fixture</a>.<sup><a href="#fn4">4</a></sup></li>
+    <li>Get a reader who didn't write it. The same page describes <a href="https://code.claude.com/docs/en/best-practices" rel="noopener"><code>/code-review</code></a> as reviewing the diff in a fresh subagent that never saw your conversation, so it isn't swayed by the reasoning that produced the code.<sup><a href="#fn4">4</a></sup></li>
+    <li>Write down the debt you choose. If you're taking a shortcut on purpose, a one-line note on why turns inadvertent debt into the deliberate kind, so it's debt you know you owe instead of debt you discover later.</li>
+  </ul>
+
+  <h2>Don't pay it all back at once</h2>
+  <p class="sub">There's a trap on the other side, too. Anthropic's page warns that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">a reviewer asked to find problems will always find something</a>, and that if you fix every finding, you end up with extra abstraction layers and tests for cases that can't happen.<sup><a href="#fn4">4</a></sup> That's debt as well, just taken on in the name of cleanliness. Fowler's point about spending the effort where you modify frequently is a good filter here. Not every smell is worth the principal.</p>
+  <p class="sub">So the goal isn't debt-free code. It's knowing what you owe, where, and roughly what it'll cost the next person who touches it. Often that next person is you.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history a coding agent keeps and turns it into a map of how a project was built. When you mark a version shipped, partial or abandoned with <code>/complete</code>, the appraisal judges every session's moves against the outcome you declared, with evidence, minutes, and the technical implications now living in the result. It's a way to look back at what a build owes, with the record that shows where each part of it came from.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Martin Fowler. <a href="https://martinfowler.com/bliki/TechnicalDebt.html" rel="noopener">Technical Debt</a>. martinfowler.com bliki.</li>
+    <li id="fn2">Martin Fowler. <a href="https://martinfowler.com/bliki/TechnicalDebtQuadrant.html" rel="noopener">Technical Debt Quadrant</a>. martinfowler.com bliki.</li>
+    <li id="fn3">Liu, Widyasari, Zhao, Irsan, Lo. <a href="https://arxiv.org/abs/2603.28592" rel="noopener">Debt Behind the AI Boom: A Large-Scale Empirical Study of AI-Generated Code in the Wild</a>. arXiv preprint 2603.28592, 2026.</li>
+    <li id="fn4">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>
