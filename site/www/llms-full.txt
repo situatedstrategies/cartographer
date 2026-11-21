@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-19.
+> Generated 2026-11-21.
 
 
 ---
@@ -986,6 +986,64 @@ Cartographer reads the session history a coding agent keeps and turns it into a 
 - Anthropic. Best practices for Claude Code. Claude Code documentation.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Understanding an unfamiliar codebase: what the code can't tell you
+URL: https://codecartographer.dev/blog/understanding-an-unfamiliar-codebase
+Description: A field study found developers spend about 58 percent of their time on program comprehension. What an agent can answer in a new codebase, and what it can't.
+
+Opening an unfamiliar repository has a particular feeling. Hundreds of files, names that mean something to somebody, and no obvious door. We've all scrolled a directory tree hoping the structure would explain itself. It rarely does.
+
+A coding agent offers another way in: you can ask your questions in plain words. That's a real gift. It's also worth being clear about which kind of understanding it gives us, and which kind it can't.
+
+## Reading is most of the job
+
+Xia and colleagues collected 3,148 working hours of data from 78 professional developers in a field study.1 They found that, on average, developers spend about 58 percent of their time on program comprehension activities, and that they frequently use web browsers and document editors to do it.1 They also report that senior developers spend a significantly smaller percentage of their time on program comprehension than junior developers do.1
+
+We find that number oddly comforting. If more than half of the time goes to understanding, then feeling slow in a new codebase isn't a personal failing. It's the work. And we read the seniority gap as a hint that comprehension gets cheaper with familiarity, which is exactly what a newcomer doesn't have yet.
+
+## What the code doesn't say
+
+LaToza, Venolia and DeLine ran two surveys and eleven interviews to understand developers' tools, activities and practices.2 They report that many problems arose because developers were forced to invest great effort recovering implicit knowledge by exploring code and interrupting teammates, and that this knowledge was only saved in their memory.2 The expectation had been that documentation makes design rationale easy to understand. Instead, they found that current design documents are inadequate.2
+
+That paper is from 2006, and we think it still describes the newcomer's problem well. The hard questions aren't "where is the login handler." They're "why is it like this," and the answer often isn't in the repository at all.
+
+Anthropic's documentation makes a matching point from the agent's side. Its best practices page for Claude Code describes projects that have knowledge, rules, or constraints that Claude can't see from the code alone, and the first example it gives is a deploy process that lives in someone's head.3
+
+## Good first questions
+
+For the part that is in the code, Anthropic's common workflows page offers a simple recipe. It imagines that you've just joined a new project and need to understand its structure quickly, and suggests a prompt as plain as "give me an overview of this codebase."4 Its tips are to start with broad questions, then narrow down to specific areas, to ask about the coding conventions and patterns the project uses, and to request a glossary of project-specific terms.4
+
+We like the glossary tip most. So much of being new is not knowing what the words mean. The same page suggests following one path from end to end, with an example prompt that asks Claude to trace the login process from front-end to database.4 We'd take one traced path over ten file summaries.
+
+For bigger repositories, the page notes that exploring a large codebase fills your context with file reads, and suggests delegating the exploration to a subagent so that only the findings come back.4
+
+## Keep a list of the whys
+
+So here's the habit we'd suggest. Let the agent help with the where and the how. While it does, keep a running list of the questions the files can't settle: why this library, why this odd retry, what was tried before. Those are the ones to take to a teammate, the commit history, or a decision record if the project keeps them.
+
+When you get an answer, write it down where the next newcomer will find it. Otherwise it goes back to being saved only in somebody's memory, and the next person pays for it again.
+
+And walk a little of the ground yourself. An overview is a claim about the code, not the code. Open two or three of the files it names and check that they do what you were told. It takes a few minutes, and it's how a borrowed understanding starts to become your own.
+
+## Where Cartographer fits
+
+Cartographer reads the session history a coding agent keeps and turns it into a map of how a project was built. Marks on the map call out decisions, questions, dead ends, fixes, artifacts, pivots and insights. For a project built with an agent, that's one place where some of the why was written down as it happened.
+
+## Sources
+
+- Xia, Bao, Lo, Xing, Hassan, Li. Measuring Program Comprehension: A Large-Scale Field Study with Professionals. IEEE Transactions on Software Engineering, volume 44, issue 10, 2018.
+
+- LaToza, Venolia, DeLine. Maintaining Mental Models: A Study of Developer Work Habits. Proceedings of the 28th International Conference on Software Engineering (ICSE), 2006. Microsoft Research.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+- Anthropic. Common workflows. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
 
 ← BlogHow it works →
 

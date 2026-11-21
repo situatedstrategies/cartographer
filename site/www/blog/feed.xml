@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Nov 2026 15:04:54 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 21 Nov 2026 15:03:56 GMT</lastBuildDate>
+    <item>
+      <title>Understanding an unfamiliar codebase: what the code can't tell you</title>
+      <link>https://codecartographer.dev/blog/understanding-an-unfamiliar-codebase</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/understanding-an-unfamiliar-codebase</guid>
+      <pubDate>Sat, 21 Nov 2026 12:00:00 GMT</pubDate>
+      <description>A field study found developers spend about 58 percent of their time on program comprehension. What an agent can answer in a new codebase, and what it can't.</description>
+    </item>
     <item>
       <title>Technical debt in AI-generated code: what it means and how to spot it</title>
       <link>https://codecartographer.dev/blog/technical-debt-in-agent-built-code</link>

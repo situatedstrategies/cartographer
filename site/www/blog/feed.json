@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/understanding-an-unfamiliar-codebase",
+      "url": "https://codecartographer.dev/blog/understanding-an-unfamiliar-codebase",
+      "title": "Understanding an unfamiliar codebase: what the code can't tell you",
+      "summary": "A field study found developers spend about 58 percent of their time on program comprehension. What an agent can answer in a new codebase, and what it can't.",
+      "date_published": "2026-11-21T12:00:00Z",
+      "date_modified": "2026-11-21T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/technical-debt-in-agent-built-code",
       "url": "https://codecartographer.dev/blog/technical-debt-in-agent-built-code",
       "title": "Technical debt in AI-generated code: what it means and how to spot it",
