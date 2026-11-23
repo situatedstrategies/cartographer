@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 21 Nov 2026 15:03:56 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 23 Nov 2026 15:04:26 GMT</lastBuildDate>
+    <item>
+      <title>How to write a bug report for a coding agent: what research says</title>
+      <link>https://codecartographer.dev/blog/how-to-write-a-bug-report-for-a-coding-agent</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/how-to-write-a-bug-report-for-a-coding-agent</guid>
+      <pubDate>Mon, 23 Nov 2026 12:00:00 GMT</pubDate>
+      <description>A survey found the bug report details most developers call helpful are the hardest to supply. What that and Anthropic's docs say about asking for a fix.</description>
+    </item>
     <item>
       <title>Understanding an unfamiliar codebase: what the code can't tell you</title>
       <link>https://codecartographer.dev/blog/understanding-an-unfamiliar-codebase</link>

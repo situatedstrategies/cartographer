@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-21.
+> Generated 2026-11-23.
 
 
 ---
@@ -1044,6 +1044,74 @@ Cartographer reads the session history a coding agent keeps and turns it into a 
 - Anthropic. Common workflows. Claude Code documentation.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# How to write a bug report for a coding agent: what research says
+URL: https://codecartographer.dev/blog/how-to-write-a-bug-report-for-a-coding-agent
+Description: A survey found the bug report details most developers call helpful are the hardest to supply. What that and Anthropic's docs say about asking for a fix.
+
+"Fix the login bug" is a complete sentence and an incomplete report. It says something is wrong. It doesn't say what was seen, how to see it again, or what right would look like. There's research on what separates a report like that from a useful one.
+
+That research is worth a look now, because a prompt asking an agent to fix something is a bug report. The reader has changed. The parts that make a report useful haven't changed much.
+
+## What developers said they need
+
+Zimmermann and colleagues conducted a survey among developers and users of Apache, Eclipse and Mozilla to find out what makes a good bug report.1 The analysis of the 466 responses revealed an information mismatch between what developers need and what users supply.1 Most developers considered steps to reproduce, stack traces and test cases helpful, and those were, at the same time, the items most difficult for users to provide.1
+
+That last finding goes a long way toward explaining thin reports. The helpful parts are the costly parts. A symptom is quick to type. Steps that reliably reproduce it take work to find, and a test case takes more. So the cheap part gets sent, and the reader is left to work out the rest.
+
+## The same three things, asked of you
+
+Anthropic's documentation for Claude Code asks for a very similar list. Its common workflows page has a recipe for fixing bugs, and the tips under it are to tell Claude the command to reproduce the issue and get a stack trace, to mention any steps to reproduce the error, and to let Claude know if the error is intermittent or consistent.2 Steps to reproduce and stack traces are two of the survey's three, almost word for word.
+
+The third turns up on the best practices page. It says that if you name the file, describe the symptom, and say what "fixed" looks like up front, you usually save yourself a round of corrections later.3 Its example replaces "fix the login bug" with a prompt that says users report login fails after the session times out, points at token refresh in a named directory, and asks Claude to write a failing test that reproduces it, then fix it.3 That's the test case.
+
+## Hand over the evidence
+
+The same page has a plain rule for material you already hold: hand it over instead of describing it.3 Its examples include pasting a screenshot of the error into the prompt and piping command output in from your shell.3
+
+The reasoning holds for any reader. A description of an error is a summary, and a summary drops detail. The exact message, the full trace and the line number are the facts. "It crashes on save" is your reading of them. Send both, and the reader can check the reading against the facts.
+
+## A failing test is a report that runs
+
+The best practices page also says that Claude stops when the work looks done, and that with nothing to run that tells it whether the work actually is done, "looks done" is all it has to go on.3 Its advice is to give Claude something it can run that comes back pass or fail.3
+
+For a bug, a reproducing test is exactly that. It states the steps, the expected result and the actual result in a form nobody has to interpret. It fails now, and it passes when the bug is gone.
+
+It's also one of the items the survey found most difficult to provide. The documentation's example hands that cost to the agent by asking it to write the test. If you do the same, read the test before you read the fix, and confirm it fails for the reason you reported. A test that fails for some other reason describes some other bug.
+
+## Five questions before you send
+
+A fix request worth sending answers five questions:
+
+- What did you see? The exact error text or output, pasted and not paraphrased.
+
+- How do you make it happen? The command or the steps, in order.
+
+- Does it happen every time? Say whether it's intermittent or consistent.
+
+- Where would you look first? A file or directory if you have a guess, labelled as a guess.
+
+- What does fixed look like? The behavior you expect, ideally as a check that can be run.
+
+Not every bug comes with all five answers. If you can't reproduce it, say so. That's information too. A gap that's named is better than a gap left blank, because a blank can't tell the reader whether something is unknown or just unmentioned.
+
+## Where Cartographer fits
+
+Cartographer reads the session history a coding agent keeps and turns it into a map of how a project was built. It reads every prompt for what it anchors to: files, symbols, errors, pasted code. Marks on the map call out decisions, questions, dead ends, fixes, artifacts, pivots and insights.
+
+## Sources
+
+- Zimmermann, Premraj, Bettenburg, Just, Schr&ouml;ter, Weiss. What Makes a Good Bug Report?. IEEE Transactions on Software Engineering, volume 36, issue 5, 2010.
+
+- Anthropic. Common workflows. Claude Code documentation.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
 
 ← BlogHow it works →
 

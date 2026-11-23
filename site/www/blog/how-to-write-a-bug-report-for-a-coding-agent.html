@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to write a bug report for a coding agent: what research says</title>
+<meta name="description" content="A survey found the bug report details most developers call helpful are the hardest to supply. What that and Anthropic's docs say about asking for a fix.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/how-to-write-a-bug-report-for-a-coding-agent">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/how-to-write-a-bug-report-for-a-coding-agent">
+<meta property="og:title" content="How to write a bug report for a coding agent: what research says">
+<meta property="og:description" content="A survey found the bug report details most developers call helpful are the hardest to supply. What that and Anthropic's docs say about asking for a fix.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"How to write a bug report for a coding agent: what research says","description":"A survey found the bug report details most developers call helpful are the hardest to supply. What that and Anthropic's docs say about asking for a fix.","url":"https://codecartographer.dev/blog/how-to-write-a-bug-report-for-a-coding-agent","mainEntityOfPage":"https://codecartographer.dev/blog/how-to-write-a-bug-report-for-a-coding-agent","datePublished":"2026-11-23","dateModified":"2026-11-23","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"How to write a bug report for a coding agent: what research says","item":"https://codecartographer.dev/blog/how-to-write-a-bug-report-for-a-coding-agent"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>How to write a bug report for a coding agent: what research says</h1>
+  <p class="lead">A survey of open source developers and users found that the parts of a bug report most developers call helpful are also the hardest to supply. Anthropic's documentation asks for much the same parts when the reader is a coding agent.</p>
+  <p class="meta">By Team Cartographer · November 23rd 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <p class="sub">"Fix the login bug" is a complete sentence and an incomplete report. It says something is wrong. It doesn't say what was seen, how to see it again, or what right would look like. There's research on what separates a report like that from a useful one.</p>
+  <p class="sub">That research is worth a look now, because a prompt asking an agent to fix something is a bug report. The reader has changed. The parts that make a report useful haven't changed much.</p>
+
+  <h2>What developers said they need</h2>
+  <p class="sub">Zimmermann and colleagues <a href="https://ieeexplore.ieee.org/document/5487527/" rel="noopener">conducted a survey among developers and users of Apache, Eclipse and Mozilla</a> to find out what makes a good bug report.<sup><a href="#fn1">1</a></sup> The analysis of the 466 responses <a href="https://ieeexplore.ieee.org/document/5487527/" rel="noopener">revealed an information mismatch between what developers need and what users supply</a>.<sup><a href="#fn1">1</a></sup> Most developers considered <a href="https://ieeexplore.ieee.org/document/5487527/" rel="noopener">steps to reproduce, stack traces and test cases</a> helpful, and those were, at the same time, the items most difficult for users to provide.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">That last finding goes a long way toward explaining thin reports. The helpful parts are the costly parts. A symptom is quick to type. Steps that reliably reproduce it take work to find, and a test case takes more. So the cheap part gets sent, and the reader is left to work out the rest.</p>
+
+  <h2>The same three things, asked of you</h2>
+  <p class="sub">Anthropic's documentation for Claude Code asks for a very similar list. Its common workflows page has a recipe for fixing bugs, and the tips under it are to <a href="https://code.claude.com/docs/en/common-workflows" rel="noopener">tell Claude the command to reproduce the issue and get a stack trace</a>, to mention any steps to reproduce the error, and to <a href="https://code.claude.com/docs/en/common-workflows" rel="noopener">let Claude know if the error is intermittent or consistent</a>.<sup><a href="#fn2">2</a></sup> Steps to reproduce and stack traces are two of the survey's three, almost word for word.</p>
+  <p class="sub">The third turns up on the best practices page. It says that if you <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">name the file, describe the symptom, and say what &quot;fixed&quot; looks like up front</a>, you usually save yourself a round of corrections later.<sup><a href="#fn3">3</a></sup> Its example replaces "fix the login bug" with a prompt that says users report login fails after the session times out, points at token refresh in a named directory, and asks Claude to <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">write a failing test that reproduces it</a>, then fix it.<sup><a href="#fn3">3</a></sup> That's the test case.</p>
+
+  <h2>Hand over the evidence</h2>
+  <p class="sub">The same page has a plain rule for material you already hold: <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">hand it over instead of describing it</a>.<sup><a href="#fn3">3</a></sup> Its examples include pasting a screenshot of the error into the prompt and piping command output in from your shell.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">The reasoning holds for any reader. A description of an error is a summary, and a summary drops detail. The exact message, the full trace and the line number are the facts. "It crashes on save" is your reading of them. Send both, and the reader can check the reading against the facts.</p>
+
+  <h2>A failing test is a report that runs</h2>
+  <p class="sub">The best practices page also says that <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Claude stops when the work looks done</a>, and that with nothing to run that tells it whether the work actually is done, "looks done" is all it has to go on.<sup><a href="#fn3">3</a></sup> Its advice is to give Claude <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">something it can run that comes back pass or fail</a>.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">For a bug, a reproducing test is exactly that. It states the steps, the expected result and the actual result in a form nobody has to interpret. It fails now, and it passes when the bug is gone.</p>
+  <p class="sub">It's also one of the items the survey found most difficult to provide. The documentation's example hands that cost to the agent by asking it to write the test. If you do the same, read the test before you read the fix, and confirm it fails for the reason you reported. A test that fails for some other reason describes some other bug.</p>
+
+  <h2>Five questions before you send</h2>
+  <p class="sub">A fix request worth sending answers five questions:</p>
+  <ul class="list">
+    <li>What did you see? The exact error text or output, pasted and not paraphrased.</li>
+    <li>How do you make it happen? The command or the steps, in order.</li>
+    <li>Does it happen every time? Say whether it's intermittent or consistent.</li>
+    <li>Where would you look first? A file or directory if you have a guess, labelled as a guess.</li>
+    <li>What does fixed look like? The behavior you expect, ideally as a check that can be run.</li>
+  </ul>
+  <p class="sub">Not every bug comes with all five answers. If you can't reproduce it, say so. That's information too. A gap that's named is better than a gap left blank, because a blank can't tell the reader whether something is unknown or just unmentioned.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history a coding agent keeps and turns it into a map of how a project was built. It reads every prompt for what it anchors to: files, symbols, errors, pasted code. Marks on the map call out decisions, questions, dead ends, fixes, artifacts, pivots and insights.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Zimmermann, Premraj, Bettenburg, Just, Schr&ouml;ter, Weiss. <a href="https://ieeexplore.ieee.org/document/5487527/" rel="noopener">What Makes a Good Bug Report?</a>. IEEE Transactions on Software Engineering, volume 36, issue 5, 2010.</li>
+    <li id="fn2">Anthropic. <a href="https://code.claude.com/docs/en/common-workflows" rel="noopener">Common workflows</a>. Claude Code documentation.</li>
+    <li id="fn3">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>
