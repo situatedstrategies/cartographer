@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-23.
+> Generated 2026-11-25.
 
 
 ---
@@ -1112,6 +1112,68 @@ Cartographer reads the session history a coding agent keeps and turns it into a 
 - Anthropic. Best practices for Claude Code. Claude Code documentation.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Checklists for agent-written code: what they catch and what they don't
+URL: https://codecartographer.dev/blog/checklists-for-agent-written-code
+Description: A surgical checklist cut deaths in a 2009 study. Code review checklists had mixed results. What we'd put on a checklist for agent output, and what to leave off.
+
+## The checklist with the famous result
+
+When people argue for checklists, they usually reach for surgery. In 2009 Haynes and colleagues reported in the New England Journal of Medicine on a 19-item surgical safety checklist, based on the World Health Organization's Safe Surgery Saves Lives guidelines, introduced at eight hospitals in eight cities. The rate of death was 1.5 percent before the checklist and 0.8 percent afterward. Inpatient complications went from 11.0 percent of patients to 7.0 percent.1
+
+It's a striking result, and it pays to be precise about what the checklist was. It focused on three moments: sign in before anesthesia, a timeout right before the incision, and sign out when the patient was ready to leave the room.1 Our reading, not the paper's, is that each item confirmed a step the team already knew mattered and could still skip under pressure. The list didn't make anyone a better surgeon. It made the known steps harder to forget.
+
+## Checklists in code review: a more mixed picture
+
+Software has tried the same idea for decades, with quieter numbers. A 2022 experiment by Wurzel Gon&ccedil;alves and colleagues, published in Empirical Software Engineering, had 70 developers do three review tasks under one of three conditions: ad hoc review, review with a checklist, and review with a guided checklist that used further means of reducing cognitive load. The guided checklist went with better review effectiveness in the small task, while the plain checklist seemed to raise performance in the other task. Most of the participants, 71.6 percent, didn't commonly practice code review, so the authors treat them as novice reviewers.2
+
+So a checklist helped, sometimes, depending on the task and who was holding it. That's a long way from the surgical result, and we think the gap is the interesting part. A surgical checklist confirms known steps in a procedure that is roughly the same every time. A code review is a search for unknown problems in a change that is different every time. A list can't name the bug you haven't met yet. What it can do is make sure the boring, known checks actually happen.
+
+## What's different when an agent wrote it
+
+Agent output has a particular failure shape, and the vendor says so. Anthropic's best practices page for Claude Code puts it plainly: Claude stops when the work looks done, and if it has nothing to run that tells it whether the work actually is done, "looks done" is all it has to go on. The same page says to ask for evidence, the command it ran and its output, because "all tests pass" on its own tells you very little.3 The docs for Anthropic's Code Review feature carry the mirror-image warning: a review with no findings doesn't mean your code is error-free or secure.4
+
+That's the surgical kind of problem, not the research kind. It isn't a subtle bug nobody could have predicted. It's a known step, confirming the work, skipped because the summary read well. Known steps that get skipped are exactly what a checklist is for.
+
+## What we'd put on it
+
+Keep it short, and make every item a yes or no about the session rather than a matter of taste.
+
+- Did it run? Not "did it say it ran." The command and its output are in the transcript, or they aren't.
+
+- Does the diff match the ask? Read the request again, then the change. Extra files and extra features count as a mismatch.
+
+- What did it skip? Look for the sentence where a step was deferred, stubbed, or declared out of scope.
+
+- What did it assume? Any guess about your environment, your data, or your intent that wasn't in the prompt.
+
+- Was it corrected, and did the correction stick? A "no, I meant" earlier in the session is the best pointer to where the first version went wrong.
+
+None of these needs expertise in the code. They need the transcript, the diff, and five minutes. That's the point. A checklist is cheap enough to run every time, which is the only way it ever pays off.
+
+## What we'd leave off
+
+Style, naming, structure. Those are review questions, but they aren't checklist questions, and they crowd out the ones above. Anthropic's best practices make a related point about asking an agent to review code: a reviewer that's asked to find problems will always find something, and if you fix every finding you end up with extra abstraction layers and tests for cases that can't happen.3 The same page describes running the review in a fresh subagent that never saw the conversation, so it isn't swayed by the reasoning that produced the code.3 We'd keep the checklist for the known steps and leave the open-ended search to a reader, human or otherwise, who starts fresh.
+
+## Where Cartographer fits
+
+Several items on that list are about the record, not the code. Cartographer reads the session history a coding agent keeps and reads every prompt for what act it performs: build, fix, repair, accept, ask. A turn that starts with "no, I meant" marks the previous move as having gone wrong for you, even if the code ran. Outcomes are judged from the record, not from tone, every appraisal item has to cite its evidence, and praise words are rejected on save.
+
+## Sources
+
+- Haynes and colleagues. A surgical safety checklist to reduce morbidity and mortality in a global population. New England Journal of Medicine, volume 360, issue 5, 2009.
+
+- Wurzel Gon&ccedil;alves, Fregnan, Baum, Schneider, Bacchelli. Do explicit review strategies improve code review performance? Towards understanding the role of cognitive load. Empirical Software Engineering, volume 27, 2022.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+- Anthropic. Code Review. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: support@codecartographer.dev. We read everything.
 
 ← BlogHow it works →
 
