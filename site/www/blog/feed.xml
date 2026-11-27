@@ -6,7 +6,14 @@
     <atom:link href="https://codecartographer.dev/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Short, cited articles from Team Cartographer on working with coding agents, with sources.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Nov 2026 15:06:44 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 27 Nov 2026 15:07:14 GMT</lastBuildDate>
+    <item>
+      <title>Sunk cost in an agent session: when to stop prompting and revert</title>
+      <link>https://codecartographer.dev/blog/sunk-cost-in-an-agent-session</link>
+      <guid isPermaLink="true">https://codecartographer.dev/blog/sunk-cost-in-an-agent-session</guid>
+      <pubDate>Fri, 27 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Full-price theatergoers showed up more. A survey put escalation at 30 to 40 percent of IS projects. What that says about one more prompt, and when to revert.</description>
+    </item>
     <item>
       <title>Checklists for agent-written code: what they catch and what they don't</title>
       <link>https://codecartographer.dev/blog/checklists-for-agent-written-code</link>

@@ -54,7 +54,6 @@ When the queue runs low, add new topics that fit the pillars and target real
 search phrases people use. Never repeat a topic an existing post already
 covers.
 
-- Sunk cost in an agent session: when to stop prompting and revert (search: "sunk cost fallacy programming")
 - Documentation that drifts from code: keeping README and comments honest after an agent edits (search: "keep documentation in sync with code")
 - Bus factor when an agent wrote most of the code: who holds the knowledge (search: "bus factor software")
 - Premature optimization with a coding agent: asking for fast before asking for right (search: "premature optimization is the root of all evil")

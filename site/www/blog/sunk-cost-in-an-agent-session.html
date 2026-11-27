@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2443535982979230"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunk cost in an agent session: when to stop prompting and revert</title>
+<meta name="description" content="Full-price theatergoers showed up more. A survey put escalation at 30 to 40 percent of IS projects. What that says about one more prompt, and when to revert.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://codecartographer.dev/blog/sunk-cost-in-an-agent-session">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codecartographer.dev/blog/sunk-cost-in-an-agent-session">
+<meta property="og:title" content="Sunk cost in an agent session: when to stop prompting and revert">
+<meta property="og:description" content="Full-price theatergoers showed up more. A survey put escalation at 30 to 40 percent of IS projects. What that says about one more prompt, and when to revert.">
+<meta property="og:image" content="https://codecartographer.dev/icon.png">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/site.css">
+<script src="/motion.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Sunk cost in an agent session: when to stop prompting and revert","description":"Full-price theatergoers showed up more. A survey put escalation at 30 to 40 percent of IS projects. What that says about one more prompt, and when to revert.","url":"https://codecartographer.dev/blog/sunk-cost-in-an-agent-session","mainEntityOfPage":"https://codecartographer.dev/blog/sunk-cost-in-an-agent-session","datePublished":"2026-11-27","dateModified":"2026-11-27","inLanguage":"en","author":{"@type":"Organization","name":"Team Cartographer"},"publisher":{"@id":"https://situatedstrategies.org/#organization"},"isPartOf":{"@type":"Blog","url":"https://codecartographer.dev/blog/","name":"The Cartographer blog"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cartographer","item":"https://codecartographer.dev/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://codecartographer.dev/blog/"},{"@type":"ListItem","position":3,"name":"Sunk cost in an agent session: when to stop prompting and revert","item":"https://codecartographer.dev/blog/sunk-cost-in-an-agent-session"}]}</script>
+</head>
+<body><div class="wrap">
+<nav><a class="brand" href="/"><img src="/logo.png" alt="" width="40" height="40">Cartographer</a><a href="/install">Install</a><a href="/claude-code">In Claude Code</a><a href="/commands">Commands</a><a href="/how-it-works">How it works</a><a href="/questions">Questions</a><a href="/blog/" class="on">Blog</a><a class="ext" href="/demo.html" target="_blank" rel="noopener">See a map</a></nav>
+
+<header>
+  <div class="eyebrow"><a href="/blog/">Blog</a></div>
+  <h1>Sunk cost in an agent session: when to stop prompting and revert</h1>
+  <p class="lead">Every extra prompt spent rescuing a session that went wrong feels like an investment. The research on sunk cost says that feeling is exactly the one to distrust.</p>
+  <p class="meta">By Team Cartographer · November 27th 2026 · 4 minute read</p>
+</header>
+<main>
+
+<section>
+  <h2>What the sunk cost effect is</h2>
+  <p class="sub">In 1985 Arkes and Blumer defined the sunk cost effect as <a href="https://www.semanticscholar.org/paper/The-Psychology-of-Sunk-Cost-Arkes-Blumer/e4564b88ca2349962a707b76be4c75076ad6bd43" rel="noopener">"a greater tendency to continue an endeavor once an investment in money, effort, or time has been made."</a> Their best known test of it was a field study. Customers who had paid more for a season subscription to a theater series attended more plays over the next six months, which the authors put down to their higher sunk cost in the tickets.<sup><a href="#fn1">1</a></sup></p>
+  <p class="sub">The setup is worth knowing because it's so ordinary. The first 60 people to buy season tickets at the Ohio University Theater box office were randomly sold them at full price, at a $2 discount, or at a $7 discount. The tickets were the same. The full-price buyers used significantly more of them in the first half of the season than either discount group, and the difference didn't show up in the second half.<sup><a href="#fn1">1</a></sup> The authors' explanation is that people don't want to appear wasteful.<sup><a href="#fn1">1</a></sup> Nothing about the plays changed. What changed was how much it would hurt to skip one.</p>
+
+  <h2>Software projects are known to keep going</h2>
+  <p class="sub">Whole software projects do the same thing at a larger scale. Keil, Mann and Rai surveyed information systems audit and control professionals and <a href="https://aisel.aisnet.org/misq/vol24/iss4/4/" rel="noopener">reported in MIS Quarterly in 2000</a> that between 30 and 40 percent of all IS projects exhibit some degree of escalation, the field's word for a troubled project that keeps going. Projects that escalated had significantly worse perceived implementation performance and perceived budget and schedule performance than projects that didn't.<sup><a href="#fn2">2</a></sup></p>
+  <p class="sub">One finding from that paper matters for anyone deep in an agent session. The authors tested constructs from four theories of escalation, and the one that best separated escalated projects from the rest was the completion effect, drawn from approach avoidance theory. It correctly classified over 70 percent of both escalated and non-escalated projects.<sup><a href="#fn2">2</a></sup> In plain terms, the strongest pull wasn't what had already been spent. It was the sense of being almost there.</p>
+
+  <h2>The session-sized version</h2>
+  <p class="sub">An agent session compresses all of this into an afternoon. The first prompt asks for a feature. The result is close but wrong, so the second prompt corrects it. The third correction fixes one thing and breaks another. By the fifth, the conversation holds four failed attempts, the diff touches files nobody meant to touch, and every message starts with "almost, but". Each prompt is a small investment, and each one makes the next feel more necessary. The conviction that one more correction will land is the completion effect in miniature.</p>
+  <p class="sub">Anthropic's guidance for Claude Code names the point to stop. Its <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">best practices page</a> says that if you've corrected the same thing twice and it's still wrong, a third correction mostly adds to a conversation that already contains two failed attempts for Claude to keep re-reading. The advice is to run /clear and write one new prompt that folds in what you learned, which the page says works better almost every time.<sup><a href="#fn3">3</a></sup> Two is a number, not a feeling. That's what makes it usable in the moment.</p>
+
+  <h2>Reverting is cheaper than it feels</h2>
+  <p class="sub">Part of what makes a sunk cost sticky is the belief that walking away costs something. In an agent session it mostly doesn't, and the tooling has been built around that. Claude Code's <a href="https://code.claude.com/docs/en/checkpointing" rel="noopener">checkpointing documentation</a> says it captures the state of your code before each prompt that starts a turn. The /rewind menu lists the prompts you sent and lets you restore code and conversation together, restore only the conversation, or restore only the code.<sup><a href="#fn4">4</a></sup> The best practices page draws the conclusion: that makes it low-risk to try the bolder approach first and rewind if it doesn't work out.<sup><a href="#fn3">3</a></sup></p>
+  <p class="sub">Two limits are worth knowing. The same documentation says a file that only Bash commands changed isn't tracked, so reverting it means version control, and that checkpoints are designed for quick, session-level recovery rather than as a replacement for Git.<sup><a href="#fn4">4</a></sup> A commit before the risky prompt costs seconds. It's also what turns a revert from a loss into a choice.</p>
+
+  <h2>What to keep from the attempt you abandon</h2>
+  <p class="sub">Reverting the code doesn't have to mean losing what it taught. Two failed corrections told you something: what the agent assumed, which file it reached for first, where the prompt was vague enough to read two ways. The advice to fold what you learned into the new prompt only works if that learning gets written down before the clear.<sup><a href="#fn3">3</a></sup> One line is enough. "Leave the auth module alone, the bug is in the date parser" saves the next session from the first wrong turn.</p>
+  <p class="sub">Seen this way, stopping isn't the loss of an investment. The investment bought information. Spending more prompts to protect it is the theater ticket: showing up because of what was paid, not because of where the play is going.</p>
+
+  <h2>Where Cartographer fits</h2>
+  <p class="sub">Cartographer reads the session history a coding agent already keeps and reads every prompt for the act it performs: build, fix, repair, accept, ask. A turn that starts with "no, I meant" marks the previous move as having gone wrong for you, even if the code ran, and turn-initial repairs are flagged because they usually mark a dead end. The replay tells the moves back in order, so a run of corrections is plain to see afterward. Outcomes are judged from the record, not from tone.</p>
+</section>
+<section>
+  <h2 id="sources">Sources</h2>
+  <ol class="list">
+    <li id="fn1">Arkes and Blumer. <a href="https://www.semanticscholar.org/paper/The-Psychology-of-Sunk-Cost-Arkes-Blumer/e4564b88ca2349962a707b76be4c75076ad6bd43" rel="noopener">The psychology of sunk cost</a>. Organizational Behavior and Human Decision Processes, volume 35, 1985.</li>
+    <li id="fn2">Keil, Mann and Rai. <a href="https://aisel.aisnet.org/misq/vol24/iss4/4/" rel="noopener">Why software projects escalate: an empirical analysis and test of four theoretical models</a>. MIS Quarterly, volume 24, issue 4, 2000.</li>
+    <li id="fn3">Anthropic. <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Best practices for Claude Code</a>. Claude Code documentation.</li>
+    <li id="fn4">Anthropic. <a href="https://code.claude.com/docs/en/checkpointing" rel="noopener">Checkpointing</a>. Claude Code documentation.</li>
+  </ol>
+  <p class="meta">Questions, or a topic you'd like us to dig into next? Reach out any time: <a href="mailto:mapit@codecartographer.dev">mapit@codecartographer.dev</a>. We read everything.</p>
+</section>
+
+<div class="next"><a href="/blog/">← Blog</a><a href="/how-it-works">How it works →</a></div>
+</main>
+<footer>
+  <span>Cartographer is made by <a href="https://situatedstrategies.org/" rel="noopener">Situated Strategies</a>.</span>
+  <a href="/about">About</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="mailto:support@codecartographer.dev">support@codecartographer.dev</a>
+  <a href="mailto:mapit@codecartographer.dev">Send a map or feedback: mapit@codecartographer.dev</a>
+  <a href="https://github.com/situatedstrategies/cartographer">Source</a>
+  <a href="https://ko-fi.com/olivia_" target="_blank" rel="noopener">Support the Creator</a>
+  <a class="badge" href="https://peerpush.com/p/cartographer" target="_blank" rel="noopener"><img src="https://peerpush.com/p/cartographer/badge.png" alt="Cartographer on PeerPush" width="230"></a>
+</footer>
+</div><script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  if (window.kofiWidgetOverlay) kofiWidgetOverlay.draw('olivia_', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#2f4a72',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body></html>

@@ -13,6 +13,19 @@
   ],
   "items": [
     {
+      "id": "https://codecartographer.dev/blog/sunk-cost-in-an-agent-session",
+      "url": "https://codecartographer.dev/blog/sunk-cost-in-an-agent-session",
+      "title": "Sunk cost in an agent session: when to stop prompting and revert",
+      "summary": "Full-price theatergoers showed up more. A survey put escalation at 30 to 40 percent of IS projects. What that says about one more prompt, and when to revert.",
+      "date_published": "2026-11-27T12:00:00Z",
+      "date_modified": "2026-11-27T12:00:00Z",
+      "authors": [
+        {
+          "name": "Team Cartographer"
+        }
+      ]
+    },
+    {
       "id": "https://codecartographer.dev/blog/checklists-for-agent-written-code",
       "url": "https://codecartographer.dev/blog/checklists-for-agent-written-code",
       "title": "Checklists for agent-written code: what they catch and what they don't",

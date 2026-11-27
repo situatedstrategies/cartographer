@@ -2,7 +2,7 @@
 
 > An open source tool that reads the session history a coding agent keeps and turns it into a map of how a project was built. By Situated Strategies LLC.
 > Every page below is also served at its URL. This file is the same content in one place, for assistants and crawlers. See also /llms.txt for the short index.
-> Generated 2026-11-25.
+> Generated 2026-11-27.
 
 
 ---
@@ -1110,6 +1110,60 @@ Cartographer reads the session history a coding agent keeps and turns it into a 
 - Anthropic. Common workflows. Claude Code documentation.
 
 - Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
+
+← BlogHow it works →
+
+---
+
+# Sunk cost in an agent session: when to stop prompting and revert
+URL: https://codecartographer.dev/blog/sunk-cost-in-an-agent-session
+Description: Full-price theatergoers showed up more. A survey put escalation at 30 to 40 percent of IS projects. What that says about one more prompt, and when to revert.
+
+## What the sunk cost effect is
+
+In 1985 Arkes and Blumer defined the sunk cost effect as "a greater tendency to continue an endeavor once an investment in money, effort, or time has been made." Their best known test of it was a field study. Customers who had paid more for a season subscription to a theater series attended more plays over the next six months, which the authors put down to their higher sunk cost in the tickets.1
+
+The setup is worth knowing because it's so ordinary. The first 60 people to buy season tickets at the Ohio University Theater box office were randomly sold them at full price, at a $2 discount, or at a $7 discount. The tickets were the same. The full-price buyers used significantly more of them in the first half of the season than either discount group, and the difference didn't show up in the second half.1 The authors' explanation is that people don't want to appear wasteful.1 Nothing about the plays changed. What changed was how much it would hurt to skip one.
+
+## Software projects are known to keep going
+
+Whole software projects do the same thing at a larger scale. Keil, Mann and Rai surveyed information systems audit and control professionals and reported in MIS Quarterly in 2000 that between 30 and 40 percent of all IS projects exhibit some degree of escalation, the field's word for a troubled project that keeps going. Projects that escalated had significantly worse perceived implementation performance and perceived budget and schedule performance than projects that didn't.2
+
+One finding from that paper matters for anyone deep in an agent session. The authors tested constructs from four theories of escalation, and the one that best separated escalated projects from the rest was the completion effect, drawn from approach avoidance theory. It correctly classified over 70 percent of both escalated and non-escalated projects.2 In plain terms, the strongest pull wasn't what had already been spent. It was the sense of being almost there.
+
+## The session-sized version
+
+An agent session compresses all of this into an afternoon. The first prompt asks for a feature. The result is close but wrong, so the second prompt corrects it. The third correction fixes one thing and breaks another. By the fifth, the conversation holds four failed attempts, the diff touches files nobody meant to touch, and every message starts with "almost, but". Each prompt is a small investment, and each one makes the next feel more necessary. The conviction that one more correction will land is the completion effect in miniature.
+
+Anthropic's guidance for Claude Code names the point to stop. Its best practices page says that if you've corrected the same thing twice and it's still wrong, a third correction mostly adds to a conversation that already contains two failed attempts for Claude to keep re-reading. The advice is to run /clear and write one new prompt that folds in what you learned, which the page says works better almost every time.3 Two is a number, not a feeling. That's what makes it usable in the moment.
+
+## Reverting is cheaper than it feels
+
+Part of what makes a sunk cost sticky is the belief that walking away costs something. In an agent session it mostly doesn't, and the tooling has been built around that. Claude Code's checkpointing documentation says it captures the state of your code before each prompt that starts a turn. The /rewind menu lists the prompts you sent and lets you restore code and conversation together, restore only the conversation, or restore only the code.4 The best practices page draws the conclusion: that makes it low-risk to try the bolder approach first and rewind if it doesn't work out.3
+
+Two limits are worth knowing. The same documentation says a file that only Bash commands changed isn't tracked, so reverting it means version control, and that checkpoints are designed for quick, session-level recovery rather than as a replacement for Git.4 A commit before the risky prompt costs seconds. It's also what turns a revert from a loss into a choice.
+
+## What to keep from the attempt you abandon
+
+Reverting the code doesn't have to mean losing what it taught. Two failed corrections told you something: what the agent assumed, which file it reached for first, where the prompt was vague enough to read two ways. The advice to fold what you learned into the new prompt only works if that learning gets written down before the clear.3 One line is enough. "Leave the auth module alone, the bug is in the date parser" saves the next session from the first wrong turn.
+
+Seen this way, stopping isn't the loss of an investment. The investment bought information. Spending more prompts to protect it is the theater ticket: showing up because of what was paid, not because of where the play is going.
+
+## Where Cartographer fits
+
+Cartographer reads the session history a coding agent already keeps and reads every prompt for the act it performs: build, fix, repair, accept, ask. A turn that starts with "no, I meant" marks the previous move as having gone wrong for you, even if the code ran, and turn-initial repairs are flagged because they usually mark a dead end. The replay tells the moves back in order, so a run of corrections is plain to see afterward. Outcomes are judged from the record, not from tone.
+
+## Sources
+
+- Arkes and Blumer. The psychology of sunk cost. Organizational Behavior and Human Decision Processes, volume 35, 1985.
+
+- Keil, Mann and Rai. Why software projects escalate: an empirical analysis and test of four theoretical models. MIS Quarterly, volume 24, issue 4, 2000.
+
+- Anthropic. Best practices for Claude Code. Claude Code documentation.
+
+- Anthropic. Checkpointing. Claude Code documentation.
 
 Questions, or a topic you'd like us to dig into next? Reach out any time: mapit@codecartographer.dev. We read everything.
 
